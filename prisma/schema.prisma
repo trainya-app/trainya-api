@@ -1,0 +1,409 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//////Members Section
+
+//Relation to members_goals as 1 in cardinality
+model goals{
+  id  Int @id @default(autoincrement())
+  members_goals members_goals[]
+}
+
+////Normalization model for members and goals as N in cardinality
+model members_goals{
+  id  Int @id @default(autoincrement())
+  goals goals? @relation(fields: [goalId], references: [id]) //Reference
+  goalId Int?
+  members members @relation(fields: [memberId], references: [id])
+  memberId Int
+}
+
+//Relation to members_goals as          1 in cardinality
+//Relation to members_settings as       1 in cardinality
+//Relation to members_payments as       1 in cardinality
+//Relation to responsibles as           1 in cardinality
+//Relation to members_documents as      1 in cardinality
+//Relation to members_workouts_plans as 1 in cardinality
+//Relation to employees_ratings as      1 in cardinality
+//Relation to members_classes as        1 in cardinality
+//Relation to gyms_members as           1 in cardinality
+//Relation to subscriptions as          1 in cardinality
+//Relation to members_statistics as     1 in cardinality
+model members{
+  id  Int @id @default(autoincrement())
+  members_goals members_goals[]
+  members_settings members_settings[]
+  members_payments members_payments[]
+  responsibles responsibles[]
+  members_documents members_documents[]
+  members_workouts_plans members_workouts_plans[]
+  employees_ratings employees_ratings[]
+  members_classes members_classes[]
+  gyms_members gyms_members[]
+  subscriptions subscriptions[]
+  members_statistics members_statistics[]
+}
+
+////Normalization model for members and settings_options as N in cardinality
+model members_settings{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [memberId], references: [id]) //Reference
+  memberId Int
+  settings_options settings_options? @relation(fields: [settings_optionsId], references: [id]) //Reference
+  settings_optionsId Int
+}
+
+//Relation to members_settings as 1 in cardinality
+model settings_options{
+  id  Int @id @default(autoincrement())
+  members_settings members_settings[]
+}
+
+////Normalization model for members and  statistics as N in cardinality
+model members_statistics{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [memberId], references: [id]) //Reference
+  memberId Int
+  statistics statistics? @relation(fields: [statisticsId], references: [id]) //Reference
+  statisticsId Int
+
+}
+
+//Relation to members_statistics as 1 in cardinality
+model statistics{
+  id  Int @id @default(autoincrement())
+  members_statistics members_statistics[]
+}
+
+////Normalization model for members and methods as N in cardinality
+//Relation to gyms as                              N in cardinality
+model members_payments{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [memberId], references: [id]) //Reference
+  memberId Int
+  methods methods? @relation(fields: [methodsId], references: [id]) //Reference
+  methodsId Int
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+}
+
+//Relation to members_payments as 1 in cardinality
+model methods{
+  id  Int @id @default(autoincrement())
+  members_payments members_payments[]
+}
+
+//Relation to members as                N in cardinality
+//Relation to responsibles_documents as 1 in cardinality
+model responsibles{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [memberId], references: [id]) //Reference
+  memberId Int
+  responsibles_documents responsibles_documents[]
+}
+
+////Normalization model for responsibles and documents as N in cardinality
+model responsibles_documents{
+  id  Int @id @default(autoincrement())
+  responsibles responsibles? @relation(fields: [responsiblesId], references: [id]) //Reference
+  responsiblesId Int
+  documents documents? @relation(fields: [documentsId], references: [id]) //Reference
+  documentsId Int
+}
+
+////Normalization model for members and documents as N in cardinality
+model members_documents{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [membersId], references: [id]) //Reference
+  membersId Int
+  documents documents? @relation(fields: [documentsId], references: [id]) //Reference
+  documentsId Int
+}
+
+//Relation to responsibles_documents as 1 in cardinality
+//Relation to members_documents as      1 in cardinality
+//Relation to employees_documents as    1 in cardinality
+model documents{
+  id  Int @id @default(autoincrement())
+  responsibles_documents responsibles_documents[]
+  members_documents members_documents[]
+  employees_documents employees_documents[]
+}
+
+////Normalization model for members and workout_plans as N in cardinality
+model members_workouts_plans{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [membersId], references: [id]) //Reference
+  membersId Int
+  workouts_plans workouts_plans? @relation(fields: [workouts_plansId], references: [id]) //Reference
+  workouts_plansId Int
+}
+
+////Normalization model for members and classes as N in cardinality
+model members_classes{
+  id  Int @id @default(autoincrement())
+  members members? @relation(fields: [membersId], references: [id]) //Reference
+  membersId Int
+  classes classes? @relation(fields: [classesId], references: [id]) //Reference
+  classesId Int
+}
+
+////// Workouts plan section
+
+//Relation to members_workouts_plans as  1 in cardinality
+//Relation to workouts_plans_workouts as 1 in cardinality
+//Relation to employees as               N in cardinality
+model workouts_plans{
+  id  Int @id @default(autoincrement())
+  members_workouts_plans members_workouts_plans[]
+  workouts_plans_workouts workouts_plans_workouts[]
+  employees employees? @relation(fields: [employeesId], references: [id]) //Referece
+  employeesId Int 
+}
+
+////Normalization model for workout_plans and workout as N in cardinality
+model workouts_plans_workouts{
+  id  Int @id @default(autoincrement())
+  workouts_plans workouts_plans? @relation(fields: [workouts_plansId], references:[id]) //Reference
+  workouts_plansId Int
+  workout workouts? @relation(fields: [workoutId], references:[id]) //Reference
+  workoutId Int
+}
+
+////// Workouts section
+
+//Relation to workouts_plans_workouts as 1 in cardinality
+//Relation to employees as               N in cardinality
+//Relation to workouts_exercises as      1 in cardinality
+model workouts{
+  id  Int @id @default(autoincrement())
+  workouts_plans_workouts workouts_plans_workouts[]
+  employees employees? @relation(fields: [employeesId], references: [id]) //Reference
+  employeesId Int
+  workouts_exercises workouts_exercises[]
+}
+
+////Normalization model for workouts and exercises as N in cardinality
+model workouts_exercises{
+  id  Int @id @default(autoincrement())
+  workouts workouts? @relation(fields: [workoutsId], references: [id]) //Reference
+  workoutsId Int
+  exercises exercises? @relation(fields: [exercisesId], references: [id]) //Reference
+  exercisesId Int
+}
+
+//Relation to workout_exercises as 1 in cardinality
+model exercises{
+  id  Int @id @default(autoincrement())
+  workout_exercises workouts_exercises[]
+}
+
+
+////// Employees section
+
+//Relation to workouts as             1 in cardinality
+//Relation to workouts_plans as       1 in cardinality
+//Relation to employees_statistics as 1 in cardinality
+//Relation to rolls as                N in cardinality
+//Relation to employees_classes       1 in cardinality
+//Relation to employees_ratings as    1 in cardinality
+//Relation to gyms_employees as       1 in cardinality
+//Relation to employees_documents as  1 in cardinality
+model employees{
+  id  Int @id @default(autoincrement())
+  workouts workouts[]
+  workouts_plans workouts_plans[]
+  employees_statistics employees_statistics[]
+  rolls rolls? @relation(fields: [rollsId], references: [id]) //Reference
+  rollsId Int
+  employees_classes employees_classes[]
+  employees_ratings employees_ratings[]
+  gyms_employees gyms_employees[]
+  employees_documents employees_documents[]
+}
+
+////Normalization model for employees and employees_statistics_datails as N in cardinality
+model employees_statistics{
+  id  Int @id @default(autoincrement())
+  employees employees? @relation(fields: [employeesId], references: [id]) //Reference
+  employeesId Int 
+  employees_statistics_details employees_statistics_details? @relation(fields: [employees_statistics_detailsId], references: [id]) //Reference
+  employees_statistics_detailsId Int
+}
+
+//Relation to employees_statistics as 1 in cardinality
+model employees_statistics_details{
+  id  Int @id @default(autoincrement())
+  employees_statistics employees_statistics[]
+}
+
+//Relation to employees 1 in cardinality
+model rolls{
+  id  Int @id @default(autoincrement())
+  employees employees[]
+}
+
+////Normalization model for employees and documents as N in cardinality
+model employees_documents{
+  id  Int @id @default(autoincrement())
+  employees employees? @relation(fields: [employeesId], references: [id]) //Reference
+  employeesId Int
+  documents documents? @relation(fields: [documentsId], references: [id]) //Reference
+  documentsId Int
+}
+
+////Normalization model for employees and members as N in cardinality
+model employees_ratings{
+  id  Int @id @default(autoincrement())
+  employees employees? @relation(fields: [employeesId], references: [id]) //Reference
+  employeesId Int
+  members members? @relation(fields: [membersId], references: [id])//Reference
+  membersId Int
+}
+
+////Normalization model for employees and classes as N in cardinality
+model employees_classes{
+  id  Int @id @default(autoincrement())
+  employees employees? @relation(fields: [employeesId], references: [id]) //  Reference
+  employeesId Int
+  classes classes? @relation(fields: [classesId], references: [id]) // Reference
+  classesId Int
+}
+
+
+////// Gyms Section
+
+//Relation to gyms as              N in cardinality
+//Relation to employees_classes    1 in cardinality
+//Relation to classes_week_days as 1 in cardinality
+//Relation to members_classes as   1 in cardinality
+model classes{
+  id  Int @id @default(autoincrement())
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+  employees_classes employees_classes[]
+  classes_week_days classes_week_days[]
+  members_classes members_classes[]
+}
+
+////Normalization model for classes and week_days as N in cardinality
+model classes_week_days{
+  id  Int @id @default(autoincrement())
+  classes classes? @relation(fields: [classesId], references: [id]) //Reference
+  classesId Int
+  week_days week_days? @relation(fields: [week_daysId], references: [id]) //Reference
+  week_daysId Int
+}
+
+//Relation to week_days as 1 in cardinality
+model week_days{
+  id  Int @id @default(autoincrement())
+  classes_week_days classes_week_days[]
+}
+
+//Relation to members_payments as         1 in cardinality
+//Relation to gyms_employees as           1 in cardinality
+//Relation to classes as                  1 in cardinality
+//Relation to gyms_stock as               1 in cardinality
+//Relation to gyms_subscriptions_plans as 1 in cardinality
+//Relation to gyms_members as             1 in cardinality
+model gyms{
+  id  Int @id @default(autoincrement())
+  members_payments members_payments[]
+  gyms_employees gyms_employees[]
+  classes classes[]
+  gyms_stock gyms_stock[]
+  gyms_subscriptions_plans gyms_subscriptions_plans[]
+  gyms_members gyms_members[]
+}
+
+////Normalization model for gyms and employees as N in cardinality
+model gyms_employees{
+  id  Int @id @default(autoincrement())
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+  employees employees? @relation(fields: [employeesId], references: [id]) //Reference
+  employeesId Int
+}
+
+////Normalization model for gyms and products as N in cardinality
+model gyms_stock{
+  id  Int @id @default(autoincrement())
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+  products products? @relation(fields: [productsId], references: [id]) //Reference
+  productsId Int
+
+}
+
+////Normalization model for gyms and subscriptions_plans as N in cardinality
+model gyms_subscriptions_plans{
+  id  Int @id @default(autoincrement())
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+  subscriptions_plans subscriptions_plans? @relation(fields: [subscriptions_plansId], references: [id]) //Reference
+  subscriptions_plansId Int
+
+}
+
+////Normalization model for gyms and members as N in cardinality
+model gyms_members{
+  id  Int @id @default(autoincrement())
+  gyms gyms? @relation(fields: [gymsId], references: [id]) //Reference
+  gymsId Int
+  members members? @relation(fields: [membersId], references: [id]) //Reference
+  membersId Int
+
+}
+
+////// Products Section
+
+//Relation to gyms_stock as 1 in cardinality
+//Relation to providers as N in cardinality
+//Relation to categories as N in cardinality
+model products{
+  id  Int @id @default(autoincrement())
+  gyms_stock gyms_stock[]
+  providers providers? @relation(fields: [providersId], references: [id]) //Reference
+  providersId Int
+  categories categories? @relation(fields: [categoriesId], references: [id]) //Reference
+  categoriesId Int
+}
+
+//Relation to products as 1 in cardinality
+model categories{
+  id  Int @id @default(autoincrement())
+  products products[]
+}
+
+//Relation to products as 1 in cardinality
+model providers{
+  id  Int @id @default(autoincrement())
+  products products[]
+}
+
+
+////// Subscriptions Plans Section
+
+//Relation to subscriptions as            1 in cardinality
+//Relation to gyms_subscriptions_plans as 1 in cardinality
+model subscriptions_plans{
+  id  Int @id @default(autoincrement())
+  subscriptions subscriptions[]
+  gyms_subscriptions_plans gyms_subscriptions_plans[]
+}
+
+////Normalization model for subscriptions_plans and members as N in cardinality
+model subscriptions{
+  id  Int @id @default(autoincrement())
+  subscriptions_plans subscriptions_plans? @relation(fields: [subscriptions_plansId], references: [id]) //Reference
+  subscriptions_plansId Int
+  members members? @relation(fields: [membersId], references: [id]) //Reference
+  membersId Int
+}
