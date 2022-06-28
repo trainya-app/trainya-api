@@ -11,18 +11,28 @@ datasource db {
 
 //Relation to members_goals as 1 in cardinality
 model Goal{
-  id  Int @id @default(autoincrement())
-  memberGoal MemberGoal[]
+  id          Int @id @default(autoincrement())
+  memberGoal  MemberGoal[]
+  description String 
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   @@map("goals")
 }
 
 ////Normalization model for members and goals as N in cardinality
 model MemberGoal{
-  id  Int @id @default(autoincrement())
-  goal Goal? @relation(fields: [goal_id], references: [id]) //Reference
-  goal_id Int?
-  member Member @relation(fields: [member_id], references: [id])
-  member_id Int
+  id               Int @id @default(autoincrement())
+  goal             Goal? @relation(fields: [goal_id], references: [id]) //Reference
+  goal_id          Int?
+  member           Member @relation(fields: [member_id], references: [id])
+  member_id        Int
+  desired_progress Int
+  current_progress Int
+  started_at       String
+  finish_at        String
+  finished_at      String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
   @@map("members_goals")
 }
 
@@ -50,16 +60,31 @@ model Member{
   gymMember GymMember[]
   subscription Subscription[]
   memberStatistic MemberStatistic[]
+  phone         Int
+  name          String   @db.VarChar(256)
+  weight        Decimal
+  height        Decimal
+  email         String
+  password      String
+  state         String
+  city          String
+  street        String   @db.VarChar(256)
+  adress_number String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
   @@map("members")
 }
 
 ////Normalization model for members and settings_options as N in cardinality
 model MemberSetting{
-  id  Int @id @default(autoincrement())
-  member Member? @relation(fields: [member_id], references: [id]) //Reference
-  member_id Int
-  settingOption SettingOption? @relation(fields: [settings_options_id], references: [id]) //Reference
+  id   Int @id @default(autoincrement())
+  member      Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id     Int
+  settingOption       SettingOption? @relation(fields: [settings_options_id], references: [id]) //Reference
   settings_options_id Int
+  value          String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_settings")
 }
 
@@ -67,6 +92,9 @@ model MemberSetting{
 model SettingOption{
   id  Int @id @default(autoincrement())
   memberSetting MemberSetting[]
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("settings_options")
 }
 
@@ -77,6 +105,9 @@ model MemberStatistic{
   member_id Int
   statistic Statistic? @relation(fields: [statistics_id], references: [id]) //Reference
   statistics_id Int
+  value String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_statistics")
 }
 
@@ -84,6 +115,9 @@ model MemberStatistic{
 model Statistic{
   id  Int @id @default(autoincrement())
   memberStatistic MemberStatistic[]
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("statistics")
 }
 
@@ -97,6 +131,11 @@ model MemberPayment{
   methods_id Int
   gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
   gyms_id Int
+  price Decimal
+  due_date String
+  payment_date String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_payments")
 }
 
@@ -104,6 +143,9 @@ model MemberPayment{
 model Method{
   id  Int @id @default(autoincrement())
   memberPayment MemberPayment[]
+  name String 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("methods")
 }
 
@@ -114,6 +156,10 @@ model Responsible{
   member Member? @relation(fields: [member_id], references: [id]) //Reference
   member_id Int
   responsibleDocument ResponsibleDocument[]
+  name String @db.VarChar(256)
+  phone Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("responsibles")
 }
 
@@ -124,6 +170,9 @@ model ResponsibleDocument{
   responsibles_id Int
   document Document? @relation(fields: [documents_id], references: [id]) //Reference
   documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("responsibles_documents")
 }
 
@@ -134,6 +183,9 @@ model MemberDocument{
   members_id Int
   document Document? @relation(fields: [documents_id], references: [id]) //Reference
   documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_documents")
 }
 
@@ -145,6 +197,9 @@ model Document{
   responsibleDocument ResponsibleDocument[]
   memberDocuments MemberDocument[]
   employeeDocument EmployeeDocument[]
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("documents")
 }
 
@@ -155,6 +210,11 @@ model MemberWorkoutPlan{
   members_id Int
   workoutPlan WorkoutPlan? @relation(fields: [workouts_plans_id], references: [id]) //Reference
   workouts_plans_id Int
+  started_at String
+  finish_at String
+  finished_at String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_workouts_plans")
 }
 
@@ -165,6 +225,8 @@ model MemberClass{
   members_id Int
   class Class? @relation(fields: [classes_id], references: [id]) //Reference
   classes_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("members_classes")
 }
 
@@ -179,6 +241,9 @@ model WorkoutPlan{
   workoutPlanWorkout WorkoutPlanWorkout[]
   employee Employee? @relation(fields: [employees_id], references: [id]) //Referece
   employees_id Int 
+  goal String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("workouts_plans")
 }
 
@@ -189,6 +254,8 @@ model WorkoutPlanWorkout{
   workouts_plans_id Int
   workout Workout? @relation(fields: [workout_id], references:[id]) //Reference
   workout_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("workouts_plans_workouts")
 }
 
@@ -203,6 +270,15 @@ model Workout{
   employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
   employees_id Int
   workoutExercise WorkoutExercise[]
+  title String
+  description String @db.VarChar(256)
+  type String
+  preview_image_url String @db.VarChar(256)
+  video_url String @db.VarChar(256)
+  level String
+  duration String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("workouts")
 }
 
@@ -213,6 +289,11 @@ model WorkoutExercise{
   workouts_id Int
   exercise Exercise? @relation(fields: [exercises_id], references: [id]) //Reference
   exercises_id Int
+  sets Int
+  repetitions Int
+  duration Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("workouts_exercises")
 }
 
@@ -220,6 +301,11 @@ model WorkoutExercise{
 model Exercise{
   id  Int @id @default(autoincrement())
   workoutExercise WorkoutExercise[]
+  name String
+  comments String @db.VarChar(256)
+  needs_equipment Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("exercises")
 }
 
@@ -245,6 +331,15 @@ model Employee{
   employeeRating EmployeeRating[]
   gymEmployee GymEmployee[]
   employeeDocument EmployeeDocument[]
+  name String @db.VarChar(256)
+  birth_date String
+  daily_workload Int
+  weekdays_workload Int
+  phone Int
+  email String @db.VarChar(256)
+  password String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees")
 }
 
@@ -255,6 +350,9 @@ model EmployeeStatistic{
   employees_id Int 
   employeeStatisticDetail EmployeeStatisticDetail? @relation(fields: [employees_statistics_details_id], references: [id]) //Reference
   employees_statistics_details_id Int
+  value String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees_statistics")
 }
 
@@ -262,6 +360,9 @@ model EmployeeStatistic{
 model EmployeeStatisticDetail{
   id  Int @id @default(autoincrement())
   employeeStatistic EmployeeStatistic[]
+  title String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees_statistics_details")
 }
 
@@ -269,6 +370,10 @@ model EmployeeStatisticDetail{
 model Roll{
   id  Int @id @default(autoincrement())
   employee Employee[]
+  title String 
+  access_level String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("rolls")
 }
 
@@ -279,6 +384,9 @@ model EmployeeDocument{
   employees_id Int
   document Document? @relation(fields: [documents_id], references: [id]) //Reference
   documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees_documents")
 }
 
@@ -289,6 +397,10 @@ model EmployeeRating{
   employees_id Int
   members Member? @relation(fields: [members_id], references: [id])//Reference
   members_id Int
+  ratings Int
+  comments String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees_ratings")
 }
 
@@ -299,6 +411,10 @@ model EmployeeClass{
   employees_id Int
   class Class? @relation(fields: [classes_id], references: [id]) // Reference
   classes_id Int
+  rating Int
+  comments String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("employees_classes")
 }
 
@@ -316,6 +432,10 @@ model Class{
   employeeClass EmployeeClass[]
   classWeekDay ClassWeekDay[]
   memberClass MemberClass[]
+  title String
+  description String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("classes")
 }
 
@@ -326,6 +446,8 @@ model ClassWeekDay{
   classes_id Int
   weekDay WeekDay? @relation(fields: [week_days_id], references: [id]) //Reference
   week_days_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("classes_week_days")
 }
 
@@ -333,6 +455,9 @@ model ClassWeekDay{
 model WeekDay{
   id  Int @id @default(autoincrement())
   classWeekDay ClassWeekDay[]
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("week_days")
 }
 
@@ -350,6 +475,14 @@ model Gym{
   gymStock GymStock[]
   gymSubscriptionPlan GymSubscriptionPlan[]
   gymMember GymMember[]
+  name String @db.VarChar(256)
+  email String
+  password String @db.VarChar(256)
+  state String
+  city String
+  street String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("gyms")
 }
 
@@ -360,6 +493,8 @@ model GymEmployee{
   gyms_id Int
   employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
   employees_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("gyms_employees")
 }
 
@@ -370,6 +505,11 @@ model GymStock{
   gyms_id Int
   product Product? @relation(fields: [products_id], references: [id]) //Reference
   products_id Int
+  amount Int
+  min_amount Int
+  max_amount Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("gyms_stock")
 }
 
@@ -380,6 +520,8 @@ model GymSubscriptionPlan{
   gyms_id Int
   subscriptionPlan SubscriptionPlan? @relation(fields: [subscriptions_plans_id], references: [id]) //Reference
   subscriptions_plans_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("gyms_subscriptions_plans")
 }
 
@@ -390,6 +532,8 @@ model GymMember{
   gyms_id Int
   member Member? @relation(fields: [members_id], references: [id]) //Reference
   members_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("gyms_members")
 }
 
@@ -405,6 +549,11 @@ model Product{
   providers_id Int
   categorie Category? @relation(fields: [categories_id], references: [id]) //Reference
   categories_id Int
+  name String @db.VarChar(256)
+  price Decimal 
+  image_url String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("products")
 }
 
@@ -412,6 +561,10 @@ model Product{
 model Category{
   id  Int @id @default(autoincrement())
   product Product[]
+  name String
+  image_url String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("categories")
 }
 
@@ -419,6 +572,14 @@ model Category{
 model Provider{
   id  Int @id @default(autoincrement())
   product Product[]
+  name String @db.VarChar(256)
+  cnpj String 
+  state String
+  city String
+  adress_number String
+  phone_number Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("providers")
 }
 
@@ -431,6 +592,11 @@ model SubscriptionPlan{
   id  Int @id @default(autoincrement())
   subscriptions Subscription[]
   gymSubscriptionPlan GymSubscriptionPlan[]
+  title String @db.VarChar(256)
+  price Decimal
+  months_covered Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("subscriptions_plans")
 }
 
@@ -441,5 +607,8 @@ model Subscription{
   subscriptions_plans_id Int
   member Member? @relation(fields: [member_id], references: [id]) //Reference
   member_id Int
+  started_at String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   @@map("subscription")
 }
