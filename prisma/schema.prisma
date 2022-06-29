@@ -1,0 +1,614 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//////Members Section
+
+//Relation to members_goals as 1 in cardinality
+model Goal{
+  id          Int @id @default(autoincrement())
+  memberGoal  MemberGoal[]
+  description String 
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  @@map("goals")
+}
+
+////Normalization model for members and goals as N in cardinality
+model MemberGoal{
+  id               Int @id @default(autoincrement())
+  goal             Goal? @relation(fields: [goal_id], references: [id]) //Reference
+  goal_id          Int?
+  member           Member @relation(fields: [member_id], references: [id])
+  member_id        Int
+  desired_progress Int
+  current_progress Int
+  started_at       String
+  finish_at        String
+  finished_at      String
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+  @@map("members_goals")
+}
+
+//Relation to members_goals as          1 in cardinality
+//Relation to members_settings as       1 in cardinality
+//Relation to members_payments as       1 in cardinality
+//Relation to responsibles as           1 in cardinality
+//Relation to members_documents as      1 in cardinality
+//Relation to members_workouts_plans as 1 in cardinality
+//Relation to employees_ratings as      1 in cardinality
+//Relation to members_classes as        1 in cardinality
+//Relation to gyms_members as           1 in cardinality
+//Relation to subscriptions as          1 in cardinality
+//Relation to members_statistics as     1 in cardinality
+model Member{
+  id  Int @id @default(autoincrement())
+  memberGoal MemberGoal[]
+  memberSetting MemberSetting[]
+  memberPayment MemberPayment[]
+  responsible Responsible[]
+  memberDocument MemberDocument[]
+  memberWorkoutPlan MemberWorkoutPlan[]
+  employeeRating EmployeeRating[]
+  memberClass MemberClass[]
+  gymMember GymMember[]
+  subscription Subscription[]
+  memberStatistic MemberStatistic[]
+  phone         Int
+  name          String   @db.VarChar(256)
+  weight        Decimal
+  height        Decimal
+  email         String
+  password      String
+  state         String
+  city          String
+  street        String   @db.VarChar(256)
+  adress_number String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+  @@map("members")
+}
+
+////Normalization model for members and settings_options as N in cardinality
+model MemberSetting{
+  id   Int @id @default(autoincrement())
+  member      Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id     Int
+  settingOption       SettingOption? @relation(fields: [settings_options_id], references: [id]) //Reference
+  settings_options_id Int
+  value          String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_settings")
+}
+
+//Relation to members_settings as 1 in cardinality
+model SettingOption{
+  id  Int @id @default(autoincrement())
+  memberSetting MemberSetting[]
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("settings_options")
+}
+
+////Normalization model for members and  statistics as N in cardinality
+model MemberStatistic{
+  id  Int @id @default(autoincrement())
+  member Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id Int
+  statistic Statistic? @relation(fields: [statistics_id], references: [id]) //Reference
+  statistics_id Int
+  value String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_statistics")
+}
+
+//Relation to members_statistics as 1 in cardinality
+model Statistic{
+  id  Int @id @default(autoincrement())
+  memberStatistic MemberStatistic[]
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("statistics")
+}
+
+////Normalization model for members and methods as N in cardinality
+//Relation to gyms as                              N in cardinality
+model MemberPayment{
+  id  Int @id @default(autoincrement())
+  member Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id Int
+  method Method? @relation(fields: [methods_id], references: [id]) //Reference
+  methods_id Int
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  price Decimal
+  due_date String
+  payment_date String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_payments")
+}
+
+//Relation to members_payments as 1 in cardinality
+model Method{
+  id  Int @id @default(autoincrement())
+  memberPayment MemberPayment[]
+  name String 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("methods")
+}
+
+//Relation to members as                N in cardinality
+//Relation to responsibles_documents as 1 in cardinality
+model Responsible{
+  id  Int @id @default(autoincrement())
+  member Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id Int
+  responsibleDocument ResponsibleDocument[]
+  name String @db.VarChar(256)
+  phone Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("responsibles")
+}
+
+////Normalization model for responsibles and documents as N in cardinality
+model ResponsibleDocument{
+  id  Int @id @default(autoincrement())
+  responsible Responsible? @relation(fields: [responsibles_id], references: [id]) //Reference
+  responsibles_id Int
+  document Document? @relation(fields: [documents_id], references: [id]) //Reference
+  documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("responsibles_documents")
+}
+
+////Normalization model for members and documents as N in cardinality
+model MemberDocument{
+  id  Int @id @default(autoincrement())
+  member Member? @relation(fields: [members_id], references: [id]) //Reference
+  members_id Int
+  document Document? @relation(fields: [documents_id], references: [id]) //Reference
+  documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_documents")
+}
+
+//Relation to responsibles_documents as 1 in cardinality
+//Relation to members_documents as      1 in cardinality
+//Relation to employees_documents as    1 in cardinality
+model Document{
+  id  Int @id @default(autoincrement())
+  responsibleDocument ResponsibleDocument[]
+  memberDocuments MemberDocument[]
+  employeeDocument EmployeeDocument[]
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("documents")
+}
+
+////Normalization model for members and workout_plans as N in cardinality
+model MemberWorkoutPlan{
+  id  Int @id @default(autoincrement())
+  member Member? @relation(fields: [members_id], references: [id]) //Reference
+  members_id Int
+  workoutPlan WorkoutPlan? @relation(fields: [workouts_plans_id], references: [id]) //Reference
+  workouts_plans_id Int
+  started_at String
+  finish_at String
+  finished_at String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_workouts_plans")
+}
+
+////Normalization model for members and classes as N in cardinality
+model MemberClass{
+  id  Int @id @default(autoincrement())
+  members Member? @relation(fields: [members_id], references: [id]) //Reference
+  members_id Int
+  class Class? @relation(fields: [classes_id], references: [id]) //Reference
+  classes_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("members_classes")
+}
+
+////// Workouts plan section
+
+//Relation to members_workouts_plans as  1 in cardinality
+//Relation to workouts_plans_workouts as 1 in cardinality
+//Relation to employees as               N in cardinality
+model WorkoutPlan{
+  id  Int @id @default(autoincrement())
+  memberWorkoutPlan MemberWorkoutPlan[]
+  workoutPlanWorkout WorkoutPlanWorkout[]
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Referece
+  employees_id Int 
+  goal String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("workouts_plans")
+}
+
+////Normalization model for workout_plans and workout as N in cardinality
+model WorkoutPlanWorkout{
+  id  Int @id @default(autoincrement())
+  workoutsPlan WorkoutPlan? @relation(fields: [workouts_plans_id], references:[id]) //Reference
+  workouts_plans_id Int
+  workout Workout? @relation(fields: [workout_id], references:[id]) //Reference
+  workout_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("workouts_plans_workouts")
+}
+
+////// Workouts section
+
+//Relation to workouts_plans_workouts as 1 in cardinality
+//Relation to employees as               N in cardinality
+//Relation to workouts_exercises as      1 in cardinality
+model Workout{
+  id  Int @id @default(autoincrement())
+  workoutPlanWorkout WorkoutPlanWorkout[]
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
+  employees_id Int
+  workoutExercise WorkoutExercise[]
+  title String
+  description String @db.VarChar(256)
+  type String
+  preview_image_url String @db.VarChar(256)
+  video_url String @db.VarChar(256)
+  level String
+  duration String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("workouts")
+}
+
+////Normalization model for workouts and exercises as N in cardinality
+model WorkoutExercise{
+  id  Int @id @default(autoincrement())
+  workout Workout? @relation(fields: [workouts_id], references: [id]) //Reference
+  workouts_id Int
+  exercise Exercise? @relation(fields: [exercises_id], references: [id]) //Reference
+  exercises_id Int
+  sets Int
+  repetitions Int
+  duration Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("workouts_exercises")
+}
+
+//Relation to workout_exercises as 1 in cardinality
+model Exercise{
+  id  Int @id @default(autoincrement())
+  workoutExercise WorkoutExercise[]
+  name String
+  comments String @db.VarChar(256)
+  needs_equipment Boolean
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("exercises")
+}
+
+
+////// Employees section
+
+//Relation to workouts as             1 in cardinality
+//Relation to workouts_plans as       1 in cardinality
+//Relation to employees_statistics as 1 in cardinality
+//Relation to rolls as                N in cardinality
+//Relation to employees_classes       1 in cardinality
+//Relation to employees_ratings as    1 in cardinality
+//Relation to gyms_employees as       1 in cardinality
+//Relation to employees_documents as  1 in cardinality
+model Employee{
+  id  Int @id @default(autoincrement())
+  workout Workout[]
+  workoutPlan WorkoutPlan[]
+  employeeStatistic EmployeeStatistic[]
+  roll Roll? @relation(fields: [rolls_id], references: [id]) //Reference
+  rolls_id Int
+  employeeClasse EmployeeClass[]
+  employeeRating EmployeeRating[]
+  gymEmployee GymEmployee[]
+  employeeDocument EmployeeDocument[]
+  name String @db.VarChar(256)
+  birth_date String
+  daily_workload Int
+  weekdays_workload Int
+  phone Int
+  email String @db.VarChar(256)
+  password String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees")
+}
+
+////Normalization model for employees and employees_statistics_datails as N in cardinality
+model EmployeeStatistic{
+  id  Int @id @default(autoincrement())
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
+  employees_id Int 
+  employeeStatisticDetail EmployeeStatisticDetail? @relation(fields: [employees_statistics_details_id], references: [id]) //Reference
+  employees_statistics_details_id Int
+  value String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees_statistics")
+}
+
+//Relation to employees_statistics as 1 in cardinality
+model EmployeeStatisticDetail{
+  id  Int @id @default(autoincrement())
+  employeeStatistic EmployeeStatistic[]
+  title String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees_statistics_details")
+}
+
+//Relation to employees 1 in cardinality
+model Roll{
+  id  Int @id @default(autoincrement())
+  employee Employee[]
+  title String 
+  access_level String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("rolls")
+}
+
+////Normalization model for employees and documents as N in cardinality
+model EmployeeDocument{
+  id  Int @id @default(autoincrement())
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
+  employees_id Int
+  document Document? @relation(fields: [documents_id], references: [id]) //Reference
+  documents_id Int
+  value Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees_documents")
+}
+
+////Normalization model for employees and members as N in cardinality
+model EmployeeRating{
+  id  Int @id @default(autoincrement())
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
+  employees_id Int
+  members Member? @relation(fields: [members_id], references: [id])//Reference
+  members_id Int
+  ratings Int
+  comments String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees_ratings")
+}
+
+////Normalization model for employees and classes as N in cardinality
+model EmployeeClass{
+  id  Int @id @default(autoincrement())
+  employee Employee? @relation(fields: [employees_id], references: [id]) //  Reference
+  employees_id Int
+  class Class? @relation(fields: [classes_id], references: [id]) // Reference
+  classes_id Int
+  rating Int
+  comments String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("employees_classes")
+}
+
+
+////// Gyms Section
+
+//Relation to gyms as              N in cardinality
+//Relation to employees_classes    1 in cardinality
+//Relation to classes_week_days as 1 in cardinality
+//Relation to members_classes as   1 in cardinality
+model Class{
+  id  Int @id @default(autoincrement())
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  employeeClass EmployeeClass[]
+  classWeekDay ClassWeekDay[]
+  memberClass MemberClass[]
+  title String
+  description String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("classes")
+}
+
+////Normalization model for classes and week_days as N in cardinality
+model ClassWeekDay{
+  id  Int @id @default(autoincrement())
+  class Class? @relation(fields: [classes_id], references: [id]) //Reference
+  classes_id Int
+  weekDay WeekDay? @relation(fields: [week_days_id], references: [id]) //Reference
+  week_days_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("classes_week_days")
+}
+
+//Relation to week_days as 1 in cardinality
+model WeekDay{
+  id  Int @id @default(autoincrement())
+  classWeekDay ClassWeekDay[]
+  name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("week_days")
+}
+
+//Relation to members_payments as         1 in cardinality
+//Relation to gyms_employees as           1 in cardinality
+//Relation to classes as                  1 in cardinality
+//Relation to gyms_stock as               1 in cardinality
+//Relation to gyms_subscriptions_plans as 1 in cardinality
+//Relation to gyms_members as             1 in cardinality
+model Gym{
+  id  Int @id @default(autoincrement())
+  memberPayment MemberPayment[]
+  gymEmployee GymEmployee[]
+  class Class[]
+  gymStock GymStock[]
+  gymSubscriptionPlan GymSubscriptionPlan[]
+  gymMember GymMember[]
+  name String @db.VarChar(256)
+  email String
+  password String @db.VarChar(256)
+  state String
+  city String
+  street String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("gyms")
+}
+
+////Normalization model for gyms and employees as N in cardinality
+model GymEmployee{
+  id  Int @id @default(autoincrement())
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  employee Employee? @relation(fields: [employees_id], references: [id]) //Reference
+  employees_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("gyms_employees")
+}
+
+////Normalization model for gyms and products as N in cardinality
+model GymStock{
+  id  Int @id @default(autoincrement())
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  product Product? @relation(fields: [products_id], references: [id]) //Reference
+  products_id Int
+  amount Int
+  min_amount Int
+  max_amount Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("gyms_stock")
+}
+
+////Normalization model for gyms and subscriptions_plans as N in cardinality
+model GymSubscriptionPlan{
+  id  Int @id @default(autoincrement())
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  subscriptionPlan SubscriptionPlan? @relation(fields: [subscriptions_plans_id], references: [id]) //Reference
+  subscriptions_plans_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("gyms_subscriptions_plans")
+}
+
+////Normalization model for gyms and members as N in cardinality
+model GymMember{
+  id  Int @id @default(autoincrement())
+  gym Gym? @relation(fields: [gyms_id], references: [id]) //Reference
+  gyms_id Int
+  member Member? @relation(fields: [members_id], references: [id]) //Reference
+  members_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("gyms_members")
+}
+
+////// Products Section
+
+//Relation to gyms_stock as 1 in cardinality
+//Relation to providers as N in cardinality
+//Relation to categories as N in cardinality
+model Product{
+  id  Int @id @default(autoincrement())
+  gym_stock GymStock[]
+  provider Provider? @relation(fields: [providers_id], references: [id]) //Reference
+  providers_id Int
+  categorie ProductCategory? @relation(fields: [categories_id], references: [id]) //Reference
+  categories_id Int
+  name String @db.VarChar(256)
+  price Decimal 
+  image_url String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("products")
+}
+
+//Relation to products as 1 in cardinality
+model ProductCategory{
+  id  Int @id @default(autoincrement())
+  product Product[]
+  name String
+  image_url String @db.VarChar(256)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("products_categories")
+}
+
+//Relation to products as 1 in cardinality
+model Provider{
+  id  Int @id @default(autoincrement())
+  product Product[]
+  name String @db.VarChar(256)
+  cnpj String 
+  state String
+  city String
+  adress_number String
+  phone_number Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("providers")
+}
+
+
+////// Subscriptions Plans Section
+
+//Relation to subscriptions as            1 in cardinality
+//Relation to gyms_subscriptions_plans as 1 in cardinality
+model SubscriptionPlan{
+  id  Int @id @default(autoincrement())
+  subscriptions Subscription[]
+  gymSubscriptionPlan GymSubscriptionPlan[]
+  title String @db.VarChar(256)
+  price Decimal
+  months_covered Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("subscriptions_plans")
+}
+
+////Normalization model for subscriptions_plans and members as N in cardinality
+model Subscription{
+  id  Int @id @default(autoincrement())
+  subscriptionPlan SubscriptionPlan? @relation(fields: [subscriptions_plans_id], references: [id]) //Reference
+  subscriptions_plans_id Int
+  member Member? @relation(fields: [member_id], references: [id]) //Reference
+  member_id Int
+  started_at String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  @@map("subscription")
+}
