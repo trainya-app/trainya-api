@@ -547,7 +547,7 @@ model Product{
   gym_stock GymStock[]
   provider Provider? @relation(fields: [providers_id], references: [id]) //Reference
   providers_id Int
-  categorie Category? @relation(fields: [categories_id], references: [id]) //Reference
+  categorie ProductCategory? @relation(fields: [categories_id], references: [id]) //Reference
   categories_id Int
   name String @db.VarChar(256)
   price Decimal 
@@ -558,14 +558,14 @@ model Product{
 }
 
 //Relation to products as 1 in cardinality
-model Category{
+model ProductCategory{
   id  Int @id @default(autoincrement())
   product Product[]
   name String
   image_url String @db.VarChar(256)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  @@map("categories")
+  @@map("products_categories")
 }
 
 //Relation to products as 1 in cardinality
