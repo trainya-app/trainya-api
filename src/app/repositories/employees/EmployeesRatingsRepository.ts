@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-class GymController {
+class EmployeesRatingsRepository {
   index(req: Request, res: Response) {
     res.send('index');
   }
 }
 
-export default new GymController();
+export default new EmployeesRatingsRepository();
