@@ -52,7 +52,7 @@ model Member{
   memberGoal MemberGoal[]
   memberSetting MemberSetting[]
   memberPayment MemberPayment[]
-  responsible Responsible[]
+  responsible LegalRepresentative[]
   memberDocument MemberDocument[]
   memberWorkoutPlan MemberWorkoutPlan[]
   employeeRating EmployeeRating[]
@@ -151,7 +151,7 @@ model Method{
 
 //Relation to members as                N in cardinality
 //Relation to responsibles_documents as 1 in cardinality
-model Responsible{
+model LegalRepresentative{
   id  Int @id @default(autoincrement())
   member Member? @relation(fields: [member_id], references: [id]) //Reference
   member_id Int
@@ -160,14 +160,14 @@ model Responsible{
   phone Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  @@map("responsibles")
+  @@map("legal_representatives")
 }
 
 ////Normalization model for responsibles and documents as N in cardinality
 model ResponsibleDocument{
   id  Int @id @default(autoincrement())
-  responsible Responsible? @relation(fields: [responsibles_id], references: [id]) //Reference
-  responsibles_id Int
+  legalRepresentative LegalRepresentative? @relation(fields: [legal_representatives_id], references: [id]) //Reference
+  legal_representatives_id Int
   document Document? @relation(fields: [documents_id], references: [id]) //Reference
   documents_id Int
   value Int
