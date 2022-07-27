@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-class MethodsRepository {
+class PaymentMethodsController {
   index(req: Request, res: Response) {
     res.send('index');
   }
 }
 
-export default new MethodsRepository();
+export default new PaymentMethodsController();
