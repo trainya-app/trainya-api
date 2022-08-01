@@ -1,0 +1,3 @@
+class ProductsCategoriesRepositoryInMemory implements ProductsCategoriesRepository {
+
+}
