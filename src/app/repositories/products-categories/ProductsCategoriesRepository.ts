@@ -1,9 +1,3 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
 
-class ProductsCategoriesRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
-  }
-}
-
-export default new ProductsCategoriesRepository();
+const {} = new PrismaClient();
