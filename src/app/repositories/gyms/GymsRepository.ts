@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+
+const { gym } = new PrismaClient();
 
 class GymsRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const allGyms = await gym.findMany();
+
+    return allGyms;
   }
 }
 
