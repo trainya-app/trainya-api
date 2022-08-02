@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import ProductsCategoriesRepository from '../../repositories/implementation/products-categories/ProductsCategoriesRepository';
+import ProductsCategoriesRepository from '../../repositories/products-categories/ProductsCategoriesRepository';
 
 class ProductsCategoriesController {
   async create(req: Request, res: Response) {

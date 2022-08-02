@@ -1,5 +1,5 @@
 import express from 'express';
-import ProductsCategoriesController from './app/controllers/products-categories/ProductsCategoriesController';
+import productsCategoriesRoutes from './routes/ProductsCategories.routes';
 
 const app = express();
 app.use(express.json());
@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
 
-app.post('/products-categories', ProductsCategoriesController.create);
+// ProductsCategories Routes
+app.use(productsCategoriesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
