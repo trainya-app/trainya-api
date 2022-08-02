@@ -55,7 +55,7 @@ model Member {
   memberGoal          MemberGoal[]
   memberSetting       MemberSetting[]
   memberPayment       MemberPayment[]
-  responsible         Responsible[]
+  legalRepresentative LegalRepresentative[]
   memberDocument      MemberDocument[]
   memberWorkoutPlan   MemberWorkoutPlan[]
   employeeRating      EmployeeRating[]
@@ -75,7 +75,6 @@ model Member {
   adress_number       String
   created_at          DateTime              @default(now())
   updated_at          DateTime              @updatedAt
-  LegalRepresentative LegalRepresentative[]
 
   @@map("members")
 }
@@ -133,52 +132,49 @@ model Statistic {
 ////Normalization model for members and methods as N in cardinality
 //Relation to gyms as                              N in cardinality
 model MemberPayment {
-  id           Int            @id @default(autoincrement())
-  member       Member?        @relation(fields: [member_id], references: [id]) //Reference
+  id           Int      @id @default(autoincrement())
+  member       Member?  @relation(fields: [member_id], references: [id]) //Reference
   member_id    Int
-  method       PaymentMethod? @relation(fields: [method_id], references: [id]) //Reference
-  method_id    Int
-  gym          Gym?           @relation(fields: [gyms_id], references: [id]) //Reference
+  method       Method?  @relation(fields: [methods_id], references: [id]) //Reference
+  methods_id   Int
+  gym          Gym?     @relation(fields: [gyms_id], references: [id]) //Reference
   gyms_id      Int
   price        Decimal
   due_date     String
   payment_date String
-  created_at   DateTime       @default(now())
-  updated_at   DateTime       @updatedAt
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 
   @@map("members_payments")
 }
 
 //Relation to members_payments as 1 in cardinality
-model PaymentMethod {
+model Method {
   id            Int             @id @default(autoincrement())
   memberPayment MemberPayment[]
   name          String
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
 
-  @@map("payment_methods")
+  @@map("methods")
 }
 
-//Relation to members as                N in cardinality
-//Relation to responsibles_documents as 1 in cardinality
-
-////Normalization model for responsibles and documents as N in cardinality
+//Relation to members as N in cardinality
 model LegalRepresentative {
-  id                  Int                   @id @default(autoincrement())
-  member              Member?               @relation(fields: [member_id], references: [id]) //Reference
-  member_id           Int
-  responsibleDocument ResponsibleDocument[]
-  name                String                @db.VarChar(256)
-  phone               Int
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
+  id                          Int                           @id @default(autoincrement())
+  member                      Member?                       @relation(fields: [member_id], references: [id]) //Reference
+  member_id                   Int
+  legalRepresentativeDocument LegalRepresentativeDocument[]
+  name                        String                        @db.VarChar(256)
+  phone                       Int
+  created_at                  DateTime                      @default(now())
+  updated_at                  DateTime                      @updatedAt
 
   @@map("legal_representatives")
 }
 
 ////Normalization model for responsibles and documents as N in cardinality
-model ResponsibleDocument {
+model LegalRepresentativeDocument {
   id                       Int                  @id @default(autoincrement())
   legalRepresentative      LegalRepresentative? @relation(fields: [legal_representatives_id], references: [id]) //Reference
   legal_representatives_id Int
@@ -187,26 +183,9 @@ model ResponsibleDocument {
   value                    Int
   created_at               DateTime             @default(now())
   updated_at               DateTime             @updatedAt
-  Responsible              Responsible?         @relation(fields: [responsibleId], references: [id])
-  responsibleId            Int?
 
-  @@map("responsibles_documents")
+  @@map("legal_representatives_documents")
 }
-
-model Responsible {
-  id                  Int                   @id @default(autoincrement())
-  member              Member?               @relation(fields: [member_id], references: [id]) //Reference
-  member_id           Int
-  responsibleDocument ResponsibleDocument[]
-  name                String                @db.VarChar(256)
-  phone               Int
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
-
-  @@map("responsibles")
-}
-
-////Normalization model for responsibles and documents as N in cardinality
 
 ////Normalization model for members and documents as N in cardinality
 model MemberDocument {
@@ -226,13 +205,13 @@ model MemberDocument {
 //Relation to members_documents as      1 in cardinality
 //Relation to employees_documents as    1 in cardinality
 model Document {
-  id                  Int                   @id @default(autoincrement())
-  responsibleDocument ResponsibleDocument[]
-  memberDocuments     MemberDocument[]
-  employeeDocument    EmployeeDocument[]
-  name                String
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
+  id                          Int                           @id @default(autoincrement())
+  LegalRepresentativeDocument LegalRepresentativeDocument[]
+  memberDocuments             MemberDocument[]
+  employeeDocument            EmployeeDocument[]
+  name                        String
+  created_at                  DateTime                      @default(now())
+  updated_at                  DateTime                      @updatedAt
 
   @@map("documents")
 }

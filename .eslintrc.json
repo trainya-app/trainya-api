@@ -12,6 +12,9 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "class-methods-use-this": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "camelcase" :"off",
+    "import/extensions" : "off",
+    "import/no-unresolved": "off"
   }
 }
