@@ -47,6 +47,18 @@ class GymsRepository {
     return emailExists;
   }
 
+  async findPasswordById(id) {
+    const password = await gym.findFirst({
+      select: {
+        password: true,
+      },
+      where: {
+        id,
+      },
+    });
+    return password;
+  }
+
   async findByName({ name }) {
     const nameExists = await gym.findFirst({
       where: {
@@ -75,6 +87,19 @@ class GymsRepository {
     });
 
     return true;
+  }
+
+  async updatePassword(password, id) {
+    const newPassword = await gym.update({
+      data: {
+        password,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return newPassword;
   }
 }
 

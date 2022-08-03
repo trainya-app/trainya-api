@@ -33,9 +33,26 @@ class GymsController {
     return res.json({ gym });
   }
 
-  // update(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = parseInt(id, 10);
+    const { firstNewPassword, secondNewPassword } = req.body;
 
-  // }
+    if (firstNewPassword !== secondNewPassword) {
+      return res.status(400).json({ message: 'The passwords are not equal' });
+    }
+
+    const { password } = await GymsRepository.findPasswordById(parsedId);
+    const samePassword = await bcrypt.compareSync(firstNewPassword, password);
+
+    if (samePassword) {
+      return res.status(400).json({ message: 'The new password cannot be equal to the old password' });
+    }
+    const newPassword_hash = await bcrypt.hash(firstNewPassword, 8);
+    const newPassword = await GymsRepository.updatePassword(newPassword_hash, parsedId);
+
+    return res.json({ newPassword });
+  }
 
   async delete(req: Request, res: Response) {
     const { id } = req.params;
