@@ -43,7 +43,7 @@ class GymsController {
 
     const gymExists = await GymsRepository.findById(parsedId);
     if (!gymExists) {
-      return res.send({ message: 'Gym not found' });
+      return res.status(404).send({ message: 'Gym not found' });
     }
 
     await GymsRepository.delete(parsedId);
@@ -51,9 +51,17 @@ class GymsController {
     return res.sendStatus(200);
   }
 
-  // show(req: Request, res: Response) {
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = parseInt(id, 10);
+    const gym = await GymsRepository.findById(parsedId);
 
-  // }
+    if (!gym) {
+      return res.status(404).send({ message: 'Gym not found' });
+    }
+
+    return res.json({ gym });
+  }
 }
 
 export default new GymsController();
