@@ -509,6 +509,7 @@ model Gym {
   state               String
   city                String
   street              String                @db.VarChar(256)
+  adress_number       Int
   created_at          DateTime              @default(now())
   updated_at          DateTime              @updatedAt
 
