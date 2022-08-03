@@ -16,14 +16,14 @@ class GymsController {
 
     const password_hash = await bcrypt.hash(password, 8);
 
-    const emailExists = await GymsRepository.findByEmail({ email });
-    if (emailExists) {
-      return res.json({ message: 'Email already exists' });
-    }
-
     const nameExists = await GymsRepository.findByName({ name });
     if (nameExists) {
       return res.json({ message: 'Name already exists' });
+    }
+
+    const emailExists = await GymsRepository.findByEmail({ email });
+    if (emailExists) {
+      return res.json({ message: 'Email already exists' });
     }
 
     const gym = await GymsRepository.create({
@@ -37,9 +37,19 @@ class GymsController {
 
   // }
 
-  // delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = parseInt(id, 10);
 
-  // }
+    const gymExists = await GymsRepository.findById(parsedId);
+    if (!gymExists) {
+      return res.send({ message: 'Gym not found' });
+    }
+
+    await GymsRepository.delete(parsedId);
+
+    return res.sendStatus(200);
+  }
 
   // show(req: Request, res: Response) {
 

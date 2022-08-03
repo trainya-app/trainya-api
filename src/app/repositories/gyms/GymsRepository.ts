@@ -23,6 +23,7 @@ class GymsRepository {
         adress_number,
       },
       select: {
+        id: true,
         name: true,
         email: true,
         password: true,
@@ -54,6 +55,26 @@ class GymsRepository {
     });
 
     return nameExists;
+  }
+
+  async findById(id) {
+    const gymExists = await gym.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return gymExists;
+  }
+
+  async delete(id) {
+    await gym.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
   }
 }
 
