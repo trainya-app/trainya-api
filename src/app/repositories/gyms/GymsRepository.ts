@@ -10,17 +10,17 @@ class GymsRepository {
   }
 
   async create({
-    name, email, password_hash, state, city, street, adress_number,
+    name, email, hashedPassword, state, city, street, adressNumber,
   }) {
     const createdGym = await gym.create({
       data: {
         name,
         email,
-        password: password_hash,
+        password: hashedPassword,
         state,
         city,
         street,
-        adress_number,
+        adress_number: adressNumber,
       },
       select: {
         id: true,
