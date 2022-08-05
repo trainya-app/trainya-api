@@ -1,6 +1,20 @@
 import { PrismaClient } from '@prisma/client';
+import { Gym } from '@prisma/client';
 
 const { gym } = new PrismaClient();
+
+type IGym = Omit<Gym, 'created_at' | 'updated_at'>;
+
+interface UpdateGym {
+  id: number;
+  name?: string;
+  email?: string;
+  state?: string;
+  street?: string;
+  city?: string;
+  adress_number?: number;
+  zip_code?: number;
+}
 
 class GymsRepository {
   async findAll() {
@@ -10,17 +24,25 @@ class GymsRepository {
   }
 
   async create({
-    name, email, hashedPassword, state, city, street, adressNumber,
-  }) {
+    name,
+    email,
+    password,
+    state,
+    city,
+    street,
+    adress_number,
+    zip_code,
+  }: Omit<IGym, 'id'>) {
     const createdGym = await gym.create({
       data: {
         name,
         email,
-        password: hashedPassword,
+        password,
         state,
         city,
         street,
-        adress_number: adressNumber,
+        zip_code,
+        adress_number,
       },
       select: {
         id: true,
@@ -30,6 +52,7 @@ class GymsRepository {
         state: true,
         city: true,
         street: true,
+        zip_code: true,
         adress_number: true,
       },
     });
@@ -37,7 +60,7 @@ class GymsRepository {
     return createdGym;
   }
 
-  async findByEmail({ email }) {
+  async findByEmail({ email }: { email: string }) {
     const emailExists = await gym.findFirst({
       where: {
         email,
@@ -47,7 +70,7 @@ class GymsRepository {
     return emailExists;
   }
 
-  async findPasswordById(id) {
+  async findPasswordById(id: number) {
     const password = await gym.findFirst({
       select: {
         password: true,
@@ -56,10 +79,11 @@ class GymsRepository {
         id,
       },
     });
-    return password;
+
+    return password as { password: string };
   }
 
-  async findByName({ name }) {
+  async findByName({ name }: { name: string }) {
     const nameExists = await gym.findFirst({
       where: {
         name,
@@ -69,7 +93,7 @@ class GymsRepository {
     return nameExists;
   }
 
-  async findById(id) {
+  async findById(id: number) {
     const gymExists = await gym.findFirst({
       where: {
         id,
@@ -79,7 +103,7 @@ class GymsRepository {
     return gymExists;
   }
 
-  async delete(id) {
+  async delete(id: number) {
     await gym.delete({
       where: {
         id,
@@ -89,7 +113,7 @@ class GymsRepository {
     return true;
   }
 
-  async updatePassword(password, id) {
+  async updatePassword(password: string, id: number) {
     const newPassword = await gym.update({
       data: {
         password,
@@ -100,6 +124,34 @@ class GymsRepository {
     });
 
     return newPassword;
+  }
+
+  async updateGym({
+    id,
+    name,
+    email,
+    state,
+    city,
+    street,
+    adress_number,
+    zip_code,
+  }: UpdateGym) {
+    const updatedGym = await gym.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        email,
+        state,
+        city,
+        street,
+        adress_number,
+        zip_code,
+      },
+    });
+
+    return updatedGym;
   }
 }
 

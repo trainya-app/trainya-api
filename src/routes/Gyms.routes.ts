@@ -8,5 +8,6 @@ gymsRoutes.post('/gyms', GymsController.store);
 gymsRoutes.delete('/gyms/:id', GymsController.delete);
 gymsRoutes.get('/gyms/:id', GymsController.show);
 gymsRoutes.put('/gyms/password/:id', GymsController.updatePassword);
+gymsRoutes.put('/gyms/:id', GymsController.update);
 
 export default gymsRoutes;
