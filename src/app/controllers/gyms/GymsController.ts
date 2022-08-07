@@ -55,9 +55,15 @@ class GymsController {
       state,
       city,
       street,
-      adress_number: adressNumber,
-      zip_code: zipCode,
+      adress_number: Number(adressNumber),
+      zip_code: Number(zipCode),
     });
+
+    if (gym === null) {
+      return res
+        .status(400)
+        .json({ message: 'Valores inválidos para criação da academia.' });
+    }
 
     return res.json({ message: 'Academia Criada ', gym });
   }

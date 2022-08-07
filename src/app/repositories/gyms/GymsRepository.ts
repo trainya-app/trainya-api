@@ -33,31 +33,34 @@ class GymsRepository {
     adress_number,
     zip_code,
   }: Omit<IGym, 'id'>) {
-    const createdGym = await gym.create({
-      data: {
-        name,
-        email,
-        password,
-        state,
-        city,
-        street,
-        zip_code,
-        adress_number,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true,
-        state: true,
-        city: true,
-        street: true,
-        zip_code: true,
-        adress_number: true,
-      },
-    });
-
-    return createdGym;
+    try {
+      const createdGym = await gym.create({
+        data: {
+          name,
+          email,
+          password,
+          state,
+          city,
+          street,
+          zip_code,
+          adress_number,
+        },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          password: true,
+          state: true,
+          city: true,
+          street: true,
+          zip_code: true,
+          adress_number: true,
+        },
+      });
+      return createdGym;
+    } catch {
+      return null;
+    }
   }
 
   async findByEmail({ email }: { email: string }) {
