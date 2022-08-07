@@ -55,9 +55,15 @@ class GymsController {
       state,
       city,
       street,
-      adress_number: adressNumber,
-      zip_code: zipCode,
+      adress_number: Number(adressNumber),
+      zip_code: Number(zipCode),
     });
+
+    if (gym === null) {
+      return res
+        .status(400)
+        .json({ message: 'Valores inválidos para criação da academia.' });
+    }
 
     return res.json({ message: 'Academia Criada ', gym });
   }
@@ -116,20 +122,38 @@ class GymsController {
   async show(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = Number(id);
-    const gym = await GymsRepository.findById(parsedId);
 
-    if (!gym) {
-      return res.status(404).send({ message: 'Academia não encontrada' });
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', gym: null });
     }
 
-    return res.json({ gym });
+    const gym = await GymsRepository.findById(parsedId);
+    if (!gym) {
+      return res
+        .status(404)
+        .send({ message: 'Academia não encontrada', gym: null });
+    }
+
+    return res.json({ message: 'Academia encontrada.', gym });
   }
 
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const parsedId = Number(id);
     const { name, email, state, city, street, adressNumber, zipCode } =
       req.body;
+
+    const parsedId = Number(id);
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID Inválido', gym: null });
+    }
+
+    const adress_number = Number.isNaN(Number(adressNumber))
+      ? undefined
+      : Number(adressNumber);
+    const zip_code = Number.isNaN(Number(zipCode))
+      ? undefined
+      : Number(zipCode);
 
     const updatedGym = await GymsRepository.updateGym({
       id: parsedId,
@@ -138,10 +162,8 @@ class GymsController {
       state,
       city,
       street,
-      adress_number: Number.isNaN(Number(adressNumber))
-        ? undefined
-        : Number(adressNumber),
-      zip_code: Number.isNaN(Number(zipCode)) ? undefined : Number(zipCode),
+      adress_number,
+      zip_code,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
