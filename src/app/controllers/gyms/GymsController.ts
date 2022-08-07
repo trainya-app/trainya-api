@@ -139,9 +139,21 @@ class GymsController {
 
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const parsedId = Number(id);
     const { name, email, state, city, street, adressNumber, zipCode } =
       req.body;
+
+    const parsedId = Number(id);
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID Inválido', gym: null });
+    }
+
+    const adress_number = Number.isNaN(Number(adressNumber))
+      ? undefined
+      : Number(adressNumber);
+    const zip_code = Number.isNaN(Number(zipCode))
+      ? undefined
+      : Number(zipCode);
 
     const updatedGym = await GymsRepository.updateGym({
       id: parsedId,
@@ -150,10 +162,8 @@ class GymsController {
       state,
       city,
       street,
-      adress_number: Number.isNaN(Number(adressNumber))
-        ? undefined
-        : Number(adressNumber),
-      zip_code: Number.isNaN(Number(zipCode)) ? undefined : Number(zipCode),
+      adress_number,
+      zip_code,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
