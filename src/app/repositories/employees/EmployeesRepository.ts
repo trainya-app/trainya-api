@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { Employee } from '@prisma/client';
+const { employee } = new PrismaClient();
 
 class EmployeesRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  findAll() {
+    const employees = employee.findMany();
+    return employees;
   }
 }
 
