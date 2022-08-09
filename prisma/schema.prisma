@@ -345,6 +345,7 @@ model Employee {
   roll_id           Int
   name              String              @db.VarChar(256)
   birth_date        String
+  payment_date      DateTime
   daily_workload    Int
   weekdays_workload Int
   phone             Int
