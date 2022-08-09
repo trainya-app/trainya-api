@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
+import { PrismaClient, Roll } from '@prisma/client';
+const { roll } = new PrismaClient();
 
 class RollsRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const rolls = await roll.findMany();
+
+    return rolls;
   }
 }
 

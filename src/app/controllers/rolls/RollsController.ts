@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import RollsRepository from '../../repositories/rolls/RollsRepository';
 
 class RollsController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const rolls = await RollsRepository.findAll();
+
+    res.send(rolls);
   }
 }
 
