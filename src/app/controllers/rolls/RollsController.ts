@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import RollsRepository from '../../repositories/rolls/RollsRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
-import { info } from 'console';
 
 class RollsController {
   async index(req: Request, res: Response) {
@@ -60,6 +59,35 @@ class RollsController {
     }
 
     return res.status(200).json({ message: 'Cargo encontrado', roll });
+  }
+
+  async update(req: Request, res: Response) {
+    const { title, accessLevel } = req.body;
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const rollExists = await RollsRepository.findById(parsedId);
+    if (!rollExists) {
+      return res
+        .status(404)
+        .json({ message: 'Cargo não encontrado', roll: null });
+    }
+
+    const someFieldIsEmpty = isSomeEmpty([title, accessLevel]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram inseridos',
+        roll: null,
+      });
+    }
+
+    const updatedRoll = await RollsRepository.update({
+      title,
+      access_level: accessLevel,
+      id: parsedId,
+    });
+
+    return res.json({ message: 'Cargo atualizado', updatedRoll });
   }
 }
 

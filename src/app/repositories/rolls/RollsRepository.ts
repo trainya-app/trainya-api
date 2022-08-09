@@ -3,6 +3,7 @@ import rollsRoutes from '../../../routes/Rolls.routes';
 const { roll } = new PrismaClient();
 
 interface IRoll {
+  id: number;
   title: string;
   access_level: string;
 }
@@ -26,7 +27,7 @@ class RollsRepository {
     return rollExists;
   }
 
-  async create({ title, access_level }: IRoll) {
+  async create({ title, access_level }: Omit<IRoll, 'id'>) {
     const createdRoll = await roll.create({
       data: {
         title,
@@ -57,6 +58,20 @@ class RollsRepository {
       },
     });
     return true;
+  }
+
+  async update({ title, access_level, id }: IRoll) {
+    const updatedRoll = await roll.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        access_level,
+      },
+    });
+
+    return updatedRoll;
   }
 }
 
