@@ -47,6 +47,20 @@ class RollsController {
 
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const roll = await RollsRepository.findById(parsedId);
+    if (!roll) {
+      return res
+        .status(404)
+        .json({ message: 'Cargo não encontrado', roll: null });
+    }
+
+    return res.status(200).json({ message: 'Cargo encontrado', roll });
+  }
 }
 
 export default new RollsController();
