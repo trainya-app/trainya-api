@@ -352,6 +352,7 @@ model Employee {
   email             String              @db.VarChar(256)
   wage              Int
   password          String              @db.VarChar(256)
+  profile_img       String
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
   employeeClasse    EmployeeClass[]
