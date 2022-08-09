@@ -349,6 +349,7 @@ model Employee {
   weekdays_workload Int
   phone             Int
   email             String              @db.VarChar(256)
+  wage              Int
   password          String              @db.VarChar(256)
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
