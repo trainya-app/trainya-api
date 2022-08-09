@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import RollsRepository from '../../repositories/rolls/RollsRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
+import { info } from 'console';
 
 class RollsController {
   async index(req: Request, res: Response) {
@@ -30,6 +31,21 @@ class RollsController {
       access_level: accessLevel,
     });
     return res.status(200).json({ message: 'Cargo criado', roll });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const rollExists = await RollsRepository.findById(parsedId);
+    if (!rollExists) {
+      return res
+        .status(401)
+        .json({ message: 'Cargo não encontrado', roll: null });
+    }
+
+    await RollsRepository.delete(parsedId);
+
+    return res.sendStatus(200);
   }
 }
 

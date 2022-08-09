@@ -40,6 +40,24 @@ class RollsRepository {
 
     return createdRoll;
   }
+
+  async findById(id: number) {
+    const rollExists = await roll.findFirst({
+      where: {
+        id,
+      },
+    });
+    return rollExists;
+  }
+
+  async delete(id: number) {
+    await roll.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  }
 }
 
 export default new RollsRepository();
