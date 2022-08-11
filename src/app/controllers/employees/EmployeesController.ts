@@ -104,6 +104,48 @@ class EmployeesController {
 
     return res.json({ message: 'Funcionário encontrado', employeeExists });
   }
+
+  async updatePassoword(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { firstNewPassword, secondNewPassword } = req.body;
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', gym: null });
+    }
+
+    if (firstNewPassword !== secondNewPassword) {
+      return res
+        .status(400)
+        .json({ message: 'As senhas não são iguais', newPassword: null });
+    }
+
+    const employeeExists = await EmployeesRepository.findById(parsedId);
+    if (!employeeExists) {
+      return res
+        .status(404)
+        .json({ message: 'Funcionário não encontrado', employee: null });
+    }
+
+    const { password } = await EmployeesRepository.findPasswordById(parsedId);
+    const samePassword = await bcrypt.compare(firstNewPassword, password);
+
+    if (samePassword) {
+      return res.status(400).json({
+        message: 'A senha nova não pode ser igual a antiga',
+        newPassword: null,
+      });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(firstNewPassword, 8);
+    const newPassword = await EmployeesRepository.updatePassword({
+      password: hashedNewPassword,
+      id: parsedId,
+    });
+
+    return res.json({ message: 'Atualizada', newPassword });
+  }
 }
 
 export default new EmployeesController();

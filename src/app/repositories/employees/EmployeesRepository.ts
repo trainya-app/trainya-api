@@ -85,6 +85,30 @@ class EmployeesRepository {
 
     return true;
   }
+  async findPasswordById(id: number) {
+    const password = await employee.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        password: true,
+      },
+    });
+
+    return password as { password: string };
+  }
+
+  async updatePassword({ id, password }: { id: number; password: string }) {
+    const updatedPassword = await employee.update({
+      data: {
+        password,
+      },
+      where: {
+        id,
+      },
+    });
+    return updatedPassword;
+  }
 }
 
 export default new EmployeesRepository();
