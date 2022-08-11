@@ -86,6 +86,24 @@ class EmployeesController {
     await EmployeesRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const employeeExists = await EmployeesRepository.findById(parsedId);
+    if (!employeeExists) {
+      return res
+        .status(404)
+        .json({ message: 'Funcionário não encontrado', employee: null });
+    }
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', gym: null });
+    }
+
+    return res.json({ message: 'Funcionário encontrado', employeeExists });
+  }
 }
 
 export default new EmployeesController();

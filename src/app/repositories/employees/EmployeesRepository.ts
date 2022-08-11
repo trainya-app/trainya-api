@@ -61,6 +61,7 @@ class EmployeesRepository {
         password,
       },
       select: {
+        id: true,
         roll_id: true,
         name: true,
         birth_date: true,
