@@ -71,6 +71,21 @@ class EmployeesController {
       employee,
     });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const employeeExists = await EmployeesRepository.findById(parsedId);
+    if (!employeeExists) {
+      return res
+        .status(404)
+        .json({ message: 'Funcionário não encontrado', employee: null });
+    }
+
+    await EmployeesRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new EmployeesController();

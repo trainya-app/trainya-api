@@ -29,6 +29,16 @@ class EmployeesRepository {
     return employeeExists;
   }
 
+  async findById(id: number) {
+    const employeeExists = await employee.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return employeeExists;
+  }
+
   async create({
     roll_id,
     name,
@@ -63,6 +73,16 @@ class EmployeesRepository {
     });
 
     return createdEmployee;
+  }
+
+  async delete(id: number) {
+    await employee.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
   }
 }
 
