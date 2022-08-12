@@ -3,6 +3,7 @@ import GymsEmployeesController from '../app/controllers/gyms/GymsEmployeesContro
 const gymEmployeesRoutes = Router();
 
 gymEmployeesRoutes.get('/gymEmployees', GymsEmployeesController.index);
+gymEmployeesRoutes.get('/gymEmployees/:id', GymsEmployeesController.show);
 gymEmployeesRoutes.post('/gymEmployees', GymsEmployeesController.store);
 gymEmployeesRoutes.delete('/gymEmployees/:id', GymsEmployeesController.delete);
 

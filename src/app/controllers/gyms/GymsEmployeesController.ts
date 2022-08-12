@@ -63,6 +63,24 @@ class GymsEmployeesController {
 
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const gymEmployeeExists = await GymsEmployeesRepository.findById(parsedId);
+    if (!gymEmployeeExists) {
+      return res.status(404).json({
+        message: ' Funcionário da academia não encontrado',
+        gymEmployee: null,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Funcinário da academia encontrado.',
+      gymEmployeeExists,
+    });
+  }
 }
 
 export default new GymsEmployeesController();
