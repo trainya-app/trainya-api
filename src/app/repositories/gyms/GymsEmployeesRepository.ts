@@ -6,6 +6,12 @@ interface IGymEmployee {
   employee_id: number;
 }
 
+interface IUpdateGymEmployee {
+  id?: number;
+  gym_id?: number;
+  employee_id?: number;
+}
+
 class GymsEmployeesRepository {
   async findAll() {
     const gymEmployees = await gymEmployee.findMany();
@@ -41,6 +47,19 @@ class GymsEmployeesRepository {
     });
 
     return true;
+  }
+
+  async update({ id, gym_id, employee_id }: IUpdateGymEmployee) {
+    const updatedGymEmployee = await gymEmployee.update({
+      data: {
+        gym_id,
+        employee_id,
+      },
+      where: {
+        id,
+      },
+    });
+    return updatedGymEmployee;
   }
 }
 
