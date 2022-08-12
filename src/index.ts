@@ -4,6 +4,7 @@ import rollsRoutes from './routes/Rolls.routes';
 import productsCategoriesRoutes from './routes/ProductsCategories.routes';
 import employeesRoutes from './routes/Employees.routes';
 import gymEmployeesRoutes from './routes/GymEmployees.routes';
+import membersRoutes from './routes/Members.routes';
 
 const app = express();
 app.use(express.json());
@@ -24,5 +25,7 @@ app.use(gymsRoutes);
 app.use(productsCategoriesRoutes);
 // Gym Employees Routes
 app.use(gymEmployeesRoutes);
+//Members Routes
+app.use(membersRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

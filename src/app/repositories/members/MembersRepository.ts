@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+const { member } = new PrismaClient();
 
 class MembersRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const members = await member.findMany();
+
+    return members;
   }
 }
 
