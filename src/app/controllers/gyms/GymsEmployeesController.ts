@@ -46,6 +46,23 @@ class GymsEmployeesController {
       gymEmployee,
     });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const gymEmployeeExists = await GymsEmployeesRepository.findById(parsedId);
+    if (!gymEmployeeExists) {
+      return res.status(404).json({
+        message: ' Funcionário da academia não encontrados',
+        gymEmployee: null,
+      });
+    }
+
+    await GymsEmployeesRepository.delete(parsedId);
+
+    return res.sendStatus(200);
+  }
 }
 
 export default new GymsEmployeesController();

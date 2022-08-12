@@ -22,6 +22,26 @@ class GymsEmployeesRepository {
 
     return createdGymEmployee;
   }
+
+  async findById(id: number) {
+    const gymEmployeeExists = await gymEmployee.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return gymEmployeeExists;
+  }
+
+  async delete(id: number) {
+    await gymEmployee.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new GymsEmployeesRepository();
