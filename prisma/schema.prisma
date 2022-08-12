@@ -345,11 +345,14 @@ model Employee {
   roll_id           Int
   name              String              @db.VarChar(256)
   birth_date        String
+  payment_date      DateTime
   daily_workload    Int
   weekdays_workload Int
   phone             Int
   email             String              @db.VarChar(256)
+  wage              Int
   password          String              @db.VarChar(256)
+  profile_img       String
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
   employeeClasse    EmployeeClass[]
