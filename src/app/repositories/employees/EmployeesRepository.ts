@@ -2,6 +2,17 @@ import { PrismaClient } from '@prisma/client';
 import { Employee } from '@prisma/client';
 const { employee } = new PrismaClient();
 
+interface IUpdateEmployee {
+  roll_id?: number;
+  name?: string;
+  birth_date?: string;
+  daily_workload?: number;
+  weekdays_workload?: number;
+  phone?: number;
+  email?: string;
+  password?: string;
+}
+
 interface IEmployee {
   roll_id: number;
   name: string;
@@ -108,6 +119,35 @@ class EmployeesRepository {
       },
     });
     return updatedPassword;
+  }
+
+  async updateEmployee(
+    id: number,
+    {
+      roll_id,
+      name,
+      birth_date,
+      daily_workload,
+      weekdays_workload,
+      phone,
+      email,
+    }: IUpdateEmployee
+  ) {
+    const updatedEmployee = await employee.update({
+      data: {
+        roll_id,
+        name,
+        birth_date,
+        daily_workload,
+        weekdays_workload,
+        phone,
+        email,
+      },
+      where: {
+        id,
+      },
+    });
+    return updatedEmployee;
   }
 }
 

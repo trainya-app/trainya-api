@@ -146,6 +146,48 @@ class EmployeesController {
 
     return res.json({ message: 'Atualizada', newPassword });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const {
+      rollId,
+      name,
+      birthDate,
+      dailyWorkload,
+      weeksdaysWorkload,
+      phone,
+      email,
+      password,
+    } = req.body;
+    const parsedId = Number(id);
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID Inválido', employee: null });
+    }
+
+    const daily_workload = Number.isNaN(Number(dailyWorkload))
+      ? undefined
+      : Number(dailyWorkload);
+    const weekdays_workload = Number.isNaN(Number(weeksdaysWorkload))
+      ? undefined
+      : Number(weeksdaysWorkload);
+
+    const verifiedPhone = Number.isNaN(Number(phone))
+      ? undefined
+      : Number(phone);
+
+    const updatedEmployee = await EmployeesRepository.updateEmployee(parsedId, {
+      roll_id: rollId,
+      name,
+      birth_date: birthDate,
+      daily_workload,
+      weekdays_workload,
+      phone: verifiedPhone,
+      email,
+    });
+
+    return res.json({ message: 'Dados atualizados!', updatedEmployee });
+  }
 }
 
 export default new EmployeesController();
