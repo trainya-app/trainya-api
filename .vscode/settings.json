@@ -1,5 +1,10 @@
 {
+<<<<<<< HEAD
+  "cSpell.words": ["Responsibles"]
+=======
   "cSpell.words": [
     "Responsibles"
-  ]
+  ],
+  "git.ignoreLimitWarning": true
+>>>>>>> c987b1034219571d42e469a4c8a93466e588eb50
 }

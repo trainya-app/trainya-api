@@ -1,9 +1,18 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
 
-class ProductsCategoriesRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+const { productCategory } = new PrismaClient();
+
+class ProductCategoryRepository {
+  async create({ name, image_url }) {
+    const CreatedProductCategory = await productCategory.create({
+      data: {
+        name,
+        image_url,
+      },
+    });
+
+    return CreatedProductCategory;
   }
 }
 
-export default new ProductsCategoriesRepository();
+export default new ProductCategoryRepository();
