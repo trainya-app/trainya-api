@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
+import { Console } from 'console';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -141,6 +142,64 @@ class MembersController {
     );
 
     return res.json({ message: 'Atualizada', newPassword });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const {
+      phone,
+      name,
+      weight,
+      height,
+      email,
+      password,
+      state,
+      city,
+      street,
+      adressNumber,
+    } = req.body;
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    const emailExists = await MembersRepository.findByEmail(email);
+    if (emailExists) {
+      const idByEmail = await MembersRepository.findIdByEmail(email);
+      let id = idByEmail.id;
+      if (id != parsedId) {
+        return res
+          .status(400)
+          .json({ message: 'Email já está em uso', member: null });
+      }
+    }
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID Inválido', member: null });
+    }
+
+    const vWeight = Number.isNaN(Number(weight)) ? undefined : Number(weight);
+    const vHeight = Number.isNaN(Number(height)) ? undefined : Number(height);
+
+    const updatedGym = await MembersRepository.updateMember({
+      id: parsedId,
+      phone,
+      name,
+      weight: vWeight,
+      height: vHeight,
+      email,
+      password,
+      state,
+      city,
+      street,
+      adress_number: adressNumber,
+    });
+
+    return res.json({ message: 'Dados atualizados!', updatedGym });
   }
 }
 

@@ -13,6 +13,20 @@ interface IMember {
   adress_number: string;
 }
 
+interface IUpdateMember {
+  id: number;
+  phone: string;
+  name: string;
+  weight?: number;
+  height?: number;
+  email: string;
+  password: string;
+  state: string;
+  city: string;
+  street: string;
+  adress_number?: string;
+}
+
 class MembersRepository {
   async findAll() {
     const members = await member.findMany();
@@ -105,6 +119,53 @@ class MembersRepository {
       },
     });
     return updatedPassword;
+  }
+
+  async updateMember({
+    id,
+    phone,
+    name,
+    weight,
+    height,
+    email,
+    password,
+    state,
+    city,
+    street,
+    adress_number,
+  }: IUpdateMember) {
+    const updatedMember = await member.update({
+      where: {
+        id,
+      },
+      data: {
+        phone,
+        name,
+        weight,
+        height,
+        email,
+        password,
+        state,
+        city,
+        street,
+        adress_number,
+      },
+    });
+
+    return updatedMember;
+  }
+
+  async findIdByEmail(email: string) {
+    const id = await member.findFirst({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    return id as { id: number };
   }
 }
 
