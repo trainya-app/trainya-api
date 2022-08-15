@@ -74,6 +74,22 @@ class MembersController {
 
     return res.status(200).json({ message: 'Membro criado', member });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    await MembersRepository.delete(parsedId);
+
+    return res.sendStatus(200);
+  }
 }
 
 export default new MembersController();

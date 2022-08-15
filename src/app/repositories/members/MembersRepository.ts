@@ -30,6 +30,15 @@ class MembersRepository {
     return emailExists;
   }
 
+  async findById(id: number) {
+    const memberExists = await member.findFirst({
+      where: {
+        id,
+      },
+    });
+    return memberExists;
+  }
+
   async create({
     phone,
     name,
@@ -62,6 +71,15 @@ class MembersRepository {
     } catch (error) {
       return null;
     }
+  }
+
+  async delete(id: number) {
+    await member.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
   }
 }
 
