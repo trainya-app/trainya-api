@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Employee } from '@prisma/client';
+import gymEmployeesRoutes from '../../../routes/GymEmployees.routes';
 const { employee } = new PrismaClient();
 
 interface IUpdateEmployee {
@@ -169,6 +170,16 @@ class EmployeesRepository {
       },
     });
     return updatedEmployee;
+  }
+
+  async findIdByEmail(email: string) {
+    const id = await employee.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return id as { id: number };
   }
 }
 

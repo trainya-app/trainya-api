@@ -9,7 +9,7 @@ employeesRoutes.post('/employees', EmployeesController.store);
 employeesRoutes.delete('/employees/:id', EmployeesController.delete);
 employeesRoutes.put(
   '/employees/password/:id',
-  EmployeesController.updatePassoword
+  EmployeesController.updatePassword
 );
 employeesRoutes.put('/employees/:id', EmployeesController.update);
 
