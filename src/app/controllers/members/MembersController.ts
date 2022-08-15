@@ -90,6 +90,20 @@ class MembersController {
 
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    return res.status(200).json({ message: 'Membro encontrado', memberExists });
+  }
 }
 
 export default new MembersController();
