@@ -29,12 +29,12 @@ class GymsMembersController {
         .json({ message: 'Academia não encontrada', gymMember: null });
     }
 
-    // const memberExists = await MembersRepository.findById(memberId);
-    // if (!memberExists) {
-    //   return res
-    //     .status(404)
-    //     .json({ message: 'Membro não encontrado', gymMember: null });
-    // }
+    const memberExists = await MembersRepository.findById(memberId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', gymMember: null });
+    }
 
     const gymMember = await GymsMembersRepository.create({
       gym_id: gymId,
@@ -44,6 +44,23 @@ class GymsMembersController {
     return res
       .status(200)
       .json({ message: 'Membro da academia criado', gymMember });
+  }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const gymMemberExists = await GymsMembersRepository.findById(parsedId);
+    if (!gymMemberExists) {
+      return res.status(404).json({
+        message: 'Membro da academia não encontrado',
+        gymMember: null,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Membro da academia encontrado', gymMemberExists });
   }
 }
 

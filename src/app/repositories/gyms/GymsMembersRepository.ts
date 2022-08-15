@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import gymMembersRoutes from '../../../routes/GymMembers.routes';
 const { gymMember } = new PrismaClient();
 
 interface IGymMember {
@@ -22,6 +23,15 @@ class GymsMembersRepository {
     });
 
     return createdGymMember;
+  }
+
+  async findById(id: number) {
+    const gymMemberExists = await gymMember.findFirst({
+      where: {
+        id,
+      },
+    });
+    return gymMemberExists;
   }
 }
 
