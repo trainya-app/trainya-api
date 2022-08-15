@@ -8,8 +8,11 @@ interface IUpdateEmployee {
   birth_date?: string;
   daily_workload?: number;
   weekdays_workload?: number;
-  phone?: number;
+  phone: string;
+  wage?: number;
+  profile_img: string;
   email?: string;
+  payment_date: string;
   password?: string;
 }
 
@@ -19,8 +22,11 @@ interface IEmployee {
   birth_date: string;
   daily_workload: number;
   weekdays_workload: number;
-  phone: number;
+  wage: number;
+  profile_img: string;
+  phone: string;
   email: string;
+  payment_date: string;
   password: string;
 }
 
@@ -59,6 +65,9 @@ class EmployeesRepository {
     phone,
     email,
     password,
+    wage,
+    payment_date,
+    profile_img,
   }: IEmployee) {
     const createdEmployee = await employee.create({
       data: {
@@ -70,6 +79,9 @@ class EmployeesRepository {
         phone,
         email,
         password,
+        wage,
+        payment_date,
+        profile_img,
       },
       select: {
         id: true,
@@ -81,6 +93,9 @@ class EmployeesRepository {
         phone: true,
         email: true,
         password: true,
+        wage: true,
+        payment_date: true,
+        profile_img: true,
       },
     });
 
@@ -131,6 +146,9 @@ class EmployeesRepository {
       weekdays_workload,
       phone,
       email,
+      wage,
+      payment_date,
+      profile_img,
     }: IUpdateEmployee
   ) {
     const updatedEmployee = await employee.update({
@@ -142,6 +160,9 @@ class EmployeesRepository {
         weekdays_workload,
         phone,
         email,
+        wage,
+        payment_date,
+        profile_img,
       },
       where: {
         id,

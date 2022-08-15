@@ -20,6 +20,9 @@ class EmployeesController {
       phone,
       email,
       password,
+      wage,
+      profileImg,
+      paymentDate,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -31,6 +34,9 @@ class EmployeesController {
       phone,
       email,
       password,
+      wage,
+      profileImg,
+      paymentDate,
     ]);
 
     if (someFieldIsEmpty) {
@@ -64,6 +70,9 @@ class EmployeesController {
       phone,
       email,
       password: hashedPassword,
+      wage,
+      profile_img: profileImg,
+      payment_date: paymentDate,
     });
 
     return res.json({
@@ -157,7 +166,9 @@ class EmployeesController {
       weeksdaysWorkload,
       phone,
       email,
-      password,
+      wage,
+      profileImg,
+      paymentDate,
     } = req.body;
     const parsedId = Number(id);
 
@@ -171,10 +182,9 @@ class EmployeesController {
     const weekdays_workload = Number.isNaN(Number(weeksdaysWorkload))
       ? undefined
       : Number(weeksdaysWorkload);
-
-    const verifiedPhone = Number.isNaN(Number(phone))
+    const vWage = Number.isNaN(Number(wage))
       ? undefined
-      : Number(phone);
+      : Number(weeksdaysWorkload);
 
     const updatedEmployee = await EmployeesRepository.updateEmployee(parsedId, {
       roll_id: rollId,
@@ -182,8 +192,11 @@ class EmployeesController {
       birth_date: birthDate,
       daily_workload,
       weekdays_workload,
-      phone: verifiedPhone,
+      phone,
       email,
+      wage: vWage,
+      profile_img: profileImg,
+      payment_date: paymentDate,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedEmployee });
