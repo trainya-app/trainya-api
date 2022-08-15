@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 
 class GymsMembersController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const gymMembers = await GymsMembersRepository.findAll();
+
+    return res.json(gymMembers);
   }
 }
 
