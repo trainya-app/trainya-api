@@ -81,6 +81,31 @@ class MembersRepository {
     });
     return true;
   }
+
+  async findPasswordById(id: number) {
+    const password = await member.findFirst({
+      select: {
+        password: true,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return password as { password: string };
+  }
+
+  async updatePassword(id: number, password: string) {
+    const updatedPassword = await member.update({
+      where: {
+        id,
+      },
+      data: {
+        password,
+      },
+    });
+    return updatedPassword;
+  }
 }
 
 export default new MembersRepository();

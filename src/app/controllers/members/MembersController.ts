@@ -104,6 +104,44 @@ class MembersController {
 
     return res.status(200).json({ message: 'Membro encontrado', memberExists });
   }
+
+  async updatePassword(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { firstNewPassword, secondNewPassword } = req.body;
+
+    if (firstNewPassword !== secondNewPassword) {
+      return res
+        .status(400)
+        .json({ message: 'As senhas não são iguais', newPassword: null });
+    }
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    const { password } = await MembersRepository.findPasswordById(parsedId);
+    const samePassword = await bcrypt.compare(firstNewPassword, password);
+
+    if (samePassword) {
+      return res.status(400).json({
+        message: 'A senha nova não pode ser igual a antiga',
+        newPassword: null,
+      });
+    }
+
+    const hashedNewPassword = await bcrypt.hash(firstNewPassword, 8);
+    const newPassword = await MembersRepository.updatePassword(
+      parsedId,
+      hashedNewPassword
+    );
+
+    return res.json({ message: 'Atualizada', newPassword });
+  }
 }
 
 export default new MembersController();
