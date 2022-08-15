@@ -156,6 +156,16 @@ class GymsRepository {
 
     return updatedGym;
   }
+
+  async findIdByEmail(email: string) {
+    const id = await gym.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return id as { id: number };
+  }
 }
 
 export default new GymsRepository();

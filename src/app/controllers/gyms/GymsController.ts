@@ -148,6 +148,17 @@ class GymsController {
       return res.status(400).json({ message: 'ID Inválido', gym: null });
     }
 
+    const emailExists = await GymsRepository.findByEmail(email);
+    if (emailExists) {
+      const idByEmail = await GymsRepository.findIdByEmail(email);
+      let id = idByEmail.id;
+      if (id != parsedId) {
+        return res
+          .status(400)
+          .json({ message: 'Email já está em uso', gym: null });
+      }
+    }
+
     const adress_number = Number.isNaN(Number(adressNumber))
       ? undefined
       : Number(adressNumber);
