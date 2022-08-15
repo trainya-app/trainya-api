@@ -7,6 +7,11 @@ interface IGymMember {
   member_id: number;
 }
 
+interface IUpdateGymMember {
+  gym_id?: number;
+  member_id?: number;
+}
+
 class GymsMembersRepository {
   async findAll() {
     const gymMembers = await gymMember.findMany();
@@ -32,6 +37,30 @@ class GymsMembersRepository {
       },
     });
     return gymMemberExists;
+  }
+
+  async delete(id: number) {
+    await gymMember.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
+
+  async update(id: number, { gym_id, member_id }: IUpdateGymMember) {
+    const updatedGymMember = await gymMember.update({
+      where: {
+        id,
+      },
+      data: {
+        gym_id,
+        member_id,
+      },
+    });
+
+    return updatedGymMember;
   }
 }
 

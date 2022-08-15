@@ -62,6 +62,76 @@ class GymsMembersController {
       .status(200)
       .json({ message: 'Membro da academia encontrado', gymMemberExists });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const gymMemberExists = await GymsMembersRepository.findById(parsedId);
+    if (!gymMemberExists) {
+      return res.status(404).json({
+        message: 'Membro da academia não encontrado',
+        gymMember: null,
+      });
+    }
+
+    await GymsMembersRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const { gymId, memberId } = req.body;
+
+    const someFieldIsEmpty = isSomeEmpty([gymId, memberId]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Insira todos os campos necessários',
+        gymMember: null,
+      });
+    }
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID Inválido', gym: null });
+    }
+
+    const gymMemberExists = await GymsMembersRepository.findById(parsedId);
+    if (!gymMemberExists) {
+      return res.status(404).json({
+        message: 'Membro da academia não encontrado',
+        gymMember: null,
+      });
+    }
+
+    const gymExists = await GymsRepository.findById(gymId);
+    if (!gymExists) {
+      return res
+        .status(404)
+        .json({ message: 'Academia não encontrada', gymMember: null });
+    }
+
+    const memberExists = await MembersRepository.findById(memberId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', gymMember: null });
+    }
+
+    const gym_id = Number.isNaN(Number(gymId)) ? undefined : Number(gymId);
+    const member_id = Number.isNaN(Number(memberId))
+      ? undefined
+      : Number(memberId);
+
+    const updatedGymMember = await GymsMembersRepository.update(parsedId, {
+      gym_id,
+      member_id,
+    });
+
+    return res
+      .status(200)
+      .json({ message: 'Membro da academia atualizado', updatedGymMember });
+  }
 }
 
 export default new GymsMembersController();
