@@ -20,6 +20,9 @@ class EmployeesController {
       phone,
       email,
       password,
+      wage,
+      profileImg,
+      paymentDate,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -31,6 +34,9 @@ class EmployeesController {
       phone,
       email,
       password,
+      wage,
+      profileImg,
+      paymentDate,
     ]);
 
     if (someFieldIsEmpty) {
@@ -64,6 +70,9 @@ class EmployeesController {
       phone,
       email,
       password: hashedPassword,
+      wage,
+      profile_img: profileImg,
+      payment_date: paymentDate,
     });
 
     return res.json({
@@ -105,7 +114,7 @@ class EmployeesController {
     return res.json({ message: 'Funcionário encontrado', employeeExists });
   }
 
-  async updatePassoword(req: Request, res: Response) {
+  async updatePassword(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = Number(id);
 
@@ -157,12 +166,41 @@ class EmployeesController {
       weeksdaysWorkload,
       phone,
       email,
-      password,
+      wage,
+      profileImg,
+      paymentDate,
     } = req.body;
     const parsedId = Number(id);
 
+    const someFieldIsEmpty = isSomeEmpty([
+      rollId,
+      name,
+      birthDate,
+      dailyWorkload,
+      weeksdaysWorkload,
+      phone,
+      email,
+      wage,
+      profileImg,
+      paymentDate,
+    ]);
+
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Preencha todos os campos necessários',
+        employee: null,
+      });
+    }
+
     if (Number.isNaN(parsedId)) {
       return res.status(400).json({ message: 'ID Inválido', employee: null });
+    }
+
+    const employeeExists = await EmployeesRepository.findById(parsedId);
+    if (!employeeExists) {
+      return res
+        .status(404)
+        .json({ message: 'Funcionário não encontrado', employee: null });
     }
 
     const daily_workload = Number.isNaN(Number(dailyWorkload))
@@ -171,10 +209,20 @@ class EmployeesController {
     const weekdays_workload = Number.isNaN(Number(weeksdaysWorkload))
       ? undefined
       : Number(weeksdaysWorkload);
-
-    const verifiedPhone = Number.isNaN(Number(phone))
+    const vWage = Number.isNaN(Number(wage))
       ? undefined
-      : Number(phone);
+      : Number(weeksdaysWorkload);
+
+    const emailExists = await EmployeesRepository.findByEmail(email);
+    if (emailExists) {
+      const idByEmail = await EmployeesRepository.findIdByEmail(email);
+      let id = idByEmail.id;
+      if (id != parsedId) {
+        return res
+          .status(400)
+          .json({ message: 'Email já está em uso', employee: null });
+      }
+    }
 
     const updatedEmployee = await EmployeesRepository.updateEmployee(parsedId, {
       roll_id: rollId,
@@ -182,8 +230,11 @@ class EmployeesController {
       birth_date: birthDate,
       daily_workload,
       weekdays_workload,
-      phone: verifiedPhone,
+      phone,
       email,
+      wage: vWage,
+      profile_img: profileImg,
+      payment_date: paymentDate,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedEmployee });
