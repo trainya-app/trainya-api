@@ -10,7 +10,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 class EmployeesController {
     async index(req, res) {
         const employees = await EmployeesRepository_1.default.findAll();
-        res.send(employees);
+        res.send({ employees });
     }
     async store(req, res) {
         const { rollId, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, password, wage, profileImg, paymentDate, } = req.body;
