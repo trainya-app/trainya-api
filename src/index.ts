@@ -10,7 +10,7 @@ import gymMembersRoutes from './routes/GymMembers.routes';
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
