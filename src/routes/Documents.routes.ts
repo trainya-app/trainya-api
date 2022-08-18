@@ -3,5 +3,6 @@ import DocumentsController from '../app/controllers/documents/DocumentsControlle
 const documentsRoutes = Router();
 
 documentsRoutes.get('/documents', DocumentsController.index);
+documentsRoutes.post('/documents', DocumentsController.store);
 
 export default documentsRoutes;
