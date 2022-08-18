@@ -6,7 +6,7 @@ class RollsController {
   async index(req: Request, res: Response) {
     const rolls = await RollsRepository.findAll();
 
-    res.send(rolls);
+    res.send({ rolls });
   }
 
   async store(req: Request, res: Response) {

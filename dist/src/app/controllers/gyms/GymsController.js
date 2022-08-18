@@ -9,7 +9,7 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
-        return res.send(gyms);
+        return res.send({ gyms });
     }
     async store(req, res) {
         const { name, email, password, state, city, street, adressNumber, zipCode, } = req.body;

@@ -10,7 +10,7 @@ const MembersRepository_1 = __importDefault(require("../../repositories/members/
 class GymsMembersController {
     async index(req, res) {
         const gymMembers = await GymsMembersRepository_1.default.findAll();
-        return res.json(gymMembers);
+        return res.json({ gymMembers });
     }
     async store(req, res) {
         const { gymId, memberId } = req.body;

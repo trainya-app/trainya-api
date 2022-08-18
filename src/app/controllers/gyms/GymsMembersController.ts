@@ -8,7 +8,7 @@ class GymsMembersController {
   async index(req: Request, res: Response) {
     const gymMembers = await GymsMembersRepository.findAll();
 
-    return res.json(gymMembers);
+    return res.json({ gymMembers });
   }
 
   async store(req: Request, res: Response) {

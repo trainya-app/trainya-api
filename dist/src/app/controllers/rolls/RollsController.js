@@ -8,7 +8,7 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 class RollsController {
     async index(req, res) {
         const rolls = await RollsRepository_1.default.findAll();
-        res.send(rolls);
+        res.send({ rolls });
     }
     async store(req, res) {
         const { title, accessLevel } = req.body;

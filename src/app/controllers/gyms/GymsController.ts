@@ -6,7 +6,7 @@ class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
 
-    return res.send(gyms);
+    return res.send({ gyms });
   }
 
   async store(req: Request, res: Response) {
