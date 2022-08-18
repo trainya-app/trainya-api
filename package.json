@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "ts-node-dev --exit-child --transpile-only src/index.ts --ignore __tests__",
     "migrate": "npx prisma migrate dev --name init",
-    "start": "tsc --build && node dist/index.js",
+    "start": "node dist/index.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "commit": "cz",
