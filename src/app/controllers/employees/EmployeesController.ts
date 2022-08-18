@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 class EmployeesController {
   async index(req: Request, res: Response) {
     const employees = await EmployeesRepository.findAll();
-    res.send(employees);
+    res.send({ employees });
   }
 
   async store(req: Request, res: Response) {
