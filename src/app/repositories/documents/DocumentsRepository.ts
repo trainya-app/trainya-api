@@ -30,6 +30,25 @@ class DocumentsRepository {
     });
     return documentByName;
   }
+
+  async findById(id: number) {
+    const documentById = await document.findFirst({
+      where: {
+        id,
+      },
+    });
+    return documentById;
+  }
+
+  async delete(id: number) {
+    await document.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new DocumentsRepository();
