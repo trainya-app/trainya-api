@@ -36,6 +36,16 @@ class MembersDocumentsRepository {
 
     return memberDocumentExists;
   }
+
+  async delete(id: number) {
+    const memberDocumentExists = await memberDocument.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new MembersDocumentsRepository();

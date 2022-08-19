@@ -11,4 +11,14 @@ memberDocumentsRoutes.get(
   '/memberDocuments/:id',
   MembersDocumentsController.show
 );
+
+// memberDocumentsRoutes.put(
+//   '/memberDocuments/:id',
+//   MembersDocumentsController.update
+// );
+
+memberDocumentsRoutes.delete(
+  '/memberDocuments/:id',
+  MembersDocumentsController.delete
+);
 export default memberDocumentsRoutes;

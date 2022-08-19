@@ -65,6 +65,26 @@ class MembersDocumentsController {
       .status(200)
       .json({ message: 'Documento do membro', memberDocumentExists });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberDocumentExists = await MembersDocumentsRepository.findById(
+      parsedId
+    );
+
+    if (!memberDocumentExists) {
+      return res.status(404).json({
+        message: 'Documento do membro não encontrado',
+        memberDocument: null,
+      });
+    }
+
+    await MembersDocumentsRepository.delete(parsedId);
+
+    return res.sendStatus(200);
+  }
 }
 
 export default new MembersDocumentsController();
