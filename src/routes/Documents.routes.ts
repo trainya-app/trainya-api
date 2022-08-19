@@ -6,5 +6,6 @@ documentsRoutes.get('/documents', DocumentsController.index);
 documentsRoutes.post('/documents', DocumentsController.store);
 documentsRoutes.delete('/documents/:id', DocumentsController.delete);
 documentsRoutes.post('/documents/:id', DocumentsController.show);
+documentsRoutes.put('/documents/:id', DocumentsController.update);
 
 export default documentsRoutes;
