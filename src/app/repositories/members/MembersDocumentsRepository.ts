@@ -1,8 +1,12 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { resolve } from 'path';
+const { memberDocument } = new PrismaClient();
 
 class MembersDocumentsRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const memberDocuments = await memberDocument.findMany();
+
+    return memberDocuments;
   }
 }
 

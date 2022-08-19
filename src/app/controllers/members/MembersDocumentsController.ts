@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import MembersDocumentsRepository from '../../repositories/members/MembersDocumentsRepository';
 
 class MembersDocumentsController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const memberDocuments = await MembersDocumentsRepository.findAll();
+
+    return res.send({ memberDocuments });
   }
 }
 
