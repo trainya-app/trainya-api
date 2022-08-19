@@ -6,6 +6,7 @@ import employeesRoutes from './routes/Employees.routes';
 import gymEmployeesRoutes from './routes/GymEmployees.routes';
 import membersRoutes from './routes/Members.routes';
 import gymMembersRoutes from './routes/GymMembers.routes';
+import documentsRoutes from './routes/Documents.routes';
 
 const app = express();
 app.use(express.json());
@@ -28,8 +29,9 @@ app.use(productsCategoriesRoutes);
 app.use(gymEmployeesRoutes);
 //Members Routes
 app.use(membersRoutes);
-
 //Gym Members Routes
 app.use(gymMembersRoutes);
+//Documents Routes
+app.use(documentsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
