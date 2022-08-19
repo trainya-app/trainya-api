@@ -50,6 +50,26 @@ class DocumentsController {
 
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', document: null });
+    }
+
+    const documentExists = await DocumentsRepository.findById(parsedId);
+    if (!documentExists) {
+      return res
+        .status(404)
+        .json({ message: 'Documento não encontrado', document: null });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Documento encontrado', documentExists });
+  }
 }
 
 export default new DocumentsController();
