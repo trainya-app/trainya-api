@@ -7,4 +7,8 @@ memberDocumentsRoutes.post(
   '/memberDocuments',
   MembersDocumentsController.store
 );
+memberDocumentsRoutes.get(
+  '/memberDocuments/:id',
+  MembersDocumentsController.show
+);
 export default memberDocumentsRoutes;

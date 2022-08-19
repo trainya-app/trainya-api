@@ -26,6 +26,16 @@ class MembersDocumentsRepository {
 
     return createdMemberDocument;
   }
+
+  async findById(id: number) {
+    const memberDocumentExists = await memberDocument.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return memberDocumentExists;
+  }
 }
 
 export default new MembersDocumentsRepository();
