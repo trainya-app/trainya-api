@@ -1,11 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { resolve } from 'path';
+import { NumberLiteralType } from 'typescript';
 const { memberDocument } = new PrismaClient();
 
 interface IMemberDocument {
   member_id: number;
   document_id: number;
   value: number;
+}
+interface IUpdateMemberDocument {
+  id: number;
+  member_id?: number;
+  document_id?: number;
+  value?: number;
 }
 
 class MembersDocumentsRepository {
@@ -45,6 +52,21 @@ class MembersDocumentsRepository {
     });
 
     return true;
+  }
+
+  async update({ id, member_id, document_id, value }: IUpdateMemberDocument) {
+    const updatedMemberDocument = await memberDocument.update({
+      where: {
+        id,
+      },
+      data: {
+        member_id,
+        document_id,
+        value,
+      },
+    });
+
+    return updatedMemberDocument;
   }
 }
 

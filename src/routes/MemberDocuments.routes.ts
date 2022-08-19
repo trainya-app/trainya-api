@@ -12,10 +12,10 @@ memberDocumentsRoutes.get(
   MembersDocumentsController.show
 );
 
-// memberDocumentsRoutes.put(
-//   '/memberDocuments/:id',
-//   MembersDocumentsController.update
-// );
+memberDocumentsRoutes.put(
+  '/memberDocuments/:id',
+  MembersDocumentsController.update
+);
 
 memberDocumentsRoutes.delete(
   '/memberDocuments/:id',
