@@ -13,6 +13,7 @@ import memberGoalsRoutes from './routes/MemberGoals.routes';
 import settingOptionsRoutes from './routes/SettingOptions.routes';
 import memberSettingsRoutes from './routes/MemberSettings.routes';
 import methodsRoutes from './routes/Methods.routes';
+import memberPaymentsRoutes from './routes/MemberPayments.routes';
 
 const app = express();
 app.use(express.json());
@@ -51,5 +52,7 @@ app.use(settingOptionsRoutes);
 app.use(memberSettingsRoutes);
 // Methods Routes
 app.use(methodsRoutes);
+// Member Payments Routes
+app.use(memberPaymentsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

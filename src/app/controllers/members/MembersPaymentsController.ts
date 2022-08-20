@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import MembersPaymentsRepository from '../../repositories/members/MembersPaymentsRepository';
 
 class MembersPaymentsController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const memberPayments = await MembersPaymentsRepository.findAll();
+    return res.send({ memberPayments });
   }
 }
 
