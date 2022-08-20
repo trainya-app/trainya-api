@@ -61,6 +61,47 @@ class GoalsController {
 
     return res.send({ goal: goalExists });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { description } = req.body;
+
+    const someFieldIsEmpty = isSomeEmpty([description]);
+    if (someFieldIsEmpty) {
+      return res.status(400).send({
+        message: 'Campos obrigatórios não foram enviados',
+        goal: null,
+      });
+    }
+
+    const goalExists = await GoalsRepository.findById(parsedId);
+    if (!goalExists) {
+      return res.status(400).send({
+        message: 'Meta não encontrada',
+        goal: null,
+      });
+    }
+
+    const descriptionExists = await GoalsRepository.findByDescription({
+      description,
+    });
+    if (descriptionExists) {
+      let id = descriptionExists.id;
+      if (id != parsedId) {
+        return res
+          .status(400)
+          .json({ message: 'Meta já está em uso', goal: null });
+      }
+    }
+
+    const goal = await GoalsRepository.update({
+      id: parsedId,
+      description,
+    });
+    return res.status(200).json({ goal });
+  }
 }
 
 export default new GoalsController();

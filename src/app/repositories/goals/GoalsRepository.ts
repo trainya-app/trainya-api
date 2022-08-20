@@ -5,6 +5,11 @@ interface IGoal {
   description: string;
 }
 
+interface IUpdateGoal {
+  id: number;
+  description: string;
+}
+
 class GoalsRepository {
   async findAll() {
     const goals = await goal.findMany();
@@ -45,6 +50,18 @@ class GoalsRepository {
       },
     });
     return deletedGoal;
+  }
+
+  async update({ id, description }: IUpdateGoal) {
+    const updatedGoal = await goal.update({
+      where: {
+        id,
+      },
+      data: {
+        description,
+      },
+    });
+    return updatedGoal;
   }
 }
 
