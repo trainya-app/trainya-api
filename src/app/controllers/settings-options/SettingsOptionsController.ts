@@ -37,6 +37,22 @@ class SettingsOptionsController {
       .status(200)
       .json({ message: 'Opção de configuração cadastrada', settingOption });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const settingOption = await SettingsOptionsRepository.findById(parsedId);
+    if (!settingOption) {
+      return res.status(400).send({
+        message: 'Opção de configuração não encontrada',
+        settingOption: null,
+      });
+    }
+
+    await SettingsOptionsRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new SettingsOptionsController();

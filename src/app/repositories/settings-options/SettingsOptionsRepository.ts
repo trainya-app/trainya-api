@@ -24,6 +24,18 @@ class SettingsOptionsRepository {
     });
     return createdSettingOption;
   }
+
+  async findById(id: number) {
+    const settingOptionExists = await settingOption.findFirst({
+      where: { id },
+    });
+    return settingOptionExists;
+  }
+
+  async delete(id: number) {
+    await settingOption.delete({ where: { id } });
+    return true;
+  }
 }
 
 export default new SettingsOptionsRepository();
