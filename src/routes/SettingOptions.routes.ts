@@ -9,6 +9,9 @@ settingOptionsRoutes.delete(
   SettingsOptionsController.delete
 );
 settingOptionsRoutes.get('/settingOptions/:id', SettingsOptionsController.show);
-// settingOptionsRoutes.put('/settingOptions/:id', SettingsOptionsController.update);
+settingOptionsRoutes.put(
+  '/settingOptions/:id',
+  SettingsOptionsController.update
+);
 
 export default settingOptionsRoutes;
