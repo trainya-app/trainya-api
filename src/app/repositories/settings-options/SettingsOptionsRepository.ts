@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+const { settingOption } = new PrismaClient();
 
 class SettingsOptionsRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const settingsOptions = await settingOption.findMany();
+    return settingsOptions;
   }
 }
 
