@@ -30,6 +30,37 @@ class GoalsController {
     const goal = await GoalsRepository.create({ description });
     return res.status(200).json({ goal });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const goalExists = await GoalsRepository.findById(parsedId);
+    if (!goalExists) {
+      return res.status(400).send({
+        message: 'Meta não encontrada',
+        goal: null,
+      });
+    }
+
+    await GoalsRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const goalExists = await GoalsRepository.findById(parsedId);
+    if (!goalExists) {
+      return res.status(400).send({
+        message: 'Meta não encontrada',
+        goal: null,
+      });
+    }
+
+    return res.send({ goal: goalExists });
+  }
 }
 
 export default new GoalsController();

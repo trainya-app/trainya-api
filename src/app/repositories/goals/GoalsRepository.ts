@@ -28,6 +28,24 @@ class GoalsRepository {
     });
     return goalExists;
   }
+
+  async findById(id: number) {
+    const goalExists = await goal.findFirst({
+      where: {
+        id,
+      },
+    });
+    return goalExists;
+  }
+
+  async delete(id: number) {
+    const deletedGoal = await goal.delete({
+      where: {
+        id,
+      },
+    });
+    return deletedGoal;
+  }
 }
 
 export default new GoalsRepository();

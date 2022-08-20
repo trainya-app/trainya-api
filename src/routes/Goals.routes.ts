@@ -6,6 +6,6 @@ goalsRoutes.get('/goals', GoalsController.index);
 // goalsRoutes.get('/goals:id', GoalsController.show);
 goalsRoutes.post('/goals', GoalsController.store);
 // goalsRoutes.put('/goals', GoalsController.update);
-// goalsRoutes.delete('/goals', GoalsController.delete);
+goalsRoutes.delete('/goals/:id', GoalsController.delete);
 
 export default goalsRoutes;
