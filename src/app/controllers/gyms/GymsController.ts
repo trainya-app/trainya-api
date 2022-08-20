@@ -144,6 +144,13 @@ class GymsController {
 
     const parsedId = Number(id);
 
+    const gymExists = await GymsRepository.findById(parsedId);
+    if (!gymExists) {
+      return res
+        .status(404)
+        .json({ message: 'Academia não encontrada', gym: null });
+    }
+
     if (Number.isNaN(parsedId)) {
       return res.status(400).json({ message: 'ID Inválido', gym: null });
     }
