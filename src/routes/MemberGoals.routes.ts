@@ -6,6 +6,6 @@ memberGoalsRoutes.get('/memberGoals', MembersGoalsController.index);
 memberGoalsRoutes.post('/memberGoals', MembersGoalsController.store);
 memberGoalsRoutes.delete('/memberGoals/:id', MembersGoalsController.delete);
 memberGoalsRoutes.get('/memberGoals/:id', MembersGoalsController.show);
-// memberGoalsRoutes.put('/memberGoals/:id', MembersGoalsController.update);
+memberGoalsRoutes.put('/memberGoals/:id', MembersGoalsController.update);
 
 export default memberGoalsRoutes;
