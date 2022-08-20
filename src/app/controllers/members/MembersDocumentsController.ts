@@ -68,9 +68,10 @@ class MembersDocumentsController {
       });
     }
 
-    return res
-      .status(200)
-      .json({ message: 'Documento do membro', memberDocumentExists });
+    return res.status(200).json({
+      message: 'Documento do membro encontrado',
+      memberDocument: memberDocumentExists,
+    });
   }
 
   async delete(req: Request, res: Response) {

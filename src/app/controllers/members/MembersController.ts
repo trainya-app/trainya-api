@@ -103,7 +103,9 @@ class MembersController {
         .json({ message: 'Membro não encontrado', member: null });
     }
 
-    return res.status(200).json({ message: 'Membro encontrado', memberExists });
+    return res
+      .status(200)
+      .json({ message: 'Membro encontrado', member: memberExists });
   }
 
   async updatePassword(req: Request, res: Response) {

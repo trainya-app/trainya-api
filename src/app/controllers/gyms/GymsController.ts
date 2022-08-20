@@ -134,7 +134,7 @@ class GymsController {
         .send({ message: 'Academia não encontrada', gym: null });
     }
 
-    return res.json({ message: 'Academia encontrada.', gym });
+    return res.status(200).json({ message: 'Academia encontrada', gym });
   }
 
   async update(req: Request, res: Response) {

@@ -60,7 +60,10 @@ class GymsMembersController {
 
     return res
       .status(200)
-      .json({ message: 'Membro da academia encontrado', gymMemberExists });
+      .json({
+        message: 'Membro da academia encontrado',
+        gymMember: gymMemberExists,
+      });
   }
 
   async delete(req: Request, res: Response) {

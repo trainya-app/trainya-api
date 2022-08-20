@@ -68,7 +68,7 @@ class DocumentsController {
 
     return res
       .status(200)
-      .json({ message: 'Documento encontrado', documentExists });
+      .json({ message: 'Documento encontrado', document: documentExists });
   }
 
   async update(req: Request, res: Response) {
