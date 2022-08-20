@@ -111,7 +111,10 @@ class EmployeesController {
       return res.status(400).json({ message: 'ID inválido', gym: null });
     }
 
-    return res.json({ message: 'Funcionário encontrado', employeeExists });
+    return res.status(200).json({
+      message: 'Funcionário encontrado',
+      employee: employeeExists,
+    });
   }
 
   async updatePassword(req: Request, res: Response) {

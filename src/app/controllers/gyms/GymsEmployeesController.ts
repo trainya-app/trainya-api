@@ -78,7 +78,7 @@ class GymsEmployeesController {
 
     return res.status(200).json({
       message: 'Funcinário da academia encontrado.',
-      gymEmployeeExists,
+      gymEmployee: gymEmployeeExists,
     });
   }
 
@@ -90,12 +90,10 @@ class GymsEmployeesController {
 
     const gymEmployeeExists = await GymsEmployeesRepository.findById(parsedId);
     if (!gymEmployeeExists) {
-      return res
-        .status(404)
-        .json({
-          message: 'Funcionário da academia não encontrado',
-          gymEmployee: null,
-        });
+      return res.status(404).json({
+        message: 'Funcionário da academia não encontrado',
+        gymEmployee: null,
+      });
     }
 
     const someFieldIsEmpty = isSomeEmpty([gymId, employeeId]);
