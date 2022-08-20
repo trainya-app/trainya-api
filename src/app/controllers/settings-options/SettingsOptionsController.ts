@@ -53,6 +53,21 @@ class SettingsOptionsController {
     await SettingsOptionsRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const settingOption = await SettingsOptionsRepository.findById(parsedId);
+    if (!settingOption) {
+      return res.status(400).send({
+        message: 'Opção de configuração não encontrada',
+        settingOption: null,
+      });
+    }
+
+    return res.send({ settingOption });
+  }
 }
 
 export default new SettingsOptionsController();
