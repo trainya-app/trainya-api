@@ -43,6 +43,21 @@ class MethodsController {
     await MethodsRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const methodExists = await MethodsRepository.findById(parsedId);
+    if (!methodExists) {
+      return res.status(400).send({
+        message: 'Método não encontrado',
+        method: null,
+      });
+    }
+
+    return res.send({ method: methodExists });
+  }
 }
 
 export default new MethodsController();
