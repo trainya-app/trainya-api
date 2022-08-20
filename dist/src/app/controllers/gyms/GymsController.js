@@ -100,12 +100,18 @@ class GymsController {
                 .status(404)
                 .send({ message: 'Academia não encontrada', gym: null });
         }
-        return res.json({ message: 'Academia encontrada.', gym });
+        return res.status(200).json({ message: 'Academia encontrada', gym });
     }
     async update(req, res) {
         const { id } = req.params;
         const { name, email, state, city, street, adressNumber, zipCode } = req.body;
         const parsedId = Number(id);
+        const gymExists = await GymsRepository_1.default.findById(parsedId);
+        if (!gymExists) {
+            return res
+                .status(404)
+                .json({ message: 'Academia não encontrada', gym: null });
+        }
         if (Number.isNaN(parsedId)) {
             return res.status(400).json({ message: 'ID Inválido', gym: null });
         }
