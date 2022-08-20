@@ -28,6 +28,25 @@ class MethodsRepository {
     });
     return createdMethod;
   }
+
+  async findById(id: number) {
+    const methodExists = await method.findFirst({
+      where: {
+        id,
+      },
+    });
+    return methodExists;
+  }
+
+  async delete(id: number) {
+    await method.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new MethodsRepository();

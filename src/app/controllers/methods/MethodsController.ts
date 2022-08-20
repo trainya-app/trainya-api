@@ -27,6 +27,22 @@ class MethodsController {
     const method = await MethodsRepository.create(req.body);
     return res.send({ method });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const method = await MethodsRepository.findById(parsedId);
+    if (!method) {
+      return res.status(400).send({
+        message: 'Método não encontrado',
+        method: null,
+      });
+    }
+
+    await MethodsRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new MethodsController();
