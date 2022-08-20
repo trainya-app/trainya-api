@@ -31,6 +31,15 @@ class MembersSettingsRepository {
     });
     return memberSettingExists;
   }
+
+  async delete(id: number) {
+    const memberSettingExists = await memberSetting.delete({
+      where: {
+        id,
+      },
+    });
+    return memberSettingExists;
+  }
 }
 
 export default new MembersSettingsRepository();
