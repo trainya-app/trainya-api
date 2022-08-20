@@ -66,6 +66,24 @@ class MembersPaymentsController {
       .status(200)
       .json({ message: 'Pagamento do membro criado', memberPayment });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberPaymentExists = await MembersPaymentsRepository.findById(
+      parsedId
+    );
+    if (!memberPaymentExists) {
+      return res.status(400).send({
+        message: 'Pagamento do membro não encontrado',
+        memberPayment: null,
+      });
+    }
+
+    await MembersPaymentsRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new MembersPaymentsController();

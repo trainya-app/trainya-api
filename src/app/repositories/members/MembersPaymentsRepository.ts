@@ -36,6 +36,20 @@ class MembersPaymentsRepository {
     });
     return createdMemberPayment;
   }
+
+  async delete(id: number) {
+    await memberPayment.delete({
+      where: { id },
+    });
+    return true;
+  }
+
+  async findById(id: number) {
+    const memberPaymentExists = await memberPayment.findFirst({
+      where: { id },
+    });
+    return memberPaymentExists;
+  }
 }
 
 export default new MembersPaymentsRepository();
