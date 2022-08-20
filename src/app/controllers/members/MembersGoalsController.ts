@@ -66,6 +66,22 @@ class MembersGoalsController {
       .status(200)
       .send({ message: 'Meta do membro criada', memberGoal });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberGoalExists = await MembersGoalsRepository.findById(parsedId);
+    if (!memberGoalExists) {
+      return res.status(400).json({
+        message: 'Meta do membro não encontrada',
+        memberGoal: null,
+      });
+    }
+
+    await MembersGoalsRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new MembersGoalsController();

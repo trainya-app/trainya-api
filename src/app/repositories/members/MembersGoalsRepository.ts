@@ -39,6 +39,20 @@ class MembersGoalsRepository {
     });
     return createdMemberGoal;
   }
+
+  async delete(id: number) {
+    await memberGoal.delete({
+      where: { id },
+    });
+    return true;
+  }
+
+  async findById(id: number) {
+    const memberGoalExists = await memberGoal.findFirst({
+      where: { id },
+    });
+    return memberGoalExists;
+  }
 }
 
 export default new MembersGoalsRepository();
