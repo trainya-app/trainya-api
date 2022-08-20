@@ -10,6 +10,7 @@ import documentsRoutes from './routes/Documents.routes';
 import memberDocumentsRoutes from './routes/MemberDocuments.routes';
 import goalsRoutes from './routes/Goals.routes';
 import memberGoalsRoutes from './routes/MemberGoals.routes';
+import settingOptionsRoutes from './routes/SettingOptions.routes';
 
 const app = express();
 app.use(express.json());
@@ -22,7 +23,7 @@ app.get('/', (req, res) => {
 
 // Rolls Routes
 app.use(rollsRoutes);
-//Employees Routes
+// Employees Routes
 app.use(employeesRoutes);
 // Gyms Routes
 app.use(gymsRoutes);
@@ -30,17 +31,19 @@ app.use(gymsRoutes);
 app.use(productsCategoriesRoutes);
 // Gym Employees Routes
 app.use(gymEmployeesRoutes);
-//Members Routes
+// Members Routes
 app.use(membersRoutes);
-//Gym Members Routes
+// Gym Members Routes
 app.use(gymMembersRoutes);
-//Documents Routes
+// Documents Routes
 app.use(documentsRoutes);
-//Member documents Routes
+// Member documents Routes
 app.use(memberDocumentsRoutes);
 // Goals Routes
 app.use(goalsRoutes);
-//Member Goals Routes
+// Member Goals Routes
 app.use(memberGoalsRoutes);
+// Setting Options Routes
+app.use(settingOptionsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
