@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import MembersGoalsRepository from '../../repositories/members/MembersGoalsRepository';
 
 class MembersGoalsController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const memberGoals = await MembersGoalsRepository.findAll();
+    return res.send({ memberGoals });
   }
 }
 

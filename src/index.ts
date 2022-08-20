@@ -9,6 +9,7 @@ import gymMembersRoutes from './routes/GymMembers.routes';
 import documentsRoutes from './routes/Documents.routes';
 import memberDocumentsRoutes from './routes/MemberDocuments.routes';
 import goalsRoutes from './routes/Goals.routes';
+import memberGoalsRoutes from './routes/MemberGoals.routes';
 
 const app = express();
 app.use(express.json());
@@ -39,5 +40,7 @@ app.use(documentsRoutes);
 app.use(memberDocumentsRoutes);
 // Goals Routes
 app.use(goalsRoutes);
+//Member Goals Routes
+app.use(memberGoalsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
