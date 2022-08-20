@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import MembersSettingsRepository from '../../repositories/members/MembersSettingsRepository';
 
 class MembersSettingsController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const memberSettings = await MembersSettingsRepository.findAll();
+    return res.send({ memberSettings });
   }
 }
 
