@@ -22,6 +22,15 @@ class MembersSettingsRepository {
     });
     return createdMemberSetting;
   }
+
+  async findById(id: number) {
+    const memberSettingExists = await memberSetting.findFirst({
+      where: {
+        id,
+      },
+    });
+    return memberSettingExists;
+  }
 }
 
 export default new MembersSettingsRepository();

@@ -46,6 +46,35 @@ class MembersSettingsController {
     });
     return res.status(200).send({ memberSetting });
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).send({
+        message: 'ID inválido',
+        memberSetting: null,
+      });
+    }
+
+    const memberSettingExists = await MembersSettingsRepository.findById(
+      parsedId
+    );
+    if (!memberSettingExists) {
+      return res.status(400).send({
+        message: 'Configuração de membro não encontrada',
+        memberSetting: null,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({
+        message: 'Configuração de membro encontrada',
+        memberSetting: memberSettingExists,
+      });
+  }
 }
 
 export default new MembersSettingsController();
