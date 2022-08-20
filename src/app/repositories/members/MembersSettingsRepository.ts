@@ -6,6 +6,13 @@ interface IMemberSetting {
   settings_option_id: number;
   value: string;
 }
+
+interface IUpdateMemberSetting {
+  id: number;
+  member_id?: number;
+  settings_option_id?: number;
+  value: string;
+}
 class MembersSettingsRepository {
   async findAll() {
     const memberSettings = await memberSetting.findMany();
@@ -39,6 +46,25 @@ class MembersSettingsRepository {
       },
     });
     return memberSettingExists;
+  }
+
+  async update({
+    id,
+    member_id,
+    settings_option_id,
+    value,
+  }: IUpdateMemberSetting) {
+    const updatedMemberSetting = await memberSetting.update({
+      where: {
+        id,
+      },
+      data: {
+        member_id,
+        settings_option_id,
+        value,
+      },
+    });
+    return updatedMemberSetting;
   }
 }
 

@@ -10,6 +10,9 @@ memberSettingsRoutes.delete(
   MembersSettingsController.delete
 );
 memberSettingsRoutes.get('/memberSettings/:id', MembersSettingsController.show);
-// memberSettingsRoutes.put('/memberSettings/:id', MembersSettingsController.update);
+memberSettingsRoutes.put(
+  '/memberSettings/:id',
+  MembersSettingsController.update
+);
 
 export default memberSettingsRoutes;
