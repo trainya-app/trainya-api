@@ -1,7 +1,13 @@
 import { PrismaClient } from '@prisma/client';
+import { updateDecorator } from 'typescript';
 const { method } = new PrismaClient();
 
 interface IMethod {
+  name: string;
+}
+
+interface IUpdateMethod {
+  id: number;
   name: string;
 }
 
@@ -46,6 +52,19 @@ class MethodsRepository {
     });
 
     return true;
+  }
+
+  async update({ id, name }: IUpdateMethod) {
+    const updatedMethod = await method.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+      },
+    });
+
+    return updatedMethod;
   }
 }
 

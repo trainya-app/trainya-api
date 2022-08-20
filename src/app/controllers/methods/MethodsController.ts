@@ -12,7 +12,8 @@ class MethodsController {
     const { name } = req.body;
     if (isSomeEmpty([name])) {
       return res.status(400).send({
-        message: 'Some fields are empty',
+        message: 'Campos obrigatórios não foram enviados',
+        method: null,
       });
     }
 
@@ -57,6 +58,43 @@ class MethodsController {
     }
 
     return res.send({ method: methodExists });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { name } = req.body;
+    if (isSomeEmpty([name])) {
+      return res.status(400).send({
+        message: 'Campos obrigatórios não foram preenchidos',
+        method: null,
+      });
+    }
+
+    const methodExists = await MethodsRepository.findById(parsedId);
+    if (!methodExists) {
+      return res.status(400).send({
+        message: 'Método não encontrado',
+        method: null,
+      });
+    }
+
+    const nameExists = await MethodsRepository.findByName({ name });
+    if (nameExists) {
+      let id = nameExists.id;
+      if (id !== parsedId) {
+        return res.status(400).send({
+          message: 'Nome já está em uso',
+          method: null,
+        });
+      }
+    }
+    const updatedMethod = await MethodsRepository.update({
+      id: parsedId,
+      name,
+    });
+    return res.status(200).send({ method: updatedMethod });
   }
 }
 
