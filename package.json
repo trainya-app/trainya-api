@@ -14,7 +14,7 @@
     "start": "node dist/src/index.js",
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "commit": "git add . && cz",
+    "commit": "cz",
     "test": "jest"
   },
   "devDependencies": {

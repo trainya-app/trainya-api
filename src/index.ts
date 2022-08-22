@@ -20,6 +20,12 @@ import workoutsRoutes from './routes/Workouts.routes';
 import workoutsPlanRoutes from './routes/WorkoutPlans.routes';
 import workoutsPlansWorkoutsRoutes from './routes/WorkoutPlanWorkout.routes';
 import membersWorkoutsPlansRoutes from './routes/MemberWorkoutPlans.routes';
+import statisticsRoutes from './routes/Statistics.routes';
+import memberStatisticsRoutes from './routes/MemberStatistics.routes';
+import weekDaysRoutes from './routes/WeekDays.routes';
+import classesRoutes from './routes/Classes.routes';
+import classesWeekDaysRoutes from './routes/ClassesWeekDay.routes';
+import membersClassesRoutes from './routes/MemberClasses.routes';
 
 const app = express();
 app.use(express.json());
@@ -72,5 +78,17 @@ app.use(workoutsPlanRoutes);
 app.use(workoutsPlansWorkoutsRoutes);
 // Members Workouts Plans Routes
 app.use(membersWorkoutsPlansRoutes);
+// Statistics Routes
+app.use(statisticsRoutes);
+// Member Statistics Routes
+app.use(memberStatisticsRoutes);
+// Week Days Routes
+app.use(weekDaysRoutes);
+// Classes Routes
+app.use(classesRoutes);
+// Classes Week Days Routes
+app.use(classesWeekDaysRoutes);
+// Members Classes Routes
+app.use(membersClassesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
