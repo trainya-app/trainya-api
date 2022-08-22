@@ -6,5 +6,8 @@ workoutsPlansWorkoutsRoutes.get(
   '/workoutPlanWorkouts',
   WorkoutsPlansWorkoutsController.index
 );
-
+workoutsPlansWorkoutsRoutes.post(
+  '/workoutPlanWorkouts',
+  WorkoutsPlansWorkoutsController.store
+);
 export default workoutsPlansWorkoutsRoutes;
