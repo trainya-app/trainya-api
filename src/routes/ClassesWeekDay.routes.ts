@@ -8,5 +8,6 @@ classesWeekDaysRoutes.delete(
   '/classWeekDays/:id',
   ClassesWeekDaysController.delete
 );
+classesWeekDaysRoutes.get('/classWeekDays/:id', ClassesWeekDaysController.show);
 
 export default classesWeekDaysRoutes;
