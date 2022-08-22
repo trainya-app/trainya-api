@@ -65,6 +65,22 @@ class WorkoutsPlansWorkoutsController {
     await WorkoutsPlansWorkoutsRepository.delete(parsedId);
     res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const workoutPlanWorkoutExists =
+      await WorkoutsPlansWorkoutsRepository.findById(parsedId);
+    if (!workoutPlanWorkoutExists) {
+      return res.status(400).json({
+        message: 'Treino do plano de treino não encontrado',
+        workoutPlanWorkout: null,
+      });
+    }
+
+    res.send({ workoutPlanWorkout: workoutPlanWorkoutExists });
+  }
 }
 
 export default new WorkoutsPlansWorkoutsController();

@@ -14,4 +14,8 @@ workoutsPlansWorkoutsRoutes.delete(
   '/workoutPlanWorkouts/:id',
   WorkoutsPlansWorkoutsController.delete
 );
+workoutsPlansWorkoutsRoutes.get(
+  '/workoutPlanWorkouts/:id',
+  WorkoutsPlansWorkoutsController.show
+);
 export default workoutsPlansWorkoutsRoutes;
