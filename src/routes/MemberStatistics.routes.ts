@@ -6,5 +6,9 @@ memberStatisticsRoutes.get(
   '/memberStatistics',
   MembersStatisticsController.index
 );
+memberStatisticsRoutes.post(
+  '/memberStatistics',
+  MembersStatisticsController.store
+);
 
 export default memberStatisticsRoutes;
