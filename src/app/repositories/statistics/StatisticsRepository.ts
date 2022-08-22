@@ -5,6 +5,11 @@ interface IStatistic {
   description: string;
 }
 
+interface IUpdateStatistic {
+  id: number;
+  description: string;
+}
+
 class StatisticsRepository {
   async findAll() {
     const statistics = await statistic.findMany();
@@ -48,6 +53,20 @@ class StatisticsRepository {
     });
 
     return true;
+  }
+
+  async update({ id, description }: IUpdateStatistic) {
+    const updatedStatistic = await statistic.update({
+      data: {
+        description,
+      },
+
+      where: {
+        id,
+      },
+    });
+
+    return updatedStatistic;
   }
 }
 

@@ -65,6 +65,42 @@ class StatisticsController {
       .status(200)
       .json({ message: 'Estátistica encontrada', statistic: statisticExists });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const { description } = req.body;
+
+    const someFieldIsEmpty = isSomeEmpty([description]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        statistic: null,
+      });
+    }
+
+    const descriptionExist = await StatisticsRepository.findByDescription(
+      description
+    );
+
+    if (descriptionExist) {
+      let id = descriptionExist.id;
+      if (id != parsedId) {
+        return res
+          .status(400)
+          .json({ message: 'Descrição já existe', statistic: null });
+      }
+    }
+
+    const updatedStatistic = await StatisticsRepository.update({
+      id: parsedId,
+      description,
+    });
+
+    return res
+      .status(200)
+      .json({ message: 'Estátistica atualizada', statistic: updatedStatistic });
+  }
 }
 
 export default new StatisticsController();
