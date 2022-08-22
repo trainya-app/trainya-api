@@ -10,5 +10,9 @@ memberStatisticsRoutes.post(
   '/memberStatistics',
   MembersStatisticsController.store
 );
+memberStatisticsRoutes.delete(
+  '/memberStatistics/:id',
+  MembersStatisticsController.delete
+);
 
 export default memberStatisticsRoutes;

@@ -24,6 +24,26 @@ class MembersStatisticsRepository {
 
     return createdMemberStatistic;
   }
+
+  async findById(id: number) {
+    const memberStatisticExists = await memberStatistic.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return memberStatisticExists;
+  }
+
+  async delete(id: number) {
+    await memberStatistic.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new MembersStatisticsRepository();

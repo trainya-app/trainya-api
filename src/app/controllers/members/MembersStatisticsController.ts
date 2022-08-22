@@ -40,12 +40,28 @@ class MembersStatisticsController {
       value,
     });
 
-    return res
-      .status(200)
-      .json({
-        message: 'Estátistica do membro criada',
-        memberStatistic: createdMemberStatistic,
+    return res.status(200).json({
+      message: 'Estátistica do membro criada',
+      memberStatistic: createdMemberStatistic,
+    });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberStatisticExists = await MembersStatisticsRepository.findById(
+      parsedId
+    );
+    if (!memberStatisticExists) {
+      return res.status(200).json({
+        message: 'Estátistica do membro não existe',
+        memberStatistic: null,
       });
+    }
+
+    await MembersStatisticsRepository.delete(parsedId);
+    return res.sendStatus(200);
   }
 }
 
