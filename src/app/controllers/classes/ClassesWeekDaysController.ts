@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import ClassesWeekDaysRepository from '../../repositories/classes/ClassesWeekDaysRepository';
 
 class ClassesWeekDaysController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const classesWeekDays = await ClassesWeekDaysRepository.findAll();
+    return res.send({ classesWeekDays });
   }
 }
 
