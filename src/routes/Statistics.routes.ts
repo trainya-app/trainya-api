@@ -4,5 +4,6 @@ const statisticsRoutes = Router();
 
 statisticsRoutes.get('/statistics', StatisticsController.index);
 statisticsRoutes.post('/statistics', StatisticsController.store);
+statisticsRoutes.delete('/statistics/:id', StatisticsController.delete);
 
 export default statisticsRoutes;

@@ -29,6 +29,26 @@ class StatisticsRepository {
 
     return createdStatistic;
   }
+
+  async findById(id: number) {
+    const statisticExists = await statistic.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return statisticExists;
+  }
+
+  async delete(id: number) {
+    await statistic.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new StatisticsRepository();
