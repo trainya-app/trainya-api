@@ -57,6 +57,25 @@ class MembersClassesController {
     await MembersClassesRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberClassExists = await MembersClassesRepository.findById(parsedId);
+    if (!memberClassExists) {
+      return res
+        .status(400)
+        .json({ message: 'Aula do membro não encontrada', memberClass: null });
+    }
+
+    return res
+      .status(200)
+      .json({
+        message: 'Aula do membro encontrada',
+        memberClass: memberClassExists,
+      });
+  }
 }
 
 export default new MembersClassesController();
