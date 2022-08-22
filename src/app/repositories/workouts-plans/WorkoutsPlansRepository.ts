@@ -6,6 +6,12 @@ interface IWorkoutPlan {
   goal: string;
 }
 
+interface IUpdateWorkoutPlan {
+  id: number;
+  employee_id?: number;
+  goal: string;
+}
+
 class WorkoutsPlansRepository {
   async findAll() {
     const workoutPlans = await workoutPlan.findMany();
@@ -38,6 +44,20 @@ class WorkoutsPlansRepository {
       },
     });
     return true;
+  }
+
+  async update({ id, employee_id, goal }: IUpdateWorkoutPlan) {
+    const updatedWorkoutPlan = await workoutPlan.update({
+      data: {
+        employee_id,
+        goal,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return updatedWorkoutPlan;
   }
 }
 
