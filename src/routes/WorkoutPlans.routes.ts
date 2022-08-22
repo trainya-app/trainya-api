@@ -4,7 +4,7 @@ const workoutPlanRoutes = Router();
 
 workoutPlanRoutes.get('/workoutPlans', WorkoutsPlansController.index);
 workoutPlanRoutes.post('/workoutPlans', WorkoutsPlansController.store);
-// workoutPlanRoutes.delete('/workoutPlans/:id', WorkoutsPlansController.delete);
+workoutPlanRoutes.delete('/workoutPlans/:id', WorkoutsPlansController.delete);
 // workoutPlanRoutes.get('/workoutPlans/:id', WorkoutsPlansController.show);
 // workoutPlanRoutes.put('/workoutPlans/:id', WorkoutsPlansController.update);
 
