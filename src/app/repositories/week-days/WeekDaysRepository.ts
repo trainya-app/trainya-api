@@ -5,6 +5,11 @@ interface IWeekDay {
   name: string;
 }
 
+interface IUpdateWeekDay {
+  id: number;
+  name: string;
+}
+
 class WeekDaysRepository {
   async findAll() {
     const weekDays = await weekDay.findMany();
@@ -46,6 +51,19 @@ class WeekDaysRepository {
     });
 
     return true;
+  }
+
+  async update({ id, name }: IUpdateWeekDay) {
+    const updatedWeekDay = await weekDay.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+      },
+    });
+
+    return updatedWeekDay;
   }
 }
 

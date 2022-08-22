@@ -60,6 +60,47 @@ class WeekDaysController {
 
     return res.send({ weekDay });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { name } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([name]);
+    if (someFieldIsEmpty) {
+      return res.status(400).send({
+        message: 'Campos obrigatórios não foram enviados',
+        weekDay: null,
+      });
+    }
+
+    const weekDay = await WeekDaysRepository.findById(parsedId);
+    if (!weekDay) {
+      return res.status(400).send({
+        message: 'Dia da semana não encontrado',
+        weekDay: null,
+      });
+    }
+
+    const weekDayExists = await WeekDaysRepository.findByName(name);
+    if (weekDayExists) {
+      let id = weekDayExists.id;
+      if (id != parsedId) {
+        return res.status(400).send({
+          message: 'Dia da semana já existe',
+          weekDay: null,
+        });
+      }
+
+      const updatedWeekDay = await WeekDaysRepository.update({
+        id: parsedId,
+        name,
+      });
+      return res
+        .status(200)
+        .json({ message: 'Dia da semana atualizado', weekDay: updatedWeekDay });
+    }
+  }
 }
 
 export default new WeekDaysController();
