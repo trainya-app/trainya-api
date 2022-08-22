@@ -25,6 +25,7 @@ import memberStatisticsRoutes from './routes/MemberStatistics.routes';
 import weekDaysRoutes from './routes/WeekDays.routes';
 import classesRoutes from './routes/Classes.routes';
 import classesWeekDaysRoutes from './routes/ClassesWeekDay.routes';
+import membersClassesRoutes from './routes/MemberClasses.routes';
 
 const app = express();
 app.use(express.json());
@@ -87,5 +88,7 @@ app.use(weekDaysRoutes);
 app.use(classesRoutes);
 // Classes Week Days Routes
 app.use(classesWeekDaysRoutes);
+// Members Classes Routes
+app.use(membersClassesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
