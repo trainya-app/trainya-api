@@ -60,6 +60,22 @@ class ClassesController {
     await ClassesRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const classExists = await ClassesRepository.findById(parsedId);
+    if (!classExists) {
+      return res.status(400).json({
+        message: 'Aula não encontrada',
+        class: null,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Aula encontrada', class: classExists });
+  }
 }
 
 export default new ClassesController();

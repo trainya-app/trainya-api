@@ -5,5 +5,6 @@ const classesRoutes = Router();
 classesRoutes.get('/classes', ClassesController.index);
 classesRoutes.post('/classes', ClassesController.create);
 classesRoutes.delete('/classes/:id', ClassesController.delete);
+classesRoutes.get('/classes/:id', ClassesController.show);
 
 export default classesRoutes;
