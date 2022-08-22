@@ -9,9 +9,6 @@ memberPaymentsRoutes.delete(
   MembersPaymentsController.delete
 );
 memberPaymentsRoutes.get('/memberPayments/:id', MembersPaymentsController.show);
-memberPaymentsRoutes.put(
-  '/memberPayments/:id',
-  MembersPaymentsController.update
-);
+// memberPaymentsRoutes.put('/memberPayments/:id', MembersPaymentsController.update);
 
 export default memberPaymentsRoutes;
