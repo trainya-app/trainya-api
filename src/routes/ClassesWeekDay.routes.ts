@@ -3,5 +3,6 @@ import ClassesWeekDaysController from '../app/controllers/classes/ClassesWeekDay
 const classesWeekDaysRoutes = Router();
 
 classesWeekDaysRoutes.get('/classWeekDays', ClassesWeekDaysController.index);
+classesWeekDaysRoutes.post('/classWeekDays', ClassesWeekDaysController.store);
 
 export default classesWeekDaysRoutes;
