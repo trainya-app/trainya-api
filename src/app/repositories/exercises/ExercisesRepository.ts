@@ -7,6 +7,13 @@ interface IExercises {
   needs_equipment: boolean;
 }
 
+interface IUpdateExercises {
+  id: number;
+  name: string;
+  comment: string;
+  needs_equipment: boolean;
+}
+
 class ExercisesRepository {
   async findAll() {
     const exercises = await exercise.findMany();
@@ -51,6 +58,21 @@ class ExercisesRepository {
     });
 
     return true;
+  }
+
+  async update({ id, name, comment, needs_equipment }: IUpdateExercises) {
+    const updatedExercise = await exercise.update({
+      where: {
+        id,
+      },
+      data: {
+        name,
+        comment,
+        needs_equipment,
+      },
+    });
+
+    return updatedExercise;
   }
 }
 

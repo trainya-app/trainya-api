@@ -65,6 +65,51 @@ class ExercisesController {
 
     return res.status(200).send({ exercise: exerciseExists });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { name, comment, needsEquipment } = req.body;
+
+    const someFieldIsEmpty = isSomeEmpty([name, comment, needsEquipment]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        exercise: null,
+      });
+    }
+
+    const exerciseExists = await ExercisesRepository.findById(parsedId);
+    if (!exerciseExists) {
+      return res.status(400).json({
+        message: 'Exercício não encontrado',
+        exercise: null,
+      });
+    }
+
+    const nameExists = await ExercisesRepository.findByName(name);
+    if (nameExists) {
+      let id = nameExists.id;
+      if (id !== parsedId) {
+        return res.status(400).json({
+          message: 'Exercício já cadastrado',
+          exercise: null,
+        });
+      }
+
+      const updatedExercise = await ExercisesRepository.update({
+        id: parsedId,
+        name,
+        comment,
+        needs_equipment: needsEquipment,
+      });
+
+      return res
+        .status(200)
+        .json({ message: 'Exercício atualizado!', exercise: updatedExercise });
+    }
+  }
 }
 
 export default new ExercisesController();
