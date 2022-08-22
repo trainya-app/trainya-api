@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import ClassesRepository from '../../repositories/classes/ClassesRepository';
 
 class ClassesController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const classes = await ClassesRepository.findAll();
+    return res.send({ classes });
   }
 }
 

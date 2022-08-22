@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { updateDecorator } from 'typescript';
 const { method } = new PrismaClient();
 
 interface IMethod {
