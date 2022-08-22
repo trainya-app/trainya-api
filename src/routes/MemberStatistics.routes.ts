@@ -14,5 +14,9 @@ memberStatisticsRoutes.delete(
   '/memberStatistics/:id',
   MembersStatisticsController.delete
 );
+memberStatisticsRoutes.get(
+  '/memberStatistics/:id',
+  MembersStatisticsController.show
+);
 
 export default memberStatisticsRoutes;

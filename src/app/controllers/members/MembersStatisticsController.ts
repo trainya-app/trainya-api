@@ -14,7 +14,7 @@ class MembersStatisticsController {
     const { memberId, statisticId, value } = req.body;
     const someFieldIsEmpty = isSomeEmpty([memberId, statisticId, value]);
     if (someFieldIsEmpty) {
-      return res.status(200).json({
+      return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',
         memberStatistic: null,
       });
@@ -23,14 +23,14 @@ class MembersStatisticsController {
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
       return res
-        .status(200)
+        .status(400)
         .json({ message: 'Membro não encontrado', memberStatistic: null });
     }
 
     const statisticExists = await StatisticsRepository.findById(statisticId);
     if (!statisticExists) {
       return res
-        .status(200)
+        .status(400)
         .json({ message: 'Estátistica não encontrada', memberStatistic: null });
     }
 
@@ -54,7 +54,7 @@ class MembersStatisticsController {
       parsedId
     );
     if (!memberStatisticExists) {
-      return res.status(200).json({
+      return res.status(400).json({
         message: 'Estátistica do membro não existe',
         memberStatistic: null,
       });
@@ -72,18 +72,16 @@ class MembersStatisticsController {
       parsedId
     );
     if (!memberStatisticExists) {
-      return res.status(200).json({
+      return res.status(400).json({
         message: 'Estátistica do membro não existe',
         memberStatistic: null,
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: 'Estátistica do membro encontrada',
-        memberStatistic: memberStatisticExists,
-      });
+    return res.status(200).json({
+      message: 'Estátistica do membro encontrada',
+      memberStatistic: memberStatisticExists,
+    });
   }
 }
 
