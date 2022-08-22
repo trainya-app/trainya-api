@@ -83,6 +83,64 @@ class MembersStatisticsController {
       memberStatistic: memberStatisticExists,
     });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const { memberId, statisticId, value } = req.body;
+    const parsedId = Number(id);
+
+    const memberStatisticExists = await MembersStatisticsRepository.findById(
+      parsedId
+    );
+    if (!memberStatisticExists) {
+      return res.status(400).json({
+        message: 'Estátistica do membro não existe',
+        memberStatistic: null,
+      });
+    }
+
+    const someFieldIsEmpty = isSomeEmpty([memberId, statisticId, value]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        memberStatistic: null,
+      });
+    }
+
+    const memberExists = await MembersRepository.findById(memberId);
+    if (!memberExists) {
+      return res
+        .status(400)
+        .json({ message: 'Membro não encontrado', memberStatistic: null });
+    }
+
+    const statisticExists = await StatisticsRepository.findById(statisticId);
+    if (!statisticExists) {
+      return res
+        .status(400)
+        .json({ message: 'Estátistica não encontrada', memberStatistic: null });
+    }
+
+    const member_id = Number.isNaN(Number(memberId))
+      ? undefined
+      : Number(memberId);
+
+    const statistic_id = Number.isNaN(Number(statisticId))
+      ? undefined
+      : Number(statisticId);
+
+    const updatedMemberStatistic = await MembersStatisticsRepository.update({
+      id: parsedId,
+      member_id,
+      statistic_id,
+      value,
+    });
+
+    return res.status(200).json({
+      message: 'Estátistica do membro atualizada',
+      memberStatistic: updatedMemberStatistic,
+    });
+  }
 }
 
 export default new MembersStatisticsController();

@@ -18,5 +18,9 @@ memberStatisticsRoutes.get(
   '/memberStatistics/:id',
   MembersStatisticsController.show
 );
+memberStatisticsRoutes.put(
+  '/memberStatistics/:id',
+  MembersStatisticsController.update
+);
 
 export default memberStatisticsRoutes;

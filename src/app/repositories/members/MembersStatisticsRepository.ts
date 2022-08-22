@@ -7,6 +7,13 @@ interface IMemberStatistic {
   value: string;
 }
 
+interface IUpdateMemberStatistic {
+  id: number;
+  member_id?: number;
+  statistic_id?: number;
+  value: string;
+}
+
 class MembersStatisticsRepository {
   async findAll() {
     const memberStatistics = memberStatistic.findMany();
@@ -43,6 +50,21 @@ class MembersStatisticsRepository {
     });
 
     return true;
+  }
+
+  async update({ id, member_id, statistic_id, value }: IUpdateMemberStatistic) {
+    const updatedMemberStatistic = await memberStatistic.update({
+      data: {
+        member_id,
+        statistic_id,
+        value,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return updatedMemberStatistic;
   }
 }
 
