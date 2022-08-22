@@ -18,9 +18,9 @@ workoutExercisesRoutes.get(
   '/workoutExercises/:id',
   WorkoutsExercisesController.show
 );
-// workoutExercisesRoutes.put(
-//   '/workoutExercises/:id',
-//   WorkoutsExercisesController.update
-// );
+workoutExercisesRoutes.put(
+  '/workoutExercises/:id',
+  WorkoutsExercisesController.update
+);
 
 export default workoutExercisesRoutes;

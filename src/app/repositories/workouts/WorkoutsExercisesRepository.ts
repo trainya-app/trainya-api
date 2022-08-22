@@ -8,6 +8,15 @@ interface IWorkoutExercise {
   repetitions: number;
   duration: number;
 }
+
+interface IUpdateWorkoutExercise {
+  id?: number;
+  workout_id?: number;
+  exercise_id?: number;
+  sets?: number;
+  repetitions?: number;
+  duration?: number;
+}
 class WorkoutsExercisesRepository {
   async findAll() {
     const workoutsExercises = await workoutExercise.findMany();
@@ -51,6 +60,30 @@ class WorkoutsExercisesRepository {
     });
 
     return true;
+  }
+
+  async update({
+    id,
+    workout_id,
+    exercise_id,
+    sets,
+    repetitions,
+    duration,
+  }: IUpdateWorkoutExercise) {
+    const updatedWorkoutExercise = await workoutExercise.update({
+      data: {
+        workout_id,
+        exercise_id,
+        sets,
+        repetitions,
+        duration,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return updatedWorkoutExercise;
   }
 }
 
