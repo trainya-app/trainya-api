@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import WorkoutsExercisesRepository from '../../repositories/workouts/WorkoutsExercisesRepository';
 
 class WorkoutsExercisesController {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async index(req: Request, res: Response) {
+    const workoutsExercises = await WorkoutsExercisesRepository.findAll();
+    res.send({ workoutsExercises });
   }
 }
 
