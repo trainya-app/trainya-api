@@ -15,6 +15,7 @@ import memberSettingsRoutes from './routes/MemberSettings.routes';
 import methodsRoutes from './routes/Methods.routes';
 import memberPaymentsRoutes from './routes/MemberPayments.routes';
 import exercisesRoutes from './routes/Exercises.routes';
+import workoutExercisesRoutes from './routes/WorkoutExercise.routes';
 import workoutsRoutes from './routes/Workouts.routes';
 
 const app = express();
@@ -58,6 +59,8 @@ app.use(methodsRoutes);
 app.use(memberPaymentsRoutes);
 // Exercises Routes
 app.use(exercisesRoutes);
+// Workout Exercises Routes
+app.use(workoutExercisesRoutes);
 // Workouts Routes
 app.use(workoutsRoutes);
 
