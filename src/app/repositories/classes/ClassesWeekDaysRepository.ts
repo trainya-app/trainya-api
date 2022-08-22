@@ -6,6 +6,12 @@ interface IClassWeekDay {
   week_day_id: number;
 }
 
+interface IUpdateClassWeekDay {
+  id: number;
+  class_id?: number;
+  week_day_id?: number;
+}
+
 class DocumentsRepository {
   async findAll() {
     const documents = await classWeekDay.findMany();
@@ -38,6 +44,19 @@ class DocumentsRepository {
       },
     });
     return true;
+  }
+
+  async update({ id, week_day_id, class_id }: IUpdateClassWeekDay) {
+    const updatedClassWeekDay = await classWeekDay.update({
+      where: {
+        id,
+      },
+      data: {
+        week_day_id,
+        class_id,
+      },
+    });
+    return updatedClassWeekDay;
   }
 }
 

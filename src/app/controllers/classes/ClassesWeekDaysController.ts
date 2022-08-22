@@ -73,12 +73,66 @@ class ClassesWeekDaysController {
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: 'Aula do dia da semana encontrada',
-        classWeekDay: classWeekDayExists,
+    return res.status(200).json({
+      message: 'Aula do dia da semana encontrada',
+      classWeekDay: classWeekDayExists,
+    });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const { weekDayId, classId } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([weekDayId, classId]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        classWeekDay: null,
       });
+    }
+
+    const weekDayExists = await WeekDaysRepository.findById(weekDayId);
+    if (!weekDayExists) {
+      return res
+        .status(400)
+        .json({ message: 'Dia da semana não encontrado', classWeekDay: null });
+    }
+
+    const classExists = await ClassesRepository.findById(classId);
+    if (!classExists) {
+      return res
+        .status(400)
+        .json({ message: 'Aula não encontrada', classWeekDay: null });
+    }
+
+    const classWeekDayExists = await ClassesWeekDaysRepository.findById(
+      parsedId
+    );
+    if (!classWeekDayExists) {
+      return res.status(400).json({
+        message: 'Aula do dia da semana não encontrado',
+        classWeekDay: null,
+      });
+    }
+
+    const week_day_id = Number.isNaN(Number(weekDayId))
+      ? undefined
+      : Number(weekDayId);
+
+    const class_id = Number.isNaN(Number(classId))
+      ? undefined
+      : Number(classId);
+
+    const updatedClassWeekDay = await ClassesWeekDaysRepository.update({
+      id: parsedId,
+      week_day_id,
+      class_id,
+    });
+
+    return res.status(200).json({
+      message: 'Aula do dia da semana atualizada',
+      classWeekDay: updatedClassWeekDay,
+    });
   }
 }
 
