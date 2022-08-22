@@ -7,6 +7,13 @@ interface IClass {
   description: string;
 }
 
+interface IUpdateClass {
+  id: number;
+  gym_id?: number;
+  title: string;
+  description: string;
+}
+
 class ClassesRepository {
   async findAll() {
     const classes = await prisma.class.findMany();
@@ -43,6 +50,18 @@ class ClassesRepository {
       where: { id },
     });
     return true;
+  }
+
+  async update({ id, gym_id, title, description }: IUpdateClass) {
+    const updatedClass = await prisma.class.update({
+      where: { id },
+      data: {
+        title,
+        gym_id,
+        description,
+      },
+    });
+    return updatedClass;
   }
 }
 

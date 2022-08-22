@@ -76,6 +76,56 @@ class ClassesController {
       .status(200)
       .json({ message: 'Aula encontrada', class: classExists });
   }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const { gymId, title, description } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([gymId, title, description]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram preenchidos',
+        class: null,
+      });
+    }
+
+    const classExists = await ClassesRepository.findById(parsedId);
+    if (!classExists) {
+      return res.status(400).json({
+        message: 'Aula não encontrada',
+        class: null,
+      });
+    }
+    const gymExists = await GymsRepository.findById(gymId);
+    if (!gymExists) {
+      return res.status(400).json({
+        message: 'Academia não encontrada',
+        class: null,
+      });
+    }
+    const titleExists = await ClassesRepository.findByTitle(title);
+    if (titleExists) {
+      let id = titleExists.id;
+      if (id !== parsedId) {
+        return res.status(400).json({
+          message: 'Aula já cadastrada',
+          class: null,
+        });
+      }
+    }
+
+    const gym_id = Number.isNaN(Number(gymId)) ? undefined : Number(gymId);
+
+    const updatedClass = await ClassesRepository.update({
+      id: parsedId,
+      gym_id,
+      title,
+      description,
+    });
+    return res
+      .status(200)
+      .json({ message: 'Aula atualizada com sucesso', class: updatedClass });
+  }
 }
 
 export default new ClassesController();
