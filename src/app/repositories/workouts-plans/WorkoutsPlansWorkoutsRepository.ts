@@ -21,6 +21,26 @@ class WorkoutsPlansWorkoutsRepository {
     });
     return createdWorkoutPlanWorkout;
   }
+
+  async delete(id: number) {
+    await workoutPlanWorkout.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
+
+  async findById(id: number) {
+    const workoutPlanWorkoutExists = await workoutPlanWorkout.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return workoutPlanWorkoutExists;
+  }
 }
 
 export default new WorkoutsPlansWorkoutsRepository();

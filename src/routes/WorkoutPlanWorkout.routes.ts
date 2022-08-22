@@ -10,4 +10,8 @@ workoutsPlansWorkoutsRoutes.post(
   '/workoutPlanWorkouts',
   WorkoutsPlansWorkoutsController.store
 );
+workoutsPlansWorkoutsRoutes.delete(
+  '/workoutPlanWorkouts/:id',
+  WorkoutsPlansWorkoutsController.delete
+);
 export default workoutsPlansWorkoutsRoutes;

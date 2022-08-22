@@ -43,12 +43,27 @@ class WorkoutsPlansWorkoutsController {
       workouts_plan_id: workoutPlanId,
       workout_id: workoutId,
     });
-    res
-      .status(200)
-      .send({
-        message: 'Treino do plano de treino criado',
-        workoutPlanWorkout,
+    res.status(200).send({
+      message: 'Treino do plano de treino criado',
+      workoutPlanWorkout,
+    });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const workoutPlanWorkoutExists =
+      await WorkoutsPlansWorkoutsRepository.findById(parsedId);
+    if (!workoutPlanWorkoutExists) {
+      return res.status(400).json({
+        message: 'Treino do plano de treino não encontrado',
+        workoutPlanWorkout: null,
       });
+    }
+
+    await WorkoutsPlansWorkoutsRepository.delete(parsedId);
+    res.sendStatus(200);
   }
 }
 
