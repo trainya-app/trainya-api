@@ -73,6 +73,23 @@ class WorkoutsExercisesController {
 
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const workoutExercise = await WorkoutsExercisesRepository.findById(
+      parsedId
+    );
+    if (!workoutExercise) {
+      return res.status(400).json({
+        message: 'Exercicio do treino não encontrado',
+        workoutExercise: null,
+      });
+    }
+
+    return res.status(200).json({ workoutExercise });
+  }
 }
 
 export default new WorkoutsExercisesController();

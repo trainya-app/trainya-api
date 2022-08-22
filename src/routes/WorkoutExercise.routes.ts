@@ -14,10 +14,10 @@ workoutExercisesRoutes.delete(
   '/workoutExercises/:id',
   WorkoutsExercisesController.delete
 );
-// workoutExercisesRoutes.get(
-//   '/workoutExercises/:id',
-//   WorkoutsExercisesController.show
-// );
+workoutExercisesRoutes.get(
+  '/workoutExercises/:id',
+  WorkoutsExercisesController.show
+);
 // workoutExercisesRoutes.put(
 //   '/workoutExercises/:id',
 //   WorkoutsExercisesController.update
