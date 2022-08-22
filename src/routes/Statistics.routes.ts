@@ -3,5 +3,6 @@ import StatisticsController from '../app/controllers/statistics/StatisticsContro
 const statisticsRoutes = Router();
 
 statisticsRoutes.get('/statistics', StatisticsController.index);
+statisticsRoutes.post('/statistics', StatisticsController.store);
 
 export default statisticsRoutes;
