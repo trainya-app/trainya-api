@@ -30,6 +30,20 @@ class ClassesRepository {
     });
     return createdClass;
   }
+
+  async findById(id: number) {
+    const classExists = await prisma.class.findFirst({
+      where: { id },
+    });
+    return classExists;
+  }
+
+  async delete(id: number) {
+    await prisma.class.delete({
+      where: { id },
+    });
+    return true;
+  }
 }
 
 export default new ClassesRepository();

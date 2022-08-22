@@ -45,6 +45,21 @@ class ClassesController {
       .status(200)
       .json({ message: 'Aula criada com sucesso', class: createdClass });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const classExists = await ClassesRepository.findById(parsedId);
+    if (!classExists) {
+      return res.status(400).json({
+        message: 'Aula não encontrada',
+        class: null,
+      });
+    }
+
+    await ClassesRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new ClassesController();
