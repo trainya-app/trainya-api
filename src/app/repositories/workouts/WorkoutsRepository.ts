@@ -12,6 +12,18 @@ interface IWorkout {
   duration: string;
 }
 
+interface IUpdateWorkout {
+  id: number;
+  employee_id?: number;
+  title: string;
+  description: string;
+  type: string;
+  preview_image_url: string;
+  video_url: string;
+  level: string;
+  duration: string;
+}
+
 class WorkoutsRepository {
   async findAll() {
     const workouts = await workout.findMany();
@@ -69,6 +81,36 @@ class WorkoutsRepository {
     });
 
     return true;
+  }
+
+  async update({
+    id,
+    employee_id,
+    title,
+    description,
+    type,
+    preview_image_url,
+    video_url,
+    level,
+    duration,
+  }: IUpdateWorkout) {
+    const updatedWorkout = await workout.update({
+      where: {
+        id,
+      },
+      data: {
+        employee_id,
+        title,
+        description,
+        type,
+        preview_image_url,
+        video_url,
+        level,
+        duration,
+      },
+    });
+
+    return updatedWorkout;
   }
 }
 
