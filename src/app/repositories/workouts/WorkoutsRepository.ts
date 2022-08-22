@@ -51,6 +51,25 @@ class WorkoutsRepository {
     });
     return createdWorkout;
   }
+
+  async findById(id: number) {
+    const workoutExists = await workout.findFirst({
+      where: {
+        id,
+      },
+    });
+    return workoutExists;
+  }
+
+  async delete(id: number) {
+    await workout.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new WorkoutsRepository();

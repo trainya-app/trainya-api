@@ -66,6 +66,22 @@ class WorkoutsController {
     });
     res.status(200).json({ message: 'Treino criado', workout });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parseId = Number(id);
+
+    const workoutExists = await WorkoutsRepository.findById(parseId);
+    if (!workoutExists) {
+      return res.status(400).json({
+        message: 'Treino não encontrado',
+        workout: null,
+      });
+    }
+
+    await WorkoutsRepository.delete(parseId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new WorkoutsController();
