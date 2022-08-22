@@ -9,6 +9,15 @@ interface IMemberWorkoutPlan {
   finished_at: string;
 }
 
+interface IUpdateMemberWorkoutPlan {
+  id: number;
+  member_id?: number;
+  workouts_plan_id?: number;
+  started_at: string;
+  finish_at: string;
+  finished_at: string;
+}
+
 class MembersWorkoutsPlansRepository {
   async findAll() {
     const memberWorkoutPlans = await memberWorkoutPlan.findMany();
@@ -52,6 +61,31 @@ class MembersWorkoutsPlansRepository {
     });
 
     return true;
+  }
+
+  async update({
+    id,
+    finish_at,
+    finished_at,
+    started_at,
+    member_id,
+    workouts_plan_id,
+  }: IUpdateMemberWorkoutPlan) {
+    const updatedMemberWorkoutPlan = await memberWorkoutPlan.update({
+      data: {
+        finish_at,
+        finished_at,
+        started_at,
+        member_id,
+        workouts_plan_id,
+      },
+
+      where: {
+        id,
+      },
+    });
+
+    return updatedMemberWorkoutPlan;
   }
 }
 

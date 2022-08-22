@@ -14,5 +14,13 @@ membersWorkoutsPlansRoutes.delete(
   '/memberWorkoutPlans/:id',
   MembersWorkoutsPlansController.delete
 );
+membersWorkoutsPlansRoutes.get(
+  '/memberWorkoutPlans/:id',
+  MembersWorkoutsPlansController.show
+);
+membersWorkoutsPlansRoutes.put(
+  '/memberWorkoutPlans/:id',
+  MembersWorkoutsPlansController.update
+);
 
 export default membersWorkoutsPlansRoutes;
