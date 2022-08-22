@@ -1,8 +1,63 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+const { workoutPlan } = new PrismaClient();
+
+interface IWorkoutPlan {
+  employee_id: number;
+  goal: string;
+}
+
+interface IUpdateWorkoutPlan {
+  id: number;
+  employee_id?: number;
+  goal: string;
+}
 
 class WorkoutsPlansRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const workoutPlans = await workoutPlan.findMany();
+    return workoutPlans;
+  }
+
+  async create({ employee_id, goal }: IWorkoutPlan) {
+    const createdWorkoutPlan = await workoutPlan.create({
+      data: {
+        employee_id,
+        goal,
+      },
+    });
+    return createdWorkoutPlan;
+  }
+
+  async findById(id: number) {
+    const workoutPlanExists = await workoutPlan.findFirst({
+      where: {
+        id,
+      },
+    });
+    return workoutPlanExists;
+  }
+
+  async delete(id: number) {
+    await workoutPlan.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  }
+
+  async update({ id, employee_id, goal }: IUpdateWorkoutPlan) {
+    const updatedWorkoutPlan = await workoutPlan.update({
+      data: {
+        employee_id,
+        goal,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return updatedWorkoutPlan;
   }
 }
 

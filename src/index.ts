@@ -15,6 +15,10 @@ import memberSettingsRoutes from './routes/MemberSettings.routes';
 import methodsRoutes from './routes/Methods.routes';
 import memberPaymentsRoutes from './routes/MemberPayments.routes';
 import exercisesRoutes from './routes/Exercises.routes';
+import workoutExercisesRoutes from './routes/WorkoutExercise.routes';
+import workoutsRoutes from './routes/Workouts.routes';
+import workoutsPlanRoutes from './routes/WorkoutPlans.routes';
+import workoutsPlansWorkoutsRoutes from './routes/WorkoutPlanWorkout.routes';
 
 const app = express();
 app.use(express.json());
@@ -57,5 +61,13 @@ app.use(methodsRoutes);
 app.use(memberPaymentsRoutes);
 // Exercises Routes
 app.use(exercisesRoutes);
+// Workout Exercises Routes
+app.use(workoutExercisesRoutes);
+// Workouts Routes
+app.use(workoutsRoutes);
+// Workouts Plans Routes
+app.use(workoutsPlanRoutes);
+// Workouts Plans Workouts Routes
+app.use(workoutsPlansWorkoutsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
