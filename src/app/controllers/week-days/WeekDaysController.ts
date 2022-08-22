@@ -45,6 +45,21 @@ class WeekDaysController {
     await WeekDaysRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const weekDay = await WeekDaysRepository.findById(parsedId);
+    if (!weekDay) {
+      return res.status(400).send({
+        message: 'Dia da semana não encontrado',
+        weekDay: null,
+      });
+    }
+
+    return res.send({ weekDay });
+  }
 }
 
 export default new WeekDaysController();
