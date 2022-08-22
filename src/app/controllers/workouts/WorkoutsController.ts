@@ -138,6 +138,14 @@ class WorkoutsController {
       });
     }
 
+    const workoutExists = await WorkoutsRepository.findById(parsedId);
+    if (!workoutExists) {
+      return res.status(400).json({
+        message: 'Treino não encontrado',
+        workout: null,
+      });
+    }
+
     const titleExists = await WorkoutsRepository.findByTitle(title);
     if (titleExists) {
       let id = titleExists.id;
@@ -152,14 +160,6 @@ class WorkoutsController {
     const employee_id = Number.isNaN(Number(employeeId))
       ? undefined
       : Number(employeeId);
-
-    const workoutExists = await WorkoutsRepository.findById(parsedId);
-    if (!workoutExists) {
-      return res.status(400).json({
-        message: 'Treino não encontrado',
-        workout: null,
-      });
-    }
 
     const workout = await WorkoutsRepository.update({
       id: parsedId,
