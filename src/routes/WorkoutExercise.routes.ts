@@ -6,10 +6,10 @@ workoutExercisesRoutes.get(
   '/workoutExercises',
   WorkoutsExercisesController.index
 );
-// workoutExercisesRoutes.post(
-//   '/workoutExercises',
-//   WorkoutsExercisesController.store
-// );
+workoutExercisesRoutes.post(
+  '/workoutExercises',
+  WorkoutsExercisesController.store
+);
 // workoutExercisesRoutes.delete(
 //   '/workoutExercises/:id',
 //   WorkoutsExercisesController.delete
