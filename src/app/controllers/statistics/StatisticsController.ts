@@ -49,6 +49,22 @@ class StatisticsController {
     await StatisticsRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const statisticExists = await StatisticsRepository.findById(parsedId);
+    if (!statisticExists) {
+      return res
+        .status(400)
+        .json({ message: 'Estátistica não encontrada', statistic: null });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Estátistica encontrada', statistic: statisticExists });
+  }
 }
 
 export default new StatisticsController();
