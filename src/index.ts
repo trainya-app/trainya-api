@@ -11,6 +11,10 @@ import memberDocumentsRoutes from './routes/MemberDocuments.routes';
 import goalsRoutes from './routes/Goals.routes';
 import memberGoalsRoutes from './routes/MemberGoals.routes';
 import settingOptionsRoutes from './routes/SettingOptions.routes';
+import memberSettingsRoutes from './routes/MemberSettings.routes';
+import methodsRoutes from './routes/Methods.routes';
+import memberPaymentsRoutes from './routes/MemberPayments.routes';
+import exercisesRoutes from './routes/Exercises.routes';
 
 const app = express();
 app.use(express.json());
@@ -45,5 +49,13 @@ app.use(goalsRoutes);
 app.use(memberGoalsRoutes);
 // Setting Options Routes
 app.use(settingOptionsRoutes);
+// Member Settings Routes
+app.use(memberSettingsRoutes);
+// Methods Routes
+app.use(methodsRoutes);
+// Member Payments Routes
+app.use(memberPaymentsRoutes);
+// Exercises Routes
+app.use(exercisesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
