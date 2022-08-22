@@ -34,6 +34,25 @@ class MembersWorkoutsPlansRepository {
 
     return createdMemberWorkoutPlan;
   }
+
+  async findById(id: number) {
+    const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
+      where: {
+        id,
+      },
+    });
+    return memberWorkoutPlanExists;
+  }
+
+  async delete(id: number) {
+    await memberWorkoutPlan.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new MembersWorkoutsPlansRepository();

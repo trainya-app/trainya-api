@@ -38,12 +38,10 @@ class MembersWorkoutsPlansController {
       workoutPlanId
     );
     if (!workoutPlanExists) {
-      return res
-        .status(400)
-        .json({
-          message: 'Plano de treino não encontrado',
-          memberWorkoutPlan: null,
-        });
+      return res.status(400).json({
+        message: 'Plano de treino não encontrado',
+        memberWorkoutPlan: null,
+      });
     }
 
     const memberWorkoutPlans = await MembersWorkoutsPlansRepository.create({
@@ -57,6 +55,25 @@ class MembersWorkoutsPlansController {
       message: 'Plano de treino do membro criado',
       memberWorkoutPlans,
     });
+  }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberWorkoutPlanExists =
+      await MembersWorkoutsPlansRepository.findById(parsedId);
+    if (!memberWorkoutPlanExists) {
+      return res
+        .status(400)
+        .json({
+          message: 'Plano de treino do membro não encontrado',
+          memberWorkoutPlan: null,
+        });
+    }
+
+    await MembersWorkoutsPlansRepository.delete(parsedId);
+    return res.sendStatus(200);
   }
 }
 
