@@ -69,9 +69,9 @@ class WorkoutsController {
 
   async delete(req: Request, res: Response) {
     const { id } = req.params;
-    const parseId = Number(id);
+    const parsedId = Number(id);
 
-    const workoutExists = await WorkoutsRepository.findById(parseId);
+    const workoutExists = await WorkoutsRepository.findById(parsedId);
     if (!workoutExists) {
       return res.status(400).json({
         message: 'Treino não encontrado',
@@ -79,8 +79,23 @@ class WorkoutsController {
       });
     }
 
-    await WorkoutsRepository.delete(parseId);
+    await WorkoutsRepository.delete(parsedId);
     return res.sendStatus(200);
+  }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const workoutExists = await WorkoutsRepository.findById(parsedId);
+    if (!workoutExists) {
+      return res.status(400).json({
+        message: 'Treino não encontrado',
+        workout: null,
+      });
+    }
+
+    res.status(200).send({ workout: workoutExists });
   }
 }
 
