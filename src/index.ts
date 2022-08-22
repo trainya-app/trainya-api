@@ -22,6 +22,7 @@ import workoutsPlansWorkoutsRoutes from './routes/WorkoutPlanWorkout.routes';
 import membersWorkoutsPlansRoutes from './routes/MemberWorkoutPlans.routes';
 import statisticsRoutes from './routes/Statistics.routes';
 import memberStatisticsRoutes from './routes/MemberStatistics.routes';
+import weekDaysRoutes from './routes/WeekDays.routes';
 
 const app = express();
 app.use(express.json());
@@ -78,5 +79,7 @@ app.use(membersWorkoutsPlansRoutes);
 app.use(statisticsRoutes);
 // Member Statistics Routes
 app.use(memberStatisticsRoutes);
+// Week Days Routes
+app.use(weekDaysRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

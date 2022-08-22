@@ -1,8 +1,10 @@
-import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+const { weekDay } = new PrismaClient();
 
 class WeekDaysRepository {
-  index(req: Request, res: Response) {
-    res.send('index');
+  async findAll() {
+    const weekDays = await weekDay.findMany();
+    return weekDays;
   }
 }
 
