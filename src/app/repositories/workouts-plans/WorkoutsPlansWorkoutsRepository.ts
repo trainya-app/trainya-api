@@ -6,6 +6,12 @@ interface IWorkoutPlanWorkout {
   workout_id: number;
 }
 
+interface IUpdateWorkoutPlanWorkout {
+  id: number;
+  workouts_plan_id?: number;
+  workout_id?: number;
+}
+
 class WorkoutsPlansWorkoutsRepository {
   async findAll() {
     const workoutPlanWorkouts = await workoutPlanWorkout.findMany();
@@ -40,6 +46,24 @@ class WorkoutsPlansWorkoutsRepository {
     });
 
     return workoutPlanWorkoutExists;
+  }
+
+  async update({
+    id,
+    workouts_plan_id,
+    workout_id,
+  }: IUpdateWorkoutPlanWorkout) {
+    const updatedWorkoutPlanWorkout = await workoutPlanWorkout.update({
+      where: {
+        id,
+      },
+      data: {
+        workouts_plan_id,
+        workout_id,
+      },
+    });
+
+    return updatedWorkoutPlanWorkout;
   }
 }
 

@@ -81,6 +81,67 @@ class WorkoutsPlansWorkoutsController {
 
     res.send({ workoutPlanWorkout: workoutPlanWorkoutExists });
   }
+
+  async update(req: Request, res: Response) {
+    const { workoutPlanId, workoutId } = req.body;
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const someFieldIsEmpty = isSomeEmpty([workoutPlanId, workoutId]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        workoutPlanWorkout: null,
+      });
+    }
+
+    const workoutPlanWorkoutExists =
+      await WorkoutsPlansWorkoutsRepository.findById(parsedId);
+    if (!workoutPlanWorkoutExists) {
+      return res.status(400).json({
+        message: 'Treino do plano de treino não encontrado',
+        workoutPlanWorkout: null,
+      });
+    }
+
+    const workoutPlanExists = await WorkoutsPlansRepository.findById(
+      workoutPlanId
+    );
+    if (!workoutPlanExists) {
+      return res.status(400).json({
+        message: 'Plano de treino não encontrado',
+        workoutPlanWorkout: null,
+      });
+    }
+
+    const workoutExists = await WorkoutsRepository.findById(workoutId);
+    if (!workoutExists) {
+      return res.status(400).json({
+        message: 'Treino não encontrado',
+        workoutPlanWorkout: null,
+      });
+    }
+
+    const workout_id = Number.isNaN(Number(workoutId))
+      ? undefined
+      : Number(workoutId);
+
+    const workouts_plan_id = Number.isNaN(Number(workoutPlanId))
+      ? undefined
+      : Number(workoutPlanId);
+
+    const updatedWorkoutPlanWorkout =
+      await WorkoutsPlansWorkoutsRepository.update({
+        id: parsedId,
+        workout_id,
+        workouts_plan_id,
+      });
+
+    return res.status(200).json({
+      message: 'Treino do plano de treino atualizado',
+      workoutPlanWorkout: updatedWorkoutPlanWorkout,
+    });
+  }
 }
 
 export default new WorkoutsPlansWorkoutsController();

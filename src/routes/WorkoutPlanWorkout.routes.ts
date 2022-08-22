@@ -18,4 +18,9 @@ workoutsPlansWorkoutsRoutes.get(
   '/workoutPlanWorkouts/:id',
   WorkoutsPlansWorkoutsController.show
 );
+workoutsPlansWorkoutsRoutes.put(
+  '/workoutPlanWorkouts/:id',
+  WorkoutsPlansWorkoutsController.update
+);
+
 export default workoutsPlansWorkoutsRoutes;
