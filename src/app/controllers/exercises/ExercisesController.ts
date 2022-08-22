@@ -50,6 +50,21 @@ class ExercisesController {
     await ExercisesRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const exerciseExists = await ExercisesRepository.findById(parsedId);
+    if (!exerciseExists) {
+      return res.status(400).json({
+        message: 'Exercício não encontrado',
+        exercise: null,
+      });
+    }
+
+    return res.status(200).send({ exercise: exerciseExists });
+  }
 }
 
 export default new ExercisesController();
