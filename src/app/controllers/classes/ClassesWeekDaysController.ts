@@ -42,6 +42,23 @@ class ClassesWeekDaysController {
       .status(200)
       .json({ message: 'Aula do dia da semana criado', createdClassWeekDay });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+    const classWeekDayExists = await ClassesWeekDaysRepository.findById(
+      parsedId
+    );
+    if (!classWeekDayExists) {
+      return res.status(400).json({
+        message: 'Aula do dia da semana não encontrado',
+        classWeekDay: null,
+      });
+    }
+
+    await ClassesWeekDaysRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new ClassesWeekDaysController();

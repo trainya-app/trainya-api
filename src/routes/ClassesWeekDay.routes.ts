@@ -4,5 +4,9 @@ const classesWeekDaysRoutes = Router();
 
 classesWeekDaysRoutes.get('/classWeekDays', ClassesWeekDaysController.index);
 classesWeekDaysRoutes.post('/classWeekDays', ClassesWeekDaysController.store);
+classesWeekDaysRoutes.delete(
+  '/classWeekDays/:id',
+  ClassesWeekDaysController.delete
+);
 
 export default classesWeekDaysRoutes;

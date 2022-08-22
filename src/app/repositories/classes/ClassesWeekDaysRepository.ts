@@ -21,6 +21,24 @@ class DocumentsRepository {
     });
     return createdClassWeekDay;
   }
+
+  async findById(id: number) {
+    const classWeekDayExists = await classWeekDay.findFirst({
+      where: {
+        id,
+      },
+    });
+    return classWeekDayExists;
+  }
+
+  async delete(id: number) {
+    await classWeekDay.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  }
 }
 
 export default new DocumentsRepository();
