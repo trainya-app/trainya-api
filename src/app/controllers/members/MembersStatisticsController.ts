@@ -63,6 +63,28 @@ class MembersStatisticsController {
     await MembersStatisticsRepository.delete(parsedId);
     return res.sendStatus(200);
   }
+
+  async show(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberStatisticExists = await MembersStatisticsRepository.findById(
+      parsedId
+    );
+    if (!memberStatisticExists) {
+      return res.status(200).json({
+        message: 'Estátistica do membro não existe',
+        memberStatistic: null,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({
+        message: 'Estátistica do membro encontrada',
+        memberStatistic: memberStatisticExists,
+      });
+  }
 }
 
 export default new MembersStatisticsController();
