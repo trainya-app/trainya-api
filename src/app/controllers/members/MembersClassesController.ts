@@ -69,12 +69,47 @@ class MembersClassesController {
         .json({ message: 'Aula do membro não encontrada', memberClass: null });
     }
 
+    return res.status(200).json({
+      message: 'Aula do membro encontrada',
+      memberClass: memberClassExists,
+    });
+  }
+
+  async update(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const { memberId, classId } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([memberId, classId]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        memberClass: null,
+      });
+    }
+
+    const memberExists = await MembersRepository.findById(memberId);
+    if (!memberExists) {
+      return res
+        .status(400)
+        .json({ message: 'Membro não encontrado', memberClass: null });
+    }
+
+    const classExists = await ClassesRepository.findById(classId);
+    if (!classExists) {
+      return res
+        .status(400)
+        .json({ message: 'Aula não encontrada', memberClass: null });
+    }
+
+    const memberClass = await MembersClassesRepository.update({
+      id: parsedId,
+      member_id: memberId,
+      class_id: classId,
+    });
     return res
       .status(200)
-      .json({
-        message: 'Aula do membro encontrada',
-        memberClass: memberClassExists,
-      });
+      .json({ message: 'Aula do membro atualizada', memberClass });
   }
 }
 

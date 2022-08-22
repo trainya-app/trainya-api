@@ -6,6 +6,12 @@ interface IMemberClass {
   class_id: number;
 }
 
+interface IUpdateMemberClass {
+  id: number;
+  member_id: number;
+  class_id: number;
+}
+
 class MembersClassesRepository {
   async findAll() {
     const memberClasses = await memberClass.findMany();
@@ -38,6 +44,19 @@ class MembersClassesRepository {
       },
     });
     return true;
+  }
+
+  async update({ id, member_id, class_id }: IUpdateMemberClass) {
+    const updatedMemberClass = await memberClass.update({
+      where: {
+        id,
+      },
+      data: {
+        member_id,
+        class_id,
+      },
+    });
+    return updatedMemberClass;
   }
 }
 

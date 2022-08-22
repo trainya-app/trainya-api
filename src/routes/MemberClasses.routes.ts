@@ -9,5 +9,6 @@ membersClassesRoutes.delete(
   MembersClassesController.delete
 );
 membersClassesRoutes.get('/memberClasses/:id', MembersClassesController.show);
+membersClassesRoutes.put('/memberClasses/:id', MembersClassesController.update);
 
 export default membersClassesRoutes;
