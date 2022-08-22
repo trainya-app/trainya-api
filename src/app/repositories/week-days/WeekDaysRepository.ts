@@ -28,6 +28,25 @@ class WeekDaysRepository {
     });
     return createdWeekDay;
   }
+
+  async findById(id: number) {
+    const weekDayExists = await weekDay.findFirst({
+      where: {
+        id,
+      },
+    });
+    return weekDayExists;
+  }
+
+  async delete(id: number) {
+    await weekDay.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new WeekDaysRepository();

@@ -29,6 +29,22 @@ class WeekDaysController {
     const weekDay = await WeekDaysRepository.create({ name });
     return res.status(200).json({ message: 'Dia da semana criado', weekDay });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const weekDay = await WeekDaysRepository.findById(parsedId);
+    if (!weekDay) {
+      return res.status(400).send({
+        message: 'Dia da semana não encontrado',
+        weekDay: null,
+      });
+    }
+
+    await WeekDaysRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new WeekDaysController();
