@@ -19,6 +19,7 @@ import workoutExercisesRoutes from './routes/WorkoutExercise.routes';
 import workoutsRoutes from './routes/Workouts.routes';
 import workoutsPlanRoutes from './routes/WorkoutPlans.routes';
 import workoutsPlansWorkoutsRoutes from './routes/WorkoutPlanWorkout.routes';
+import membersWorkoutsPlansRoutes from './routes/MemberWorkoutPlans.routes';
 
 const app = express();
 app.use(express.json());
@@ -69,5 +70,7 @@ app.use(workoutsRoutes);
 app.use(workoutsPlanRoutes);
 // Workouts Plans Workouts Routes
 app.use(workoutsPlansWorkoutsRoutes);
+// Members Workouts Plans Routes
+app.use(membersWorkoutsPlansRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
