@@ -54,6 +54,25 @@ class WorkoutsExercisesController {
       .status(200)
       .json({ message: 'Exercicio do treino criado', workoutExercise });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const workoutExercise = await WorkoutsExercisesRepository.findById(
+      parsedId
+    );
+    if (!workoutExercise) {
+      return res.status(400).json({
+        message: 'Exercicio do treino não encontrado',
+        workoutExercise: null,
+      });
+    }
+
+    await WorkoutsExercisesRepository.delete(parsedId);
+
+    return res.sendStatus(200);
+  }
 }
 
 export default new WorkoutsExercisesController();

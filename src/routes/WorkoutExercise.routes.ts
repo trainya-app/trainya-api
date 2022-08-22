@@ -10,10 +10,10 @@ workoutExercisesRoutes.post(
   '/workoutExercises',
   WorkoutsExercisesController.store
 );
-// workoutExercisesRoutes.delete(
-//   '/workoutExercises/:id',
-//   WorkoutsExercisesController.delete
-// );
+workoutExercisesRoutes.delete(
+  '/workoutExercises/:id',
+  WorkoutsExercisesController.delete
+);
 // workoutExercisesRoutes.get(
 //   '/workoutExercises/:id',
 //   WorkoutsExercisesController.show
