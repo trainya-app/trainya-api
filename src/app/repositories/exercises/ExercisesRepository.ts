@@ -32,6 +32,26 @@ class ExercisesRepository {
     });
     return createdExercise;
   }
+
+  async findById(id: number) {
+    const exerciseExists = await exercise.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return exerciseExists;
+  }
+
+  async delete(id: number) {
+    await exercise.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new ExercisesRepository();

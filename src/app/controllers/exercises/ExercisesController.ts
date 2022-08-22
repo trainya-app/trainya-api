@@ -34,6 +34,22 @@ class ExercisesController {
     });
     return res.status(200).json({ message: 'Exercício cadastrado!', exercise });
   }
+
+  async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const exercise = await ExercisesRepository.findById(parsedId);
+    if (!exercise) {
+      return res.status(400).json({
+        message: 'Exercício não encontrado',
+        exercise: null,
+      });
+    }
+
+    await ExercisesRepository.delete(parsedId);
+    return res.sendStatus(200);
+  }
 }
 
 export default new ExercisesController();
