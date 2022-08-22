@@ -21,6 +21,24 @@ class MembersClassesRepository {
     });
     return createdMemberClass;
   }
+
+  async findById(id: number) {
+    const memberClassExists = await memberClass.findFirst({
+      where: {
+        id,
+      },
+    });
+    return memberClassExists;
+  }
+
+  async delete(id: number) {
+    await memberClass.delete({
+      where: {
+        id,
+      },
+    });
+    return true;
+  }
 }
 
 export default new MembersClassesRepository();

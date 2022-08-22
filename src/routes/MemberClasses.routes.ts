@@ -4,5 +4,9 @@ const membersClassesRoutes = Router();
 
 membersClassesRoutes.get('/memberClasses', MembersClassesController.index);
 membersClassesRoutes.post('/memberClasses', MembersClassesController.store);
+membersClassesRoutes.delete(
+  '/memberClasses/:id',
+  MembersClassesController.delete
+);
 
 export default membersClassesRoutes;
