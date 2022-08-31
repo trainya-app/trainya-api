@@ -1,6 +1,6 @@
 import express from 'express';
 import gymsRoutes from './routes/Gyms.routes';
-import rollsRoutes from './routes/Rolls.routes';
+import rolesRoutes from './routes/Roles.routes';
 import productsCategoriesRoutes from './routes/ProductsCategories.routes';
 import employeesRoutes from './routes/Employees.routes';
 import gymEmployeesRoutes from './routes/GymEmployees.routes';
@@ -36,8 +36,8 @@ app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
 
-// Rolls Routes
-app.use(rollsRoutes);
+// Roles Routes
+app.use(rolesRoutes);
 // Employees Routes
 app.use(employeesRoutes);
 // Gyms Routes

@@ -4,7 +4,7 @@ import gymEmployeesRoutes from '../../../routes/GymEmployees.routes';
 const { employee } = new PrismaClient();
 
 interface IUpdateEmployee {
-  roll_id?: number;
+  role_id?: number;
   name?: string;
   birth_date?: string;
   daily_workload?: number;
@@ -18,7 +18,7 @@ interface IUpdateEmployee {
 }
 
 interface IEmployee {
-  roll_id: number;
+  role_id: number;
   name: string;
   birth_date: string;
   daily_workload: number;
@@ -58,7 +58,7 @@ class EmployeesRepository {
   }
 
   async create({
-    roll_id,
+    role_id,
     name,
     birth_date,
     daily_workload,
@@ -72,7 +72,7 @@ class EmployeesRepository {
   }: IEmployee) {
     const createdEmployee = await employee.create({
       data: {
-        roll_id,
+        role_id,
         name,
         birth_date,
         daily_workload,
@@ -86,7 +86,7 @@ class EmployeesRepository {
       },
       select: {
         id: true,
-        roll_id: true,
+        role_id: true,
         name: true,
         birth_date: true,
         daily_workload: true,
@@ -140,7 +140,7 @@ class EmployeesRepository {
   async updateEmployee(
     id: number,
     {
-      roll_id,
+      role_id,
       name,
       birth_date,
       daily_workload,
@@ -154,7 +154,7 @@ class EmployeesRepository {
   ) {
     const updatedEmployee = await employee.update({
       data: {
-        roll_id,
+        role_id,
         name,
         birth_date,
         daily_workload,
