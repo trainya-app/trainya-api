@@ -6,7 +6,8 @@
   "dependencies": {
     "@prisma/client": "^4.1.1",
     "bcrypt": "^5.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1"
   },
   "scripts": {
     "dev": "ts-node-dev --exit-child --transpile-only src/index.ts --ignore __tests__",
@@ -15,17 +16,19 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "commit": "cz",
-    "test": "jest"
+    "test": "npx autocannon -c 500 -d 30 --workers 10 --renderStatusCodes --latency --warmup [ -c 1 -d 2] https://trainya-app-api.herokuapp.com/workoutPlans"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "^28.1.6",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/mocha": "^9.1.1",
     "@types/node": "^17.0.39",
     "@types/typescript": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "@typescript-eslint/parser": "^5.27.0",
+    "autocannon": "^7.9.0",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.16.0",
     "eslint-config-airbnb-base": "^15.0.0",

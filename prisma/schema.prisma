@@ -341,8 +341,8 @@ model Exercise {
 //Relation to employees_documents as  1 in cardinality
 model Employee {
   id                Int                 @id @default(autoincrement())
-  roll              Roll?               @relation(fields: [roll_id], references: [id]) //Reference
-  roll_id           Int
+  role              Role?               @relation(fields: [role_id], references: [id]) //Reference
+  role_id           Int
   name              String              @db.VarChar(256)
   birth_date        String
   payment_date      DateTime
@@ -392,7 +392,7 @@ model EmployeeStatisticDetail {
 }
 
 //Relation to employees 1 in cardinality
-model Roll {
+model Role {
   id           Int        @id @default(autoincrement())
   title        String
   access_level String
@@ -400,7 +400,7 @@ model Roll {
   updated_at   DateTime   @updatedAt
   employee     Employee[]
 
-  @@map("rolls")
+  @@map("roles")
 }
 
 ////Normalization model for employees and documents as N in cardinality

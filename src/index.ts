@@ -1,6 +1,6 @@
 import express from 'express';
 import gymsRoutes from './routes/Gyms.routes';
-import rollsRoutes from './routes/Rolls.routes';
+import rolesRoutes from './routes/Roles.routes';
 import productsCategoriesRoutes from './routes/ProductsCategories.routes';
 import employeesRoutes from './routes/Employees.routes';
 import gymEmployeesRoutes from './routes/GymEmployees.routes';
@@ -26,6 +26,8 @@ import weekDaysRoutes from './routes/WeekDays.routes';
 import classesRoutes from './routes/Classes.routes';
 import classesWeekDaysRoutes from './routes/ClassesWeekDay.routes';
 import membersClassesRoutes from './routes/MemberClasses.routes';
+import authRoutes from './routes/Auth.routes';
+import AuthMiddleware from './app/middlewares/AuthMiddleware';
 
 const app = express();
 app.use(express.json());
@@ -35,9 +37,12 @@ const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
-
-// Rolls Routes
-app.use(rollsRoutes);
+// Login Routes
+app.use(authRoutes);
+// Auth verification
+app.use(AuthMiddleware);
+// Roles Routes
+app.use(rolesRoutes);
 // Employees Routes
 app.use(employeesRoutes);
 // Gyms Routes

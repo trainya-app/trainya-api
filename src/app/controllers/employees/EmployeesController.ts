@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
-import RollsRepository from '../../repositories/rolls/RollsRepository';
+import RolesRepository from '../../repositories/roles/RolesRepository';
 import bcrypt from 'bcrypt';
 
 class EmployeesController {
@@ -12,7 +12,7 @@ class EmployeesController {
 
   async store(req: Request, res: Response) {
     const {
-      rollId,
+      roleId,
       name,
       birthDate,
       dailyWorkload,
@@ -26,7 +26,7 @@ class EmployeesController {
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
-      rollId,
+      roleId,
       name,
       birthDate,
       dailyWorkload,
@@ -53,8 +53,8 @@ class EmployeesController {
         .json({ message: 'Email já está em uso', employee: null });
     }
 
-    const rollExists = await RollsRepository.findById(rollId);
-    if (!rollExists) {
+    const roleExists = await RolesRepository.findById(roleId);
+    if (!roleExists) {
       return res
         .status(404)
         .json({ message: 'Cargo não encontrado', employee: null });
@@ -62,7 +62,7 @@ class EmployeesController {
 
     const hashedPassword = await bcrypt.hash(password, 8);
     const employee = await EmployeesRepository.create({
-      roll_id: rollId,
+      role_id: roleId,
       name,
       birth_date: birthDate,
       daily_workload: dailyWorkload,
@@ -162,7 +162,7 @@ class EmployeesController {
   async update(req: Request, res: Response) {
     const { id } = req.params;
     const {
-      rollId,
+      roleId,
       name,
       birthDate,
       dailyWorkload,
@@ -176,7 +176,7 @@ class EmployeesController {
     const parsedId = Number(id);
 
     const someFieldIsEmpty = isSomeEmpty([
-      rollId,
+      roleId,
       name,
       birthDate,
       dailyWorkload,
@@ -228,7 +228,7 @@ class EmployeesController {
     }
 
     const updatedEmployee = await EmployeesRepository.updateEmployee(parsedId, {
-      roll_id: rollId,
+      role_id: roleId,
       name,
       birth_date: birthDate,
       daily_workload,
