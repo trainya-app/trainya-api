@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
-const RollsRepository_1 = __importDefault(require("../../repositories/rolls/RollsRepository"));
+const RolesRepository_1 = __importDefault(require("../../repositories/roles/RolesRepository"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 class EmployeesController {
     async index(req, res) {
@@ -13,9 +13,9 @@ class EmployeesController {
         res.send({ employees });
     }
     async store(req, res) {
-        const { rollId, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, password, wage, profileImg, paymentDate, } = req.body;
+        const { roleId, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, password, wage, profileImg, paymentDate, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
-            rollId,
+            roleId,
             name,
             birthDate,
             dailyWorkload,
@@ -39,15 +39,15 @@ class EmployeesController {
                 .status(400)
                 .json({ message: 'Email já está em uso', employee: null });
         }
-        const rollExists = await RollsRepository_1.default.findById(rollId);
-        if (!rollExists) {
+        const roleExists = await RolesRepository_1.default.findById(roleId);
+        if (!roleExists) {
             return res
                 .status(404)
                 .json({ message: 'Cargo não encontrado', employee: null });
         }
         const hashedPassword = await bcrypt_1.default.hash(password, 8);
         const employee = await EmployeesRepository_1.default.create({
-            roll_id: rollId,
+            role_id: roleId,
             name,
             birth_date: birthDate,
             daily_workload: dailyWorkload,
@@ -128,10 +128,10 @@ class EmployeesController {
     }
     async update(req, res) {
         const { id } = req.params;
-        const { rollId, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, wage, profileImg, paymentDate, } = req.body;
+        const { roleId, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, wage, profileImg, paymentDate, } = req.body;
         const parsedId = Number(id);
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
-            rollId,
+            roleId,
             name,
             birthDate,
             dailyWorkload,
@@ -177,7 +177,7 @@ class EmployeesController {
             }
         }
         const updatedEmployee = await EmployeesRepository_1.default.updateEmployee(parsedId, {
-            roll_id: rollId,
+            role_id: roleId,
             name,
             birth_date: birthDate,
             daily_workload,

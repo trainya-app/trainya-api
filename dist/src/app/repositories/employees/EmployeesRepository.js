@@ -23,10 +23,10 @@ class EmployeesRepository {
         });
         return employeeExists;
     }
-    async create({ roll_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, }) {
+    async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, }) {
         const createdEmployee = await employee.create({
             data: {
-                roll_id,
+                role_id,
                 name,
                 birth_date,
                 daily_workload,
@@ -40,7 +40,7 @@ class EmployeesRepository {
             },
             select: {
                 id: true,
-                roll_id: true,
+                role_id: true,
                 name: true,
                 birth_date: true,
                 daily_workload: true,
@@ -85,10 +85,10 @@ class EmployeesRepository {
         });
         return updatedPassword;
     }
-    async updateEmployee(id, { roll_id, name, birth_date, daily_workload, weekdays_workload, phone, email, wage, payment_date, profile_img, }) {
+    async updateEmployee(id, { role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, wage, payment_date, profile_img, }) {
         const updatedEmployee = await employee.update({
             data: {
-                roll_id,
+                role_id,
                 name,
                 birth_date,
                 daily_workload,
