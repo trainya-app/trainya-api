@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
-import { Console } from 'console';
 
 class MembersController {
   async index(req: Request, res: Response) {
