@@ -26,6 +26,8 @@ import weekDaysRoutes from './routes/WeekDays.routes';
 import classesRoutes from './routes/Classes.routes';
 import classesWeekDaysRoutes from './routes/ClassesWeekDay.routes';
 import membersClassesRoutes from './routes/MemberClasses.routes';
+import authRoutes from './routes/Auth.routes';
+import AuthMiddleware from './app/middlewares/AuthMiddleware';
 
 const app = express();
 app.use(express.json());
@@ -35,7 +37,10 @@ const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
-
+// Login Routes
+app.use(authRoutes);
+// Auth verification
+app.use(AuthMiddleware);
 // Roles Routes
 app.use(rolesRoutes);
 // Employees Routes
