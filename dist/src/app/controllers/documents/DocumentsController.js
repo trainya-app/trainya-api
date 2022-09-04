@@ -80,7 +80,6 @@ class DocumentsController {
             });
         }
         const nameExists = await DocumentsRepository_1.default.findByName(name);
-        console.log({ name, nameExists });
         if (nameExists) {
             const idByName = await DocumentsRepository_1.default.findIdByName(name);
             let id = idByName.id;

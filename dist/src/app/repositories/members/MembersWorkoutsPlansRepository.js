@@ -1,8 +1,54 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const client_1 = require("@prisma/client");
+const { memberWorkoutPlan } = new client_1.PrismaClient();
 class MembersWorkoutsPlansRepository {
-    index(req, res) {
-        res.send('index');
+    async findAll() {
+        const memberWorkoutPlans = await memberWorkoutPlan.findMany();
+        return memberWorkoutPlans;
+    }
+    async create({ member_id, workouts_plan_id, finish_at, finished_at, started_at, }) {
+        const createdMemberWorkoutPlan = await memberWorkoutPlan.create({
+            data: {
+                member_id,
+                workouts_plan_id,
+                finish_at,
+                finished_at,
+                started_at,
+            },
+        });
+        return createdMemberWorkoutPlan;
+    }
+    async findById(id) {
+        const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
+            where: {
+                id,
+            },
+        });
+        return memberWorkoutPlanExists;
+    }
+    async delete(id) {
+        await memberWorkoutPlan.delete({
+            where: {
+                id,
+            },
+        });
+        return true;
+    }
+    async update({ id, finish_at, finished_at, started_at, member_id, workouts_plan_id, }) {
+        const updatedMemberWorkoutPlan = await memberWorkoutPlan.update({
+            data: {
+                finish_at,
+                finished_at,
+                started_at,
+                member_id,
+                workouts_plan_id,
+            },
+            where: {
+                id,
+            },
+        });
+        return updatedMemberWorkoutPlan;
     }
 }
 exports.default = new MembersWorkoutsPlansRepository();
