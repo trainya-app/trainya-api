@@ -30,6 +30,7 @@ import authRoutes from './routes/Auth.routes';
 import AuthMiddleware from './app/middlewares/AuthMiddleware';
 import authRolesRoutes from './routes/AuthRoles.routes';
 import authPermissionsRoutes from './routes/AuthPermissions.routes';
+import aclRoutes from './routes/ACL.routes';
 
 const app = express();
 app.use(express.json());
@@ -101,5 +102,7 @@ app.use(membersClassesRoutes);
 app.use(authRolesRoutes);
 // Auth Permision Routes
 app.use(authPermissionsRoutes);
+// ACL Routes
+app.use(aclRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
