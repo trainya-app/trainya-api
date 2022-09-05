@@ -29,6 +29,7 @@ import membersClassesRoutes from './routes/MemberClasses.routes';
 import authRoutes from './routes/Auth.routes';
 import AuthMiddleware from './app/middlewares/AuthMiddleware';
 import authRolesRoutes from './routes/AuthRoles.routes';
+import authPermissionsRoutes from './routes/AuthPermissions.routes';
 
 const app = express();
 app.use(express.json());
@@ -98,5 +99,7 @@ app.use(classesWeekDaysRoutes);
 app.use(membersClassesRoutes);
 // Auth Role Routes
 app.use(authRolesRoutes);
+// Auth Permision Routes
+app.use(authPermissionsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
