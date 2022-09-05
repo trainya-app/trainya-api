@@ -8,34 +8,36 @@ class AuthPermissionController {
     return res.send({ authPermissions });
   }
 
-  // async store(req: Request, res: Response) {
-  //   const { name, description } = req.body;
-  //   const someFieldIsEmpty = isSomeEmpty([name, description]);
-  //   if (someFieldIsEmpty) {
-  //     return res.status(400).send({
-  //       message: 'Campos obrigatórios não foram enviados',
-  //       authPermision: null,
-  //     });
-  //   }
+  async store(req: Request, res: Response) {
+    const { name, description } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([name, description]);
+    if (someFieldIsEmpty) {
+      return res.status(400).send({
+        message: 'Campos obrigatórios não foram enviados',
+        authPermission: null,
+      });
+    }
 
-  //   const authPermisionExists = await AuthPermisionRepository.findByName(name);
-  //   if (authPermisionExists) {
-  //     return res.status(400).send({
-  //       message: 'Permissão de autorização já cadastrado',
-  //       authPermision: null,
-  //     });
-  //   }
+    const authPermissionExists = await AuthPermissionRepository.findByName(
+      name
+    );
+    if (authPermissionExists) {
+      return res.status(400).send({
+        message: 'Permissão de autorização já cadastrado',
+        authPermission: null,
+      });
+    }
 
-  //   const authPermision = await AuthPermisionRepository.create({
-  //     name,
-  //     description,
-  //   });
+    const authPermission = await AuthPermissionRepository.create({
+      name,
+      description,
+    });
 
-  //   return res.status(200).json({
-  //     message: 'Cargo de autorização criado com sucesso',
-  //     authPermision,
-  //   });
-  // }
+    return res.status(200).json({
+      message: 'Cargo de autorização criado com sucesso',
+      authPermission,
+    });
+  }
 }
 
 export default new AuthPermissionController();
