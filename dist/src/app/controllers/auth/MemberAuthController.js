@@ -17,11 +17,11 @@ class MemberAuthController {
                 member: null,
             });
         }
-        const memberExists = await MembersRepository_1.default.findByEmail(email);
+        const memberExists = await MembersRepository_1.default.findByEmail({ email });
         if (!memberExists) {
             return res
-                .status(404)
-                .json({ message: 'Email não cadastrado', member: null });
+                .status(400)
+                .json({ message: 'Email não existe', member: null });
         }
         const checkPassword = await bcrypt_1.default.compare(password, memberExists.password);
         if (!checkPassword) {
