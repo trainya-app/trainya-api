@@ -15,11 +15,11 @@ class MemberAuthController {
       });
     }
 
-    const memberExists = await MembersRepository.findByEmail(email);
+    const memberExists = await MembersRepository.findByEmail({ email });
     if (!memberExists) {
       return res
-        .status(404)
-        .json({ message: 'Email não cadastrado', member: null });
+        .status(400)
+        .json({ message: 'Email não existe', member: null });
     }
 
     const checkPassword = await bcrypt.compare(password, memberExists.password);
