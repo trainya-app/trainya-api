@@ -39,7 +39,9 @@ class MemberAuthController {
       }
     );
 
-    return res.status(200).send({ message: 'Logado', token });
+    return res
+      .status(200)
+      .send({ message: 'Logado', token });
   }
 }
 
