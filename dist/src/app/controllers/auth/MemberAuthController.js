@@ -31,7 +31,7 @@ class MemberAuthController {
         const token = jsonwebtoken_1.default.sign({
             id: memberExists.id,
         }, secret, {
-            expiresIn: process.env.EXPIRES_IN || '10m',
+            expiresIn: process.env.EXPIRES_IN || '30d',
         });
         return res.status(200).send({ message: 'Logado', token });
     }

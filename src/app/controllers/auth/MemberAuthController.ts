@@ -35,7 +35,7 @@ class MemberAuthController {
       },
       secret,
       {
-        expiresIn: process.env.EXPIRES_IN || '10m',
+        expiresIn: process.env.EXPIRES_IN || '30d',
       }
     );
 
