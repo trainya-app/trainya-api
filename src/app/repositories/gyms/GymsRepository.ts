@@ -14,6 +14,8 @@ interface UpdateGym {
   city?: string;
   adress_number?: number;
   zip_code?: number;
+  max_capacity?: number;
+  current_capacity?: number;
 }
 
 class GymsRepository {
@@ -32,6 +34,8 @@ class GymsRepository {
     street,
     adress_number,
     zip_code,
+    max_capacity,
+    current_capacity,
   }: Omit<IGym, 'id'>) {
     try {
       const createdGym = await gym.create({
@@ -44,6 +48,8 @@ class GymsRepository {
           street,
           zip_code,
           adress_number,
+          max_capacity,
+          current_capacity,
         },
         select: {
           id: true,
@@ -55,6 +61,8 @@ class GymsRepository {
           street: true,
           zip_code: true,
           adress_number: true,
+          max_capacity: true,
+          current_capacity: true,
         },
       });
       return createdGym;
@@ -138,6 +146,8 @@ class GymsRepository {
     street,
     adress_number,
     zip_code,
+    max_capacity,
+    current_capacity,
   }: UpdateGym) {
     const updatedGym = await gym.update({
       where: {
@@ -151,6 +161,8 @@ class GymsRepository {
         street,
         adress_number,
         zip_code,
+        max_capacity,
+        current_capacity,
       },
     });
 
