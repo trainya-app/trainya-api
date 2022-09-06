@@ -14,11 +14,33 @@ interface IMemberPermission {
 
 class ACLRepository {
   async findMemberRoles() {
-    return await memberRole.findMany();
+    return await memberRole.findMany({
+      select: {
+        member_id: true,
+        authRole_id: true,
+        id: true,
+        authRole: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async findMemberPermissions() {
-    return await memberPermision.findMany();
+    return await memberPermision.findMany({
+      select: {
+        member_id: true,
+        permission_id: true,
+        id: true,
+        permission: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 
   async createMemberRole({ member_id, authRole_id }: IMemberRole) {
