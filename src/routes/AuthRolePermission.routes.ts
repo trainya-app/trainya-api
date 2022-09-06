@@ -7,4 +7,9 @@ authRolePermissionsRoutes.get(
   AuthRolePermissionsController.index
 );
 
+authRolePermissionsRoutes.post(
+  '/authRolePermissions',
+  AuthRolePermissionsController.store
+);
+
 export default authRolePermissionsRoutes;
