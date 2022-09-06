@@ -75,6 +75,8 @@ model Member {
   gymMember           GymMember[]
   subscription        Subscription[]
   memberStatistic     MemberStatistic[]
+  MemberPermision     MemberPermision[]
+  MemberRole          MemberRole[]
 
   @@map("members")
 }
@@ -362,6 +364,8 @@ model Employee {
   workout           Workout[]
   workoutPlan       WorkoutPlan[]
   employeeStatistic EmployeeStatistic[]
+  EmployeeRole      EmployeeRole[]
+  EmployeePermision EmployeePermision[]
 
   @@map("employees")
 }
@@ -653,4 +657,92 @@ model Subscription {
   updated_at           DateTime          @updatedAt
 
   @@map("subscription")
+}
+
+////// Auth Section
+
+model AuthRole {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  MemberRole        MemberRole[]
+  AuthRolePermision AuthRolePermision[]
+  EmployeeRole      EmployeeRole[]
+
+  @@map("auth_roles")
+}
+
+model AuthPermission {
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  MemberPermision   MemberPermision[]
+  AuthRolePermision AuthRolePermision[]
+  EmployeePermision EmployeePermision[]
+
+  @@map("auth_permissions")
+}
+
+model MemberPermision {
+  id            Int             @id @default(autoincrement())
+  member        Member?         @relation(fields: [member_id], references: [id]) //Reference
+  member_id     Int
+  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
+  permission_id Int
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+
+  @@map("members_permissions")
+}
+
+model MemberRole {
+  id          Int       @id @default(autoincrement())
+  member      Member?   @relation(fields: [member_id], references: [id]) //Reference
+  member_id   Int
+  authRole    AuthRole? @relation(fields: [authRole_id], references: [id]) //Reference
+  authRole_id Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("members_roles")
+}
+
+model AuthRolePermision {
+  id            Int             @id @default(autoincrement())
+  authRole      AuthRole?       @relation(fields: [authRole_id], references: [id]) //Reference
+  authRole_id   Int
+  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
+  permission_id Int
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+
+  @@map("auth_roles_permissions")
+}
+
+model EmployeeRole {
+  id          Int       @id @default(autoincrement())
+  employee    Employee? @relation(fields: [employee_id], references: [id]) //Reference
+  employee_id Int
+  authRole    AuthRole? @relation(fields: [authRole_id], references: [id]) //Reference
+  authRole_id Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("employees_roles")
+}
+
+model EmployeePermision {
+  id            Int             @id @default(autoincrement())
+  employee      Employee?       @relation(fields: [employee_id], references: [id]) //Reference
+  employee_id   Int
+  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
+  permission_id Int
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+
+  @@map("employees_permissions")
 }
