@@ -31,6 +31,15 @@ class AuthRoleRepository {
 
     return createdAuthRole;
   }
+
+  async findById(id: number) {
+    const authRoleExists = await authRole.findFirst({
+      where: {
+        id,
+      },
+    });
+    return authRoleExists;
+  }
 }
 
 export default new AuthRoleRepository();

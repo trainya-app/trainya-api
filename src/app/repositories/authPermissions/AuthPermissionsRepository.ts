@@ -25,6 +25,13 @@ class AuthPermissionsRepository {
     });
     return createdAuthPermission;
   }
+
+  async findById(id: number) {
+    const authPermissionExists = await authPermission.findFirst({
+      where: { id },
+    });
+    return authPermissionExists;
+  }
 }
 
 export default new AuthPermissionsRepository();
