@@ -27,6 +27,11 @@ interface IUpdateMember {
   adress_number?: string;
 }
 
+interface IInGym {
+  id: number;
+  inGym: boolean;
+}
+
 class MembersRepository {
   async findAll() {
     const members = await member.findMany();
@@ -166,6 +171,22 @@ class MembersRepository {
     });
 
     return id as { id: number };
+  }
+
+  async updateAtGym({ inGym, id }: IInGym) {
+    const updatedMember = await member.update({
+      where: {
+        id,
+      },
+      data: {
+        at_gym: inGym,
+      },
+      select: {
+        at_gym: true,
+      },
+    });
+
+    return updatedMember;
   }
 }
 
