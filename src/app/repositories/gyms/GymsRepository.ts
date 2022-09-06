@@ -178,6 +178,23 @@ class GymsRepository {
 
     return id as { id: number };
   }
+
+  // async updateCurrentCapacity(id: number, current_capacity: number) {
+  //   const updatedCurrentCapacity = await gym.update({
+  //     where: {
+  //       id,
+  //     },
+  //     data: {
+  //       current_capacity,
+  //     },
+  //     select: {
+  //       current_capacity: true,
+  //       max_capacity: true,
+  //     },
+  //   });
+
+  //   return updatedCurrentCapacity;
+  // }
 }
 
 export default new GymsRepository();

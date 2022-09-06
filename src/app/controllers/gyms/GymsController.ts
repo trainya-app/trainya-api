@@ -209,6 +209,47 @@ class GymsController {
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
   }
+
+  // async updateCapacity(req: Request, res: Response) {
+  //   const { id } = req.params;
+  //   const { currentCapacity } = req.body;
+
+  //   const parsedId = Number(id);
+
+  //   const gymExists = await GymsRepository.findById(parsedId);
+  //   if (!gymExists) {
+  //     return res
+  //       .status(404)
+  //       .json({ message: 'Academia não encontrada', currentCapacity: null });
+  //   }
+
+  //   if (currentCapacity < 0) {
+  //     return res.status(400).json({
+  //       message: 'Capacidade inválida',
+  //       currentCapacity: gymExists.current_capacity,
+  //     });
+  //   }
+
+  //   const percentMaxCapacity = Math.ceil(
+  //     gymExists.max_capacity * 0.1 + gymExists.max_capacity
+  //   );
+
+  //   console.log(percentMaxCapacity);
+
+  //   if (currentCapacity > percentMaxCapacity) {
+  //     return res.status(400).json({
+  //       message: 'Capacidade maior do que a suportada',
+  //       currentCapacity: gymExists.current_capacity,
+  //     });
+  //   }
+
+  //   const updatedCapacity = await GymsRepository.updateCurrentCapacity(
+  //     parsedId,
+  //     currentCapacity
+  //   );
+
+  //   return res.json({ message: 'Capacidade atualizada!', updatedCapacity });
+  // }
 }
 
 export default new GymsController();
