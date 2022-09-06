@@ -49,7 +49,7 @@ app.use(AuthMiddleware);
 // Roles Routes
 app.use(rolesRoutes);
 // Employees Routes
-app.use(employeesRoutes);
+app.use(is(['Admin']), can(['Acessar_funcionarios']), employeesRoutes);
 // Gyms Routes
 app.use(gymsRoutes);
 // ProductsCategories Routes
