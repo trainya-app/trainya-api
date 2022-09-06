@@ -32,6 +32,7 @@ import authRolesRoutes from './routes/AuthRoles.routes';
 import authPermissionsRoutes from './routes/AuthPermissions.routes';
 import aclRoutes from './routes/ACL.routes';
 import authRolePermissionsRoutes from './routes/AuthRolePermission.routes';
+import can, { is } from './app/middlewares/permissions';
 
 const app = express();
 app.use(express.json());
