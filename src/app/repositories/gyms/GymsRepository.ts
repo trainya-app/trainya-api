@@ -18,6 +18,11 @@ interface UpdateGym {
   current_capacity?: number;
 }
 
+interface IUpdateCurrentCapacity {
+  id: number;
+  current_capacity: number;
+}
+
 class GymsRepository {
   async findAll() {
     const allGyms = await gym.findMany();
@@ -177,6 +182,25 @@ class GymsRepository {
     });
 
     return id as { id: number };
+  }
+
+  async updateCurrentCapacity({
+    id,
+    current_capacity,
+  }: IUpdateCurrentCapacity) {
+    const updatedCurrentCapacity = await gym.update({
+      where: {
+        id,
+      },
+      data: {
+        current_capacity,
+      },
+      select: {
+        current_capacity: true,
+      },
+    });
+
+    return updatedCurrentCapacity;
   }
 }
 

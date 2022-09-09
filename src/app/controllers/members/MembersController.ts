@@ -22,6 +22,7 @@ class MembersController {
       city,
       street,
       adressNumber,
+      atGym,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -63,6 +64,7 @@ class MembersController {
       city,
       street,
       adress_number: adressNumber,
+      at_gym: atGym,
     });
 
     if (member == null) {
