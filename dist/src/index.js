@@ -33,6 +33,10 @@ const ClassesWeekDay_routes_1 = __importDefault(require("./routes/ClassesWeekDay
 const MemberClasses_routes_1 = __importDefault(require("./routes/MemberClasses.routes"));
 const Auth_routes_1 = __importDefault(require("./routes/Auth.routes"));
 const AuthMiddleware_1 = __importDefault(require("./app/middlewares/AuthMiddleware"));
+const AuthRoles_routes_1 = __importDefault(require("./routes/AuthRoles.routes"));
+const AuthPermissions_routes_1 = __importDefault(require("./routes/AuthPermissions.routes"));
+const ACL_routes_1 = __importDefault(require("./routes/ACL.routes"));
+const AuthRolePermission_routes_1 = __importDefault(require("./routes/AuthRolePermission.routes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 8080;
@@ -97,4 +101,12 @@ app.use(Classes_routes_1.default);
 app.use(ClassesWeekDay_routes_1.default);
 // Members Classes Routes
 app.use(MemberClasses_routes_1.default);
+// Auth Role Routes
+app.use(AuthRoles_routes_1.default);
+// Auth Permision Routes
+app.use(AuthPermissions_routes_1.default);
+// ACL Routes
+app.use(ACL_routes_1.default);
+// Auth Role Permission Routes
+app.use(AuthRolePermission_routes_1.default);
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

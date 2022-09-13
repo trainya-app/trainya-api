@@ -7,7 +7,7 @@ class GymsRepository {
         const allGyms = await gym.findMany();
         return allGyms;
     }
-    async create({ name, email, password, state, city, street, adress_number, zip_code, }) {
+    async create({ name, email, password, state, city, street, adress_number, zip_code, max_capacity, current_capacity, }) {
         try {
             const createdGym = await gym.create({
                 data: {
@@ -19,6 +19,8 @@ class GymsRepository {
                     street,
                     zip_code,
                     adress_number,
+                    max_capacity,
+                    current_capacity,
                 },
                 select: {
                     id: true,
@@ -30,6 +32,8 @@ class GymsRepository {
                     street: true,
                     zip_code: true,
                     adress_number: true,
+                    max_capacity: true,
+                    current_capacity: true,
                 },
             });
             return createdGym;
@@ -92,7 +96,7 @@ class GymsRepository {
         });
         return newPassword;
     }
-    async updateGym({ id, name, email, state, city, street, adress_number, zip_code, }) {
+    async updateGym({ id, name, email, state, city, street, adress_number, zip_code, max_capacity, current_capacity, }) {
         const updatedGym = await gym.update({
             where: {
                 id,
@@ -105,6 +109,8 @@ class GymsRepository {
                 street,
                 adress_number,
                 zip_code,
+                max_capacity,
+                current_capacity,
             },
         });
         return updatedGym;
@@ -116,6 +122,20 @@ class GymsRepository {
             },
         });
         return id;
+    }
+    async updateCurrentCapacity({ id, current_capacity, }) {
+        const updatedCurrentCapacity = await gym.update({
+            where: {
+                id,
+            },
+            data: {
+                current_capacity,
+            },
+            select: {
+                current_capacity: true,
+            },
+        });
+        return updatedCurrentCapacity;
     }
 }
 exports.default = new GymsRepository();

@@ -12,7 +12,7 @@ class MembersController {
         return res.json({ members });
     }
     async store(req, res) {
-        const { phone, name, weight, height, email, password, state, city, street, adressNumber, } = req.body;
+        const { phone, name, weight, height, email, password, state, city, street, adressNumber, atGym, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             phone,
             name,
