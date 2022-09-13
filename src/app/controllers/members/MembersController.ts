@@ -64,7 +64,6 @@ class MembersController {
       city,
       street,
       adress_number: adressNumber,
-      at_gym: atGym,
     });
 
     if (member == null) {

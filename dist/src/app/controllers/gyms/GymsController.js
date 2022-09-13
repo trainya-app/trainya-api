@@ -6,13 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const GymsRepository_1 = __importDefault(require("../../repositories/gyms/GymsRepository"));
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
+const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
         return res.send({ gyms });
     }
     async store(req, res) {
-        const { name, email, password, state, city, street, adressNumber, zipCode, } = req.body;
+        const { name, email, password, state, city, street, adressNumber, zipCode, maxCapacity, currentCapacity, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             name,
             email,
@@ -22,6 +23,8 @@ class GymsController {
             street,
             adressNumber,
             zipCode,
+            maxCapacity,
+            currentCapacity,
         ]);
         if (someFieldIsEmpty) {
             res.status(400).json({
@@ -45,6 +48,8 @@ class GymsController {
             street,
             adress_number: Number(adressNumber),
             zip_code: Number(zipCode),
+            max_capacity: maxCapacity,
+            current_capacity: currentCapacity,
         });
         if (gym === null) {
             return res
@@ -104,7 +109,7 @@ class GymsController {
     }
     async update(req, res) {
         const { id } = req.params;
-        const { name, email, state, city, street, adressNumber, zipCode } = req.body;
+        const { name, email, state, city, street, adressNumber, zipCode, maxCapacity, currentCapacity, } = req.body;
         const parsedId = Number(id);
         const gymExists = await GymsRepository_1.default.findById(parsedId);
         if (!gymExists) {
@@ -131,6 +136,12 @@ class GymsController {
         const zip_code = Number.isNaN(Number(zipCode))
             ? undefined
             : Number(zipCode);
+        const max_capacity = Number.isNaN(Number(maxCapacity))
+            ? undefined
+            : Number(maxCapacity);
+        const current_capacity = Number.isNaN(Number(currentCapacity))
+            ? undefined
+            : Number(zipCode);
         const updatedGym = await GymsRepository_1.default.updateGym({
             id: parsedId,
             name,
@@ -140,8 +151,59 @@ class GymsController {
             street,
             adress_number,
             zip_code,
+            current_capacity,
+            max_capacity,
         });
         return res.json({ message: 'Dados atualizados!', updatedGym });
+    }
+    async updateCapacity(req, res) {
+        const { gymId, memberId } = req.params;
+        const parsedGymId = Number(gymId);
+        const parsedMemberId = Number(memberId);
+        const gymExists = await GymsRepository_1.default.findById(parsedGymId);
+        if (!gymExists) {
+            return res
+                .status(404)
+                .json({ message: 'Academia não encontrada', currentCapacity: null });
+        }
+        const memberExists = await MembersRepository_1.default.findById(parsedMemberId);
+        if (!memberExists) {
+            return res.status(404).json({
+                message: 'Membro não encontrado',
+                currentCapacity: gymExists.current_capacity,
+            });
+        }
+        const currentCapacity = gymExists.current_capacity;
+        if (memberExists.at_gym === false) {
+            const makeCapacity = currentCapacity + 1;
+            const updatedCapacity = await GymsRepository_1.default.updateCurrentCapacity({
+                id: parsedGymId,
+                current_capacity: makeCapacity,
+            });
+            const updatedMember = await MembersRepository_1.default.updateAtGym({
+                inGym: true,
+                id: parsedMemberId,
+            });
+            return res.status(200).json({
+                message: 'Entrada registrada',
+                updatedCapacity,
+                updatedMember,
+            });
+        }
+        if (memberExists.at_gym === true) {
+            const makeCapacity = currentCapacity - 1;
+            const updatedCapacity = await GymsRepository_1.default.updateCurrentCapacity({
+                id: parsedGymId,
+                current_capacity: makeCapacity,
+            });
+            const updatedMember = await MembersRepository_1.default.updateAtGym({
+                inGym: false,
+                id: parsedMemberId,
+            });
+            return res
+                .status(200)
+                .json({ message: 'Saída registrada', updatedCapacity, updatedMember });
+        }
     }
 }
 exports.default = new GymsController();

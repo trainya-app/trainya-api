@@ -12,4 +12,5 @@ gymsRoutes.delete('/gyms/:id', GymsController_1.default.delete);
 gymsRoutes.get('/gyms/:id', GymsController_1.default.show);
 gymsRoutes.put('/gyms/password/:id', GymsController_1.default.updatePassword);
 gymsRoutes.put('/gyms/:id', GymsController_1.default.update);
+gymsRoutes.put('/gyms/capacity/:gymId/:memberId', GymsController_1.default.updateCapacity);
 exports.default = gymsRoutes;

@@ -106,5 +106,19 @@ class MembersRepository {
         });
         return id;
     }
+    async updateAtGym({ inGym, id }) {
+        const updatedMember = await member.update({
+            where: {
+                id,
+            },
+            data: {
+                at_gym: inGym,
+            },
+            select: {
+                at_gym: true,
+            },
+        });
+        return updatedMember;
+    }
 }
 exports.default = new MembersRepository();
