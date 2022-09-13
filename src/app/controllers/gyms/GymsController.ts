@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import GymsRepository from '../../repositories/gyms/GymsRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
+import MembersRepository from '../../repositories/members/MembersRepository';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -19,6 +20,8 @@ class GymsController {
       street,
       adressNumber,
       zipCode,
+      maxCapacity,
+      currentCapacity,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -30,6 +33,8 @@ class GymsController {
       street,
       adressNumber,
       zipCode,
+      maxCapacity,
+      currentCapacity,
     ]);
 
     if (someFieldIsEmpty) {
@@ -57,6 +62,8 @@ class GymsController {
       street,
       adress_number: Number(adressNumber),
       zip_code: Number(zipCode),
+      max_capacity: maxCapacity,
+      current_capacity: currentCapacity,
     });
 
     if (gym === null) {
@@ -139,8 +146,17 @@ class GymsController {
 
   async update(req: Request, res: Response) {
     const { id } = req.params;
-    const { name, email, state, city, street, adressNumber, zipCode } =
-      req.body;
+    const {
+      name,
+      email,
+      state,
+      city,
+      street,
+      adressNumber,
+      zipCode,
+      maxCapacity,
+      currentCapacity,
+    } = req.body;
 
     const parsedId = Number(id);
 
@@ -172,6 +188,12 @@ class GymsController {
     const zip_code = Number.isNaN(Number(zipCode))
       ? undefined
       : Number(zipCode);
+    const max_capacity = Number.isNaN(Number(maxCapacity))
+      ? undefined
+      : Number(maxCapacity);
+    const current_capacity = Number.isNaN(Number(currentCapacity))
+      ? undefined
+      : Number(zipCode);
 
     const updatedGym = await GymsRepository.updateGym({
       id: parsedId,
@@ -182,9 +204,71 @@ class GymsController {
       street,
       adress_number,
       zip_code,
+      current_capacity,
+      max_capacity,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
+  }
+
+  async updateCapacity(req: Request, res: Response) {
+    const { gymId, memberId } = req.params;
+
+    const parsedGymId = Number(gymId);
+    const parsedMemberId = Number(memberId);
+
+    const gymExists = await GymsRepository.findById(parsedGymId);
+    if (!gymExists) {
+      return res
+        .status(404)
+        .json({ message: 'Academia não encontrada', currentCapacity: null });
+    }
+
+    const memberExists = await MembersRepository.findById(parsedMemberId);
+    if (!memberExists) {
+      return res.status(404).json({
+        message: 'Membro não encontrado',
+        currentCapacity: gymExists.current_capacity,
+      });
+    }
+
+    const currentCapacity = gymExists.current_capacity;
+
+    if (memberExists.at_gym === false) {
+      const makeCapacity = currentCapacity + 1;
+      const updatedCapacity = await GymsRepository.updateCurrentCapacity({
+        id: parsedGymId,
+        current_capacity: makeCapacity,
+      });
+
+      const updatedMember = await MembersRepository.updateAtGym({
+        inGym: true,
+        id: parsedMemberId,
+      });
+
+      return res.status(200).json({
+        message: 'Entrada registrada',
+        updatedCapacity,
+        updatedMember,
+      });
+    }
+
+    if (memberExists.at_gym === true) {
+      const makeCapacity = currentCapacity - 1;
+      const updatedCapacity = await GymsRepository.updateCurrentCapacity({
+        id: parsedGymId,
+        current_capacity: makeCapacity,
+      });
+
+      const updatedMember = await MembersRepository.updateAtGym({
+        inGym: false,
+        id: parsedMemberId,
+      });
+
+      return res
+        .status(200)
+        .json({ message: 'Saída registrada', updatedCapacity, updatedMember });
+    }
   }
 }
 
