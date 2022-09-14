@@ -36,15 +36,10 @@ import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 8080;
-
-app.use(
-  cors({
-    origin: '*',
-  })
-);
 
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
