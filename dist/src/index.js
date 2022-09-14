@@ -37,7 +37,9 @@ const AuthRoles_routes_1 = __importDefault(require("./routes/AuthRoles.routes"))
 const AuthPermissions_routes_1 = __importDefault(require("./routes/AuthPermissions.routes"));
 const ACL_routes_1 = __importDefault(require("./routes/ACL.routes"));
 const AuthRolePermission_routes_1 = __importDefault(require("./routes/AuthRolePermission.routes"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {

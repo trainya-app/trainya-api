@@ -33,7 +33,9 @@ class MemberAuthController {
         }, secret, {
             expiresIn: process.env.EXPIRES_IN || '30d',
         });
-        return res.status(200).send({ message: 'Logado', token });
+        return res
+            .status(200)
+            .send({ message: 'Logado', token });
     }
 }
 exports.default = new MemberAuthController();
