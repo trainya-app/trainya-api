@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 // Login Routes
 app.use(authRoutes);
 // Auth verification
-app.use(AuthMiddleware);
+// app.use(AuthMiddleware);
 // Roles Routes
 app.use(rolesRoutes);
 // Employees Routes
