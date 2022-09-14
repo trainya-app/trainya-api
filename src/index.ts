@@ -33,10 +33,10 @@ import authPermissionsRoutes from './routes/AuthPermissions.routes';
 import aclRoutes from './routes/ACL.routes';
 import authRolePermissionsRoutes from './routes/AuthRolePermission.routes';
 import can, { is } from './app/middlewares/permissions';
-import cors from 'cors';
+// import cors from 'cors';
 
 const app = express();
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 8080;
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 // Login Routes
 app.use(authRoutes);
 // Auth verification
-app.use(AuthMiddleware);
+// app.use(AuthMiddleware);
 // Roles Routes
 app.use(rolesRoutes);
 // Employees Routes
