@@ -17,8 +17,9 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "commit": "cz",
+    "tsc": "tsc",
     "test": "npx autocannon -c 500 -d 30 --workers 10 --renderStatusCodes --latency --warmup [ -c 1 -d 2] https://trainya-app-api.herokuapp.com/workoutPlans",
-    "postinstall": "npm run build"
+    "postinstall": "npm run tsc"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
