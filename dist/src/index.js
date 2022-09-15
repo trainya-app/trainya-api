@@ -32,14 +32,13 @@ const Classes_routes_1 = __importDefault(require("./routes/Classes.routes"));
 const ClassesWeekDay_routes_1 = __importDefault(require("./routes/ClassesWeekDay.routes"));
 const MemberClasses_routes_1 = __importDefault(require("./routes/MemberClasses.routes"));
 const Auth_routes_1 = __importDefault(require("./routes/Auth.routes"));
-const AuthMiddleware_1 = __importDefault(require("./app/middlewares/AuthMiddleware"));
 const AuthRoles_routes_1 = __importDefault(require("./routes/AuthRoles.routes"));
 const AuthPermissions_routes_1 = __importDefault(require("./routes/AuthPermissions.routes"));
 const ACL_routes_1 = __importDefault(require("./routes/ACL.routes"));
 const AuthRolePermission_routes_1 = __importDefault(require("./routes/AuthRolePermission.routes"));
-// import cors from 'cors';
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
-// app.use(cors());
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
@@ -48,7 +47,7 @@ app.get('/', (req, res) => {
 // Login Routes
 app.use(Auth_routes_1.default);
 // Auth verification
-app.use(AuthMiddleware_1.default);
+// app.use(AuthMiddleware);
 // Roles Routes
 app.use(Roles_routes_1.default);
 // Employees Routes
