@@ -24,11 +24,11 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^28.1.6",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/mocha": "^9.1.1",
-    "@types/cors": "^2.8.12",
     "@types/node": "^17.0.39",
     "@types/typescript": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.27.0",
