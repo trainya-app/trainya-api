@@ -78,6 +78,22 @@ class WorkoutsRepository {
         level,
         duration,
       },
+      select: {
+        id: true,
+        employee_id: true,
+        employee: {
+          select: {
+            name: true,
+          },
+        },
+        title: true,
+        description: true,
+        type: true,
+        duration: true,
+        level: true,
+        preview_image_url: true,
+        video_url: true,
+      },
     });
     return createdWorkout;
   }

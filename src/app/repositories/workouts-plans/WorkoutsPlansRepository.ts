@@ -14,7 +14,18 @@ interface IUpdateWorkoutPlan {
 
 class WorkoutsPlansRepository {
   async findAll() {
-    const workoutPlans = await workoutPlan.findMany();
+    const workoutPlans = await workoutPlan.findMany({
+      select: {
+        id: true,
+        employee_id: true,
+        employee: {
+          select: {
+            name: true,
+          },
+        },
+        goal: true,
+      },
+    });
     return workoutPlans;
   }
 
@@ -23,6 +34,16 @@ class WorkoutsPlansRepository {
       data: {
         employee_id,
         goal,
+      },
+      select: {
+        id: true,
+        employee_id: true,
+        employee: {
+          select: {
+            name: true,
+          },
+        },
+        goal: true,
       },
     });
     return createdWorkoutPlan;

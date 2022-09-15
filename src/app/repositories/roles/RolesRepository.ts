@@ -9,7 +9,13 @@ interface IRole {
 
 class RolesRepository {
   async findAll() {
-    const roles = await role.findMany();
+    const roles = await role.findMany({
+      select: {
+        id: true,
+        title: true,
+        access_level: true,
+      },
+    });
 
     return roles;
   }

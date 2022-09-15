@@ -14,7 +14,39 @@ interface IUpdateWorkoutPlanWorkout {
 
 class WorkoutsPlansWorkoutsRepository {
   async findAll() {
-    const workoutPlanWorkouts = await workoutPlanWorkout.findMany();
+    const workoutPlanWorkouts = await workoutPlanWorkout.findMany({
+      select: {
+        workout_id: true,
+        workout: {
+          select: {
+            title: true,
+            type: true,
+          },
+        },
+        workouts_plan_id: true,
+        workoutsPlan: {
+          select: {
+            employee_id: true,
+            employee: {
+              select: {
+                name: true,
+              },
+            },
+            workoutPlanWorkout: {
+              select: {
+                workout: {
+                  select: {
+                    title: true,
+                    type: true,
+                  },
+                },
+              },
+            },
+            goal: true,
+          },
+        },
+      },
+    });
     return workoutPlanWorkouts;
   }
 
@@ -23,6 +55,37 @@ class WorkoutsPlansWorkoutsRepository {
       data: {
         workout_id,
         workouts_plan_id,
+      },
+      select: {
+        workout_id: true,
+        workout: {
+          select: {
+            title: true,
+            type: true,
+          },
+        },
+        workouts_plan_id: true,
+        workoutsPlan: {
+          select: {
+            employee_id: true,
+            employee: {
+              select: {
+                name: true,
+              },
+            },
+            workoutPlanWorkout: {
+              select: {
+                workout: {
+                  select: {
+                    title: true,
+                    type: true,
+                  },
+                },
+              },
+            },
+            goal: true,
+          },
+        },
       },
     });
     return createdWorkoutPlanWorkout;
