@@ -26,7 +26,25 @@ interface IUpdateWorkout {
 
 class WorkoutsRepository {
   async findAll() {
-    const workouts = await workout.findMany();
+    const workouts = await workout.findMany({
+      include: {
+        workoutExercise: {
+          select: {
+            id: true,
+            sets: true,
+            repetitions: true,
+            duration: true,
+            exercise: {
+              select: {
+                id: true,
+                name: true,
+                comment: true,
+              },
+            },
+          },
+        },
+      },
+    });
     return workouts;
   }
 
