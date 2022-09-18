@@ -289,11 +289,11 @@ model Workout {
   employee           Employee?            @relation(fields: [employee_id], references: [id]) //Reference
   employee_id        Int
   title              String
-  description        String               @db.VarChar(256)
-  type               String
-  preview_image_url  String               @db.VarChar(256)
-  video_url          String               @db.VarChar(256)
-  level              String
+  description        String?              @db.VarChar(256)
+  type               String?
+  preview_image_url  String?              @db.VarChar(256)
+  video_url          String?              @db.VarChar(256)
+  level              String?
   duration           String
   created_at         DateTime             @default(now())
   updated_at         DateTime             @updatedAt

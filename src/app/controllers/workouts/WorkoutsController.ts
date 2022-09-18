@@ -25,10 +25,8 @@ class WorkoutsController {
       employeeId,
       title,
       description,
-      type,
       previewImageUrl,
       videoUrl,
-      level,
       duration,
     ]);
     if (someFieldIsEmpty) {
