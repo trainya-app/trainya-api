@@ -21,14 +21,7 @@ class WorkoutsController {
       duration,
     } = req.body;
 
-    const someFieldIsEmpty = isSomeEmpty([
-      employeeId,
-      title,
-      description,
-      previewImageUrl,
-      videoUrl,
-      duration,
-    ]);
+    const someFieldIsEmpty = isSomeEmpty([employeeId, title, duration]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram preenchidos',
