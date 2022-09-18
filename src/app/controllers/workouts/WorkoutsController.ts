@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
+import WorkoutsExercisesRepository from '../../repositories/workouts/WorkoutsExercisesRepository';
 import WorkoutsRepository from '../../repositories/workouts/WorkoutsRepository';
 
 class WorkoutsController {
@@ -69,6 +70,9 @@ class WorkoutsController {
         workout: null,
       });
     }
+
+    // Delete all connections of workout and its exercises
+    await WorkoutsExercisesRepository.deleteByWorkoutId(parsedId);
 
     await WorkoutsRepository.delete(parsedId);
     return res.sendStatus(200);

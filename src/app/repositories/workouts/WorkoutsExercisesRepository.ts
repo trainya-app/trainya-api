@@ -85,6 +85,14 @@ class WorkoutsExercisesRepository {
 
     return updatedWorkoutExercise;
   }
+
+  async deleteByWorkoutId(workoutId: number) {
+    await workoutExercise.deleteMany({
+      where: {
+        workout_id: workoutId,
+      },
+    });
+  }
 }
 
 export default new WorkoutsExercisesRepository();
