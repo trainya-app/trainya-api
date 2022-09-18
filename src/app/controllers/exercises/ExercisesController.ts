@@ -11,7 +11,7 @@ class ExercisesController {
   async store(req: Request, res: Response) {
     const { name, comment, needsEquipment } = req.body;
 
-    const someFieldIsEmpty = isSomeEmpty([name, comment, needsEquipment]);
+    const someFieldIsEmpty = isSomeEmpty([name, needsEquipment]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',
