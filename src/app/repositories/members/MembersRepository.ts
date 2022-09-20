@@ -11,11 +11,14 @@ interface IMember {
   city: string;
   street: string;
   adress_number: string;
+  birth_date: string;
+  avatar_url: string;
 }
 
 interface IUpdateMember {
   id: number;
   phone: string;
+  birth_date: string;
   name: string;
   weight?: number;
   height?: number;
@@ -69,6 +72,8 @@ class MembersRepository {
     city,
     street,
     adress_number,
+    birth_date,
+    avatar_url,
   }: IMember) {
     try {
       const createdMember = await member.create({
@@ -83,6 +88,8 @@ class MembersRepository {
           city,
           street,
           adress_number,
+          birth_date,
+          avatar_url,
         },
       });
 
@@ -138,6 +145,7 @@ class MembersRepository {
     city,
     street,
     adress_number,
+    birth_date,
   }: IUpdateMember) {
     const updatedMember = await member.update({
       where: {
@@ -154,6 +162,7 @@ class MembersRepository {
         city,
         street,
         adress_number,
+        birth_date,
       },
     });
 
@@ -183,6 +192,18 @@ class MembersRepository {
       },
       select: {
         at_gym: true,
+      },
+    });
+
+    return updatedMember;
+  }
+  async updateAvatar({ id, avatar_url }: { id: number; avatar_url: string }) {
+    const updatedMember = await member.update({
+      where: {
+        id,
+      },
+      data: {
+        avatar_url,
       },
     });
 

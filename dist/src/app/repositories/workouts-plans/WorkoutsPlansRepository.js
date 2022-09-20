@@ -4,7 +4,18 @@ const client_1 = require("@prisma/client");
 const { workoutPlan } = new client_1.PrismaClient();
 class WorkoutsPlansRepository {
     async findAll() {
-        const workoutPlans = await workoutPlan.findMany();
+        const workoutPlans = await workoutPlan.findMany({
+            select: {
+                id: true,
+                employee_id: true,
+                employee: {
+                    select: {
+                        name: true,
+                    },
+                },
+                goal: true,
+            },
+        });
         return workoutPlans;
     }
     async create({ employee_id, goal }) {
@@ -12,6 +23,16 @@ class WorkoutsPlansRepository {
             data: {
                 employee_id,
                 goal,
+            },
+            select: {
+                id: true,
+                employee_id: true,
+                employee: {
+                    select: {
+                        name: true,
+                    },
+                },
+                goal: true,
             },
         });
         return createdWorkoutPlan;

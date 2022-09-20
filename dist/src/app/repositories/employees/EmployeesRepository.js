@@ -4,7 +4,28 @@ const client_1 = require("@prisma/client");
 const { employee } = new client_1.PrismaClient();
 class EmployeesRepository {
     async findAll() {
-        const employees = await employee.findMany();
+        const employees = await employee.findMany({
+            select: {
+                id: true,
+                name: true,
+                birth_date: true,
+                daily_workload: true,
+                weekdays_workload: true,
+                phone: true,
+                email: true,
+                password: true,
+                wage: true,
+                payment_date: true,
+                profile_img: true,
+                role_id: true,
+                role: {
+                    select: {
+                        title: true,
+                        access_level: true,
+                    },
+                },
+            },
+        });
         return employees;
     }
     async findByEmail({ email }) {
@@ -51,6 +72,12 @@ class EmployeesRepository {
                 wage: true,
                 payment_date: true,
                 profile_img: true,
+                role: {
+                    select: {
+                        title: true,
+                        access_level: true,
+                    },
+                },
             },
         });
         return createdEmployee;

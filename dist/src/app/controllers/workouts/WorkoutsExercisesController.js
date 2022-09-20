@@ -13,13 +13,12 @@ class WorkoutsExercisesController {
         res.send({ workoutsExercises });
     }
     async store(req, res) {
-        const { workoutId, exerciseId, sets, repetitions, duration } = req.body;
+        const { workoutId, exerciseId, sets, repetitions } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             workoutId,
             exerciseId,
             sets,
             repetitions,
-            duration,
         ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -46,7 +45,7 @@ class WorkoutsExercisesController {
             exercise_id: exerciseId,
             sets,
             repetitions,
-            duration,
+            duration: 0,
         });
         return res
             .status(200)

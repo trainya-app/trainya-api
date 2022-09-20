@@ -4,7 +4,24 @@ const client_1 = require("@prisma/client");
 const { workoutExercise } = new client_1.PrismaClient();
 class WorkoutsExercisesRepository {
     async findAll() {
-        const workoutsExercises = await workoutExercise.findMany();
+        const workoutsExercises = await workoutExercise.findMany({
+            select: {
+                workout_id: true,
+                workout: {
+                    select: {
+                        title: true,
+                        type: true,
+                    },
+                },
+                exercise_id: true,
+                exercise: {
+                    select: {
+                        name: true,
+                        comment: true,
+                    },
+                },
+            },
+        });
         return workoutsExercises;
     }
     async create({ workout_id, exercise_id, sets, repetitions, duration, }) {
@@ -15,6 +32,22 @@ class WorkoutsExercisesRepository {
                 sets,
                 repetitions,
                 duration,
+            },
+            select: {
+                workout_id: true,
+                workout: {
+                    select: {
+                        title: true,
+                        type: true,
+                    },
+                },
+                exercise_id: true,
+                exercise: {
+                    select: {
+                        name: true,
+                        comment: true,
+                    },
+                },
             },
         });
         return createdWorkoutExercise;
@@ -49,6 +82,13 @@ class WorkoutsExercisesRepository {
             },
         });
         return updatedWorkoutExercise;
+    }
+    async deleteByWorkoutId(workoutId) {
+        await workoutExercise.deleteMany({
+            where: {
+                workout_id: workoutId,
+            },
+        });
     }
 }
 exports.default = new WorkoutsExercisesRepository();

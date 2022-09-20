@@ -22,7 +22,8 @@ class MembersController {
       city,
       street,
       adressNumber,
-      atGym,
+      birthDate,
+      avatarUrl,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -36,6 +37,7 @@ class MembersController {
       city,
       street,
       adressNumber,
+      avatarUrl,
     ]);
 
     if (someFieldIsEmpty) {
@@ -64,6 +66,8 @@ class MembersController {
       city,
       street,
       adress_number: adressNumber,
+      birth_date: birthDate,
+      avatar_url: avatarUrl,
     });
 
     if (member == null) {
@@ -160,6 +164,7 @@ class MembersController {
       city,
       street,
       adressNumber,
+      birthDate,
     } = req.body;
 
     const memberExists = await MembersRepository.findById(parsedId);
@@ -199,9 +204,31 @@ class MembersController {
       city,
       street,
       adress_number: adressNumber,
+      birth_date: birthDate,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
+  }
+
+  async uploadAvatar(req: Request, res: Response) {
+    const memberId = req.userId;
+    const parsedId = Number(memberId);
+    const avatar_url = req.firebaseUrl;
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    const updatedMember = await MembersRepository.updateAvatar({
+      id: Number(memberId),
+      avatar_url,
+    });
+    return res
+      .status(200)
+      .json({ message: 'Avatar atualizado', updatedMember });
   }
 }
 
