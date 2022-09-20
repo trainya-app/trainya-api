@@ -11,6 +11,8 @@ interface IMember {
   city: string;
   street: string;
   adress_number: string;
+  birth_date: string;
+  avatar_url: string;
 }
 
 interface IUpdateMember {
@@ -69,6 +71,8 @@ class MembersRepository {
     city,
     street,
     adress_number,
+    birth_date,
+    avatar_url,
   }: IMember) {
     try {
       const createdMember = await member.create({
@@ -83,6 +87,8 @@ class MembersRepository {
           city,
           street,
           adress_number,
+          birth_date,
+          avatar_url,
         },
       });
 

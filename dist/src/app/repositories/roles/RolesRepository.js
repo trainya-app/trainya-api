@@ -4,7 +4,13 @@ const client_1 = require("@prisma/client");
 const { role } = new client_1.PrismaClient();
 class RolesRepository {
     async findAll() {
-        const roles = await role.findMany();
+        const roles = await role.findMany({
+            select: {
+                id: true,
+                title: true,
+                access_level: true,
+            },
+        });
         return roles;
     }
     async findByTitle({ title }) {

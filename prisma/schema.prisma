@@ -52,8 +52,10 @@ model MemberGoal {
 
 model Member {
   id                  Int                   @id @default(autoincrement())
+  avatar_url          String?
   phone               String
   name                String                @db.VarChar(256)
+  birth_date          String                @default("")
   weight              Decimal
   height              Decimal
   email               String
