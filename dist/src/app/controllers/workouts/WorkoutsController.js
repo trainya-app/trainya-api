@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
+const WorkoutsExercisesRepository_1 = __importDefault(require("../../repositories/workouts/WorkoutsExercisesRepository"));
 const WorkoutsRepository_1 = __importDefault(require("../../repositories/workouts/WorkoutsRepository"));
 class WorkoutsController {
     async index(req, res) {
@@ -13,16 +14,7 @@ class WorkoutsController {
     }
     async store(req, res) {
         const { employeeId, title, description, type, previewImageUrl, videoUrl, level, duration, } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
-            employeeId,
-            title,
-            description,
-            type,
-            previewImageUrl,
-            videoUrl,
-            level,
-            duration,
-        ]);
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([employeeId, title, duration]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram preenchidos',
@@ -65,6 +57,8 @@ class WorkoutsController {
                 workout: null,
             });
         }
+        // Delete all connections of workout and its exercises
+        await WorkoutsExercisesRepository_1.default.deleteByWorkoutId(parsedId);
         await WorkoutsRepository_1.default.delete(parsedId);
         return res.sendStatus(200);
     }

@@ -12,7 +12,7 @@ class MembersController {
         return res.json({ members });
     }
     async store(req, res) {
-        const { phone, name, weight, height, email, password, state, city, street, adressNumber, atGym, } = req.body;
+        const { phone, name, weight, height, email, password, state, city, street, adressNumber, birthDate, avatarUrl, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             phone,
             name,
@@ -24,6 +24,7 @@ class MembersController {
             city,
             street,
             adressNumber,
+            avatarUrl,
         ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -49,6 +50,8 @@ class MembersController {
             city,
             street,
             adress_number: adressNumber,
+            birth_date: birthDate,
+            avatar_url: avatarUrl,
         });
         if (member == null) {
             return res.status(400).json({
@@ -149,6 +152,17 @@ class MembersController {
             adress_number: adressNumber,
         });
         return res.json({ message: 'Dados atualizados!', updatedGym });
+    }
+    async uploadAvatar(req, res) {
+        const { id } = req.params;
+        const parsedId = Number(id);
+        const memberExists = await MembersRepository_1.default.findById(parsedId);
+        if (!memberExists) {
+            return res
+                .status(404)
+                .json({ message: 'Membro não encontrado', member: null });
+        }
+        // const avatar = req.file.filename;
     }
 }
 exports.default = new MembersController();

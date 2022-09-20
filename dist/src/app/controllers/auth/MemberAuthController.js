@@ -15,17 +15,20 @@ class MemberAuthController {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram inseridos',
                 member: null,
+                token: null,
             });
         }
         const memberExists = await MembersRepository_1.default.findByEmail({ email });
         if (!memberExists) {
             return res
                 .status(400)
-                .json({ message: 'Email não existe', member: null });
+                .json({ message: 'Email não existe', member: null, token: null });
         }
         const checkPassword = await bcrypt_1.default.compare(password, memberExists.password);
         if (!checkPassword) {
-            return res.status(400).json({ message: 'Senha incorreta', member: null });
+            return res
+                .status(400)
+                .json({ message: 'Senha incorreta', member: null, token: null });
         }
         const secret = process.env.SECRET || 'secret';
         const token = jsonwebtoken_1.default.sign({
@@ -33,9 +36,7 @@ class MemberAuthController {
         }, secret, {
             expiresIn: process.env.EXPIRES_IN || '30d',
         });
-        return res
-            .status(200)
-            .send({ message: 'Logado', token });
+        return res.status(200).send({ message: 'Logado', token });
     }
 }
 exports.default = new MemberAuthController();

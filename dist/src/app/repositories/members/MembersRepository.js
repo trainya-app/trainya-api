@@ -23,7 +23,7 @@ class MembersRepository {
         });
         return memberExists;
     }
-    async create({ phone, name, weight, height, email, password, state, city, street, adress_number, }) {
+    async create({ phone, name, weight, height, email, password, state, city, street, adress_number, birth_date, avatar_url, }) {
         try {
             const createdMember = await member.create({
                 data: {
@@ -37,6 +37,8 @@ class MembersRepository {
                     city,
                     street,
                     adress_number,
+                    birth_date,
+                    avatar_url,
                 },
             });
             return createdMember;

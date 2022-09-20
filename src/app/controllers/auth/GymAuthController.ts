@@ -11,19 +11,24 @@ class GymAuthController {
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram inseridos',
-        member: null,
+        gym: null,
+        token: null,
       });
     }
 
     const gymExists = await GymsRepository.findByEmail({ email });
     if (!gymExists) {
-      return res.status(400).json({ message: 'Email não existe', gym: null });
+      return res
+        .status(400)
+        .json({ message: 'Email não existe', gym: null, token: null });
     }
 
     const checkPassword = await bcrypt.compare(password, gymExists.password);
 
     if (!checkPassword) {
-      return res.status(400).json({ message: 'Senha incorreta', gym: null });
+      return res
+        .status(400)
+        .json({ message: 'Senha incorreta', gym: null, token: null });
     }
 
     const secret = process.env.SECRET || 'secret';

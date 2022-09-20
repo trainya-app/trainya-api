@@ -16,7 +16,13 @@ interface IUpdateExercises {
 
 class ExercisesRepository {
   async findAll() {
-    const exercises = await exercise.findMany();
+    const exercises = await exercise.findMany({
+      select: {
+        name: true,
+        comment: true,
+        needs_equipment: true,
+      },
+    });
     return exercises;
   }
 
@@ -35,6 +41,12 @@ class ExercisesRepository {
         name,
         comment,
         needs_equipment,
+      },
+      select: {
+        id: true,
+        name: true,
+        comment: true,
+        needs_equipment: true,
       },
     });
     return createdExercise;

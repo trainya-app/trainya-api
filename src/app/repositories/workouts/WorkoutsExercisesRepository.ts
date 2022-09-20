@@ -19,7 +19,24 @@ interface IUpdateWorkoutExercise {
 }
 class WorkoutsExercisesRepository {
   async findAll() {
-    const workoutsExercises = await workoutExercise.findMany();
+    const workoutsExercises = await workoutExercise.findMany({
+      select: {
+        workout_id: true,
+        workout: {
+          select: {
+            title: true,
+            type: true,
+          },
+        },
+        exercise_id: true,
+        exercise: {
+          select: {
+            name: true,
+            comment: true,
+          },
+        },
+      },
+    });
     return workoutsExercises;
   }
 
@@ -37,6 +54,22 @@ class WorkoutsExercisesRepository {
         sets,
         repetitions,
         duration,
+      },
+      select: {
+        workout_id: true,
+        workout: {
+          select: {
+            title: true,
+            type: true,
+          },
+        },
+        exercise_id: true,
+        exercise: {
+          select: {
+            name: true,
+            comment: true,
+          },
+        },
       },
     });
     return createdWorkoutExercise;

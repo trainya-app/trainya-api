@@ -14,16 +14,21 @@ class GymAuthController {
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram inseridos',
-                member: null,
+                gym: null,
+                token: null,
             });
         }
         const gymExists = await GymsRepository_1.default.findByEmail({ email });
         if (!gymExists) {
-            return res.status(400).json({ message: 'Email não existe', gym: null });
+            return res
+                .status(400)
+                .json({ message: 'Email não existe', gym: null, token: null });
         }
         const checkPassword = await bcrypt_1.default.compare(password, gymExists.password);
         if (!checkPassword) {
-            return res.status(400).json({ message: 'Senha incorreta', gym: null });
+            return res
+                .status(400)
+                .json({ message: 'Senha incorreta', gym: null, token: null });
         }
         const secret = process.env.SECRET || 'secret';
         const token = jsonwebtoken_1.default.sign({
