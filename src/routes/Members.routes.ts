@@ -10,7 +10,7 @@ membersRoutes.post('/members', MembersController.store);
 membersRoutes.delete('/members/:id', MembersController.delete);
 membersRoutes.put('/members/password/:id', MembersController.updatePassword);
 membersRoutes.put('/members/:id', MembersController.update);
-membersRoutes.post(
+membersRoutes.put(
   '/members/avatar/:id',
   MulterMiddleware.single('avatar'),
   uploadFile,

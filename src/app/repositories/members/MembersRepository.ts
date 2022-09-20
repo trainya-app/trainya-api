@@ -194,6 +194,18 @@ class MembersRepository {
 
     return updatedMember;
   }
+  async updateAvatar({ id, avatar_url }: { id: number; avatar_url: string }) {
+    const updatedMember = await member.update({
+      where: {
+        id,
+      },
+      data: {
+        avatar_url,
+      },
+    });
+
+    return updatedMember;
+  }
 }
 
 export default new MembersRepository();

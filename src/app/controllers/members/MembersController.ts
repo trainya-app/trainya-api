@@ -209,8 +209,9 @@ class MembersController {
   }
 
   async uploadAvatar(req: Request, res: Response) {
-    const { id } = req.params;
-    const parsedId = Number(id);
+    const memberId = req.userId;
+    const parsedId = Number(memberId);
+    const avatar_url = req.firebaseUrl;
 
     const memberExists = await MembersRepository.findById(parsedId);
     if (!memberExists) {
@@ -218,10 +219,15 @@ class MembersController {
         .status(404)
         .json({ message: 'Membro não encontrado', member: null });
     }
+    // console.log(avatar_url);
 
-    return console.log(req.firebaseUrl);
-
-    // const avatar = req.file.filename;
+    const updatedMember = await MembersRepository.updateAvatar({
+      id: parsedId,
+      avatar_url,
+    });
+    return res
+      .status(200)
+      .json({ message: 'Avatar atualizado', updatedMember });
   }
 }
 

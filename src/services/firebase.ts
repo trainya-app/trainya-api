@@ -16,11 +16,12 @@ const uploadFile = (req: Request, res: Response, next: NextFunction) => {
   if (!req.file) {
     return next();
   }
+  const userId = req.userId;
 
   const reqFile = req.file;
-  const fileName = Date.now() + '.' + reqFile.originalname.split('.').pop();
+  const fileName = userId + '.' + reqFile.originalname.split('.').pop();
 
-  const file = bucket.file(fileName);
+  const file = bucket.file('avatars/' + fileName);
 
   const stream = file.createWriteStream({
     metadata: {
@@ -28,7 +29,7 @@ const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     },
   });
 
-  stream.on('erorr', (err) => {
+  stream.on('error', (err) => {
     console.error(err);
   });
 
@@ -37,7 +38,7 @@ const uploadFile = (req: Request, res: Response, next: NextFunction) => {
     await file.makePublic();
 
     //set url public
-    req.firebaseUrl = `https://storage.googleapis.com/${BUCKET}/${fileName}`;
+    req.firebaseUrl = `https://storage.googleapis.com/${BUCKET}/avatars/${fileName}`;
     next();
   });
 
