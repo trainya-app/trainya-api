@@ -12,11 +12,7 @@ class ExercisesController {
     const { name, comment, needsEquipment } = req.body;
     console.log({ name, comment, needsEquipment });
 
-<<<<<<< HEAD
     const someFieldIsEmpty = isSomeEmpty([name, needsEquipment, comment]);
-=======
-    const someFieldIsEmpty = isSomeEmpty([name, needsEquipment]);
->>>>>>> 208eddd (feat(multer): create MulterMiddleware for images upload)
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',

@@ -13,11 +13,7 @@ class ExercisesController {
     async store(req, res) {
         const { name, comment, needsEquipment } = req.body;
         console.log({ name, comment, needsEquipment });
-<<<<<<< HEAD
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, needsEquipment, comment]);
-=======
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, needsEquipment]);
->>>>>>> 208eddd (feat(multer): create MulterMiddleware for images upload)
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram enviados',

@@ -153,5 +153,16 @@ class MembersController {
         });
         return res.json({ message: 'Dados atualizados!', updatedGym });
     }
+    async uploadAvatar(req, res) {
+        const { id } = req.params;
+        const parsedId = Number(id);
+        const memberExists = await MembersRepository_1.default.findById(parsedId);
+        if (!memberExists) {
+            return res
+                .status(404)
+                .json({ message: 'Membro não encontrado', member: null });
+        }
+        // const avatar = req.file.filename;
+    }
 }
 exports.default = new MembersController();

@@ -207,6 +207,22 @@ class MembersController {
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
   }
+
+  async uploadAvatar(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    return console.log(req.firebaseUrl);
+
+    // const avatar = req.file.filename;
+  }
 }
 
 export default new MembersController();

@@ -7,3 +7,4 @@ const multer_1 = __importDefault(require("multer"));
 const Multer = (0, multer_1.default)({
     storage: multer_1.default.memoryStorage(),
 });
+exports.default = Multer;
