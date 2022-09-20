@@ -164,6 +164,7 @@ class MembersController {
       city,
       street,
       adressNumber,
+      birthDate,
     } = req.body;
 
     const memberExists = await MembersRepository.findById(parsedId);
@@ -203,6 +204,7 @@ class MembersController {
       city,
       street,
       adress_number: adressNumber,
+      birth_date: birthDate,
     });
 
     return res.json({ message: 'Dados atualizados!', updatedGym });
@@ -219,10 +221,9 @@ class MembersController {
         .status(404)
         .json({ message: 'Membro não encontrado', member: null });
     }
-    // console.log(avatar_url);
 
     const updatedMember = await MembersRepository.updateAvatar({
-      id: parsedId,
+      id: Number(memberId),
       avatar_url,
     });
     return res

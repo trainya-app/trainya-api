@@ -14,7 +14,22 @@ interface IUpdateGymMember {
 
 class GymsMembersRepository {
   async findAll() {
-    const gymMembers = await gymMember.findMany();
+    const gymMembers = await gymMember.findMany({
+      select: {
+        id: true,
+        gym: {
+          select: {
+            name: true,
+          },
+        },
+        member_id: true,
+        member: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
 
     return gymMembers;
   }
@@ -24,6 +39,19 @@ class GymsMembersRepository {
       data: {
         gym_id,
         member_id,
+      },
+      select: {
+        id: true,
+        gym: {
+          select: {
+            name: true,
+          },
+        },
+        member: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 

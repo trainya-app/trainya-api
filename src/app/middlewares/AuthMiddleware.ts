@@ -26,7 +26,7 @@ export default function AuthMiddleware(
     const data = jwt.verify(token, process.env.SECRET || 'secret');
     const { id } = data as TokenPayload;
 
-    req.userId = id;
+    req.userId = Number(id);
 
     return next();
   } catch {

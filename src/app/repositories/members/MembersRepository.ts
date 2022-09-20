@@ -18,6 +18,7 @@ interface IMember {
 interface IUpdateMember {
   id: number;
   phone: string;
+  birth_date: string;
   name: string;
   weight?: number;
   height?: number;
@@ -144,6 +145,7 @@ class MembersRepository {
     city,
     street,
     adress_number,
+    birth_date,
   }: IUpdateMember) {
     const updatedMember = await member.update({
       where: {
@@ -160,6 +162,7 @@ class MembersRepository {
         city,
         street,
         adress_number,
+        birth_date,
       },
     });
 
