@@ -98,6 +98,7 @@ class GymsMembersRepository {
       },
       select: {
         id: true,
+        gym_id: true,
         gym: {
           select: {
             name: true,
