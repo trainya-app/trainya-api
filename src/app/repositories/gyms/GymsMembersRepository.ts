@@ -90,6 +90,23 @@ class GymsMembersRepository {
 
     return updatedGymMember;
   }
+
+  async findByMember(member_id: number) {
+    const gymMemberExists = await gymMember.findFirst({
+      where: {
+        member_id,
+      },
+      select: {
+        id: true,
+        gym: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    return gymMemberExists;
+  }
 }
 
 export default new GymsMembersRepository();

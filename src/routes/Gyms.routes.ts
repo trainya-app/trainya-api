@@ -13,5 +13,6 @@ gymsRoutes.put(
   '/gyms/capacity/:gymId/:memberId',
   GymsController.updateCapacity
 );
+gymsRoutes.get('/gyms/member', GymsController.showByMember);
 
 export default gymsRoutes;
