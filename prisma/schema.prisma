@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex"]
 }
 
 datasource db {
@@ -750,4 +751,14 @@ model EmployeePermision {
   updated_at    DateTime        @updatedAt
 
   @@map("employees_permissions")
+}
+
+//// Terms Section
+model Term {
+  id      Int    @id @default(autoincrement())
+  title   String @default("Termos e Condições")
+  content String @db.Text
+
+  @@fulltext([content])
+  @@map("terms")
 }

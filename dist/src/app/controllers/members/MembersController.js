@@ -116,7 +116,7 @@ class MembersController {
     async update(req, res) {
         const { id } = req.params;
         const parsedId = Number(id);
-        const { phone, name, weight, height, email, password, state, city, street, adressNumber, } = req.body;
+        const { phone, name, weight, height, email, password, state, city, street, adressNumber, birthDate, } = req.body;
         const memberExists = await MembersRepository_1.default.findById(parsedId);
         if (!memberExists) {
             return res
@@ -126,6 +126,7 @@ class MembersController {
         const emailExists = await MembersRepository_1.default.findByEmail(email);
         if (emailExists) {
             const idByEmail = await MembersRepository_1.default.findIdByEmail(email);
+            console.log(idByEmail);
             let id = idByEmail.id;
             if (id != parsedId) {
                 return res
@@ -150,19 +151,27 @@ class MembersController {
             city,
             street,
             adress_number: adressNumber,
+            birth_date: birthDate,
         });
         return res.json({ message: 'Dados atualizados!', updatedGym });
     }
     async uploadAvatar(req, res) {
-        const { id } = req.params;
-        const parsedId = Number(id);
+        const memberId = req.userId;
+        const parsedId = Number(memberId);
+        const avatar_url = req.firebaseUrl;
         const memberExists = await MembersRepository_1.default.findById(parsedId);
         if (!memberExists) {
             return res
                 .status(404)
                 .json({ message: 'Membro não encontrado', member: null });
         }
-        // const avatar = req.file.filename;
+        const updatedMember = await MembersRepository_1.default.updateAvatar({
+            id: Number(memberId),
+            avatar_url,
+        });
+        return res
+            .status(200)
+            .json({ message: 'Avatar atualizado', updatedMember });
     }
 }
 exports.default = new MembersController();

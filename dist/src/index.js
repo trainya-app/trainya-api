@@ -37,10 +37,13 @@ const AuthRoles_routes_1 = __importDefault(require("./routes/AuthRoles.routes"))
 const AuthPermissions_routes_1 = __importDefault(require("./routes/AuthPermissions.routes"));
 const ACL_routes_1 = __importDefault(require("./routes/ACL.routes"));
 const AuthRolePermission_routes_1 = __importDefault(require("./routes/AuthRolePermission.routes"));
+const Terms_routes_1 = __importDefault(require("./routes/Terms.routes"));
 const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+app.use(body_parser_1.default.text());
 const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
     res.send('🔷 Trainya App');
@@ -111,4 +114,6 @@ app.use(AuthPermissions_routes_1.default);
 app.use(ACL_routes_1.default);
 // Auth Role Permission Routes
 app.use(AuthRolePermission_routes_1.default);
+// Terms Routes
+app.use(Terms_routes_1.default);
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
