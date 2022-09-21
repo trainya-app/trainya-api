@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import GymsRepository from '../../repositories/gyms/GymsRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import MembersRepository from '../../repositories/members/MembersRepository';
+import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -269,6 +270,14 @@ class GymsController {
         .status(200)
         .json({ message: 'Saída registrada', updatedCapacity, updatedMember });
     }
+  }
+
+  async showByMember(req: Request, res: Response) {
+    const memberId = req.userId;
+
+    const gym = await GymsMembersRepository.findByMember(memberId);
+
+    return res.status(200).json({ message: 'Academia encontrada', gym });
   }
 }
 
