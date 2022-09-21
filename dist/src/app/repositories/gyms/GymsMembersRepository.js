@@ -4,7 +4,22 @@ const client_1 = require("@prisma/client");
 const { gymMember } = new client_1.PrismaClient();
 class GymsMembersRepository {
     async findAll() {
-        const gymMembers = await gymMember.findMany();
+        const gymMembers = await gymMember.findMany({
+            select: {
+                id: true,
+                gym: {
+                    select: {
+                        name: true,
+                    },
+                },
+                member_id: true,
+                member: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+        });
         return gymMembers;
     }
     async create({ gym_id, member_id }) {
@@ -12,6 +27,19 @@ class GymsMembersRepository {
             data: {
                 gym_id,
                 member_id,
+            },
+            select: {
+                id: true,
+                gym: {
+                    select: {
+                        name: true,
+                    },
+                },
+                member: {
+                    select: {
+                        name: true,
+                    },
+                },
             },
         });
         return createdGymMember;
