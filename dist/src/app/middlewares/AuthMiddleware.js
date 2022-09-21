@@ -16,7 +16,7 @@ function AuthMiddleware(req, res, next) {
     try {
         const data = jsonwebtoken_1.default.verify(token, process.env.SECRET || 'secret');
         const { id } = data;
-        req.userId = id;
+        req.userId = Number(id);
         return next();
     }
     catch (_a) {

@@ -177,6 +177,7 @@ class MembersController {
     const emailExists = await MembersRepository.findByEmail(email);
     if (emailExists) {
       const idByEmail = await MembersRepository.findIdByEmail(email);
+      console.log(idByEmail);
       let id = idByEmail.id;
       if (id != parsedId) {
         return res

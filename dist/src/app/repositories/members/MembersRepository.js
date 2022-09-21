@@ -77,7 +77,7 @@ class MembersRepository {
         });
         return updatedPassword;
     }
-    async updateMember({ id, phone, name, weight, height, email, password, state, city, street, adress_number, }) {
+    async updateMember({ id, phone, name, weight, height, email, password, state, city, street, adress_number, birth_date, }) {
         const updatedMember = await member.update({
             where: {
                 id,
@@ -93,6 +93,7 @@ class MembersRepository {
                 city,
                 street,
                 adress_number,
+                birth_date,
             },
         });
         return updatedMember;
@@ -118,6 +119,17 @@ class MembersRepository {
             },
             select: {
                 at_gym: true,
+            },
+        });
+        return updatedMember;
+    }
+    async updateAvatar({ id, avatar_url }) {
+        const updatedMember = await member.update({
+            where: {
+                id,
+            },
+            data: {
+                avatar_url,
             },
         });
         return updatedMember;
