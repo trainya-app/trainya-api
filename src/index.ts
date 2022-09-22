@@ -112,6 +112,7 @@ app.use(aclRoutes);
 // Auth Role Permission Routes
 app.use(authRolePermissionsRoutes);
 // Terms Routes
+
 app.use(termsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
