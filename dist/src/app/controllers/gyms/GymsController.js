@@ -7,6 +7,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const GymsRepository_1 = __importDefault(require("../../repositories/gyms/GymsRepository"));
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
+const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
@@ -204,6 +205,11 @@ class GymsController {
                 .status(200)
                 .json({ message: 'Saída registrada', updatedCapacity, updatedMember });
         }
+    }
+    async showByMember(req, res) {
+        const memberId = req.userId;
+        const gym = await GymsMembersRepository_1.default.findByMember(memberId);
+        return res.status(200).json({ message: 'Academia encontrada', gym });
     }
 }
 exports.default = new GymsController();

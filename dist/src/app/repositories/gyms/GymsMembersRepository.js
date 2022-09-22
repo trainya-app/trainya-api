@@ -72,5 +72,22 @@ class GymsMembersRepository {
         });
         return updatedGymMember;
     }
+    async findByMember(member_id) {
+        const gymMemberExists = await gymMember.findFirst({
+            where: {
+                member_id,
+            },
+            select: {
+                id: true,
+                gym_id: true,
+                gym: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+        });
+        return gymMemberExists;
+    }
 }
 exports.default = new GymsMembersRepository();

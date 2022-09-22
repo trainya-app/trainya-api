@@ -43,7 +43,6 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.use(body_parser_1.default.text());
 const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
     res.send('🔷 Trainya App');
@@ -115,5 +114,6 @@ app.use(ACL_routes_1.default);
 // Auth Role Permission Routes
 app.use(AuthRolePermission_routes_1.default);
 // Terms Routes
+app.use(body_parser_1.default.text());
 app.use(Terms_routes_1.default);
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

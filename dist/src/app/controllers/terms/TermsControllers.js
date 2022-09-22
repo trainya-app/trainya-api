@@ -21,16 +21,15 @@ class TermsController {
         return res.status(200).json({ message: 'Termo de uso criado', term });
     }
     async update(req, res) {
-        const { content } = req.body;
-        console.log(req.body);
-        // const termExists = await TermsRepository.getTerms();
-        // if (!termExists) {
-        //   return res
-        //     .status(404)
-        //     .json({ message: 'Termos de uso não cadastrados', term: null });
-        // }
-        // const term = await TermsRepository.update({ id: termExists.id, content });
-        // return res.status(200).json({ message: 'Termo de uso atualizado', term });
+        const content = req.body;
+        const termExists = await TermsRepository_1.default.getTerms();
+        if (!termExists) {
+            return res
+                .status(404)
+                .json({ message: 'Termos de uso não cadastrados', term: null });
+        }
+        const term = await TermsRepository_1.default.update({ id: termExists.id, content });
+        return res.status(200).json({ message: 'Termo de uso atualizado', term });
     }
 }
 exports.default = new TermsController();
