@@ -32,7 +32,7 @@ import authRolesRoutes from './routes/AuthRoles.routes';
 import authPermissionsRoutes from './routes/AuthPermissions.routes';
 import aclRoutes from './routes/ACL.routes';
 import authRolePermissionsRoutes from './routes/AuthRolePermission.routes';
-import termsRoutes from './routes/Terms.routes';
+// import termsRoutes from './routes/Terms.routes';
 import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 
@@ -112,6 +112,6 @@ app.use(aclRoutes);
 // Auth Role Permission Routes
 app.use(authRolePermissionsRoutes);
 // Terms Routes
-app.use(termsRoutes);
+// app.use(termsRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
