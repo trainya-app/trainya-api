@@ -229,9 +229,9 @@ model MemberWorkoutPlan {
   member_id        Int
   workoutPlan      WorkoutPlan? @relation(fields: [workouts_plan_id], references: [id]) //Reference
   workouts_plan_id Int
-  started_at       String
+  started_at       String?
   finish_at        String
-  finished_at      String
+  finished_at      String?
   created_at       DateTime     @default(now())
   updated_at       DateTime     @updatedAt
 

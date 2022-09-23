@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
+import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -230,6 +231,24 @@ class MembersController {
     return res
       .status(200)
       .json({ message: 'Avatar atualizado', updatedMember });
+  }
+
+  async showWorkouts(req: Request, res: Response) {
+    const memberId = req.userId;
+
+    const memberWorkouts = await MembersWorkoutsPlansRepository.findByMemberId(
+      memberId
+    );
+    if (!memberWorkouts) {
+      return res.status(404).json({
+        message: 'Você ainda não possui planos de treino',
+        memberWorkouts: null,
+      });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Planos de treino', memberWorkouts });
   }
 }
 
