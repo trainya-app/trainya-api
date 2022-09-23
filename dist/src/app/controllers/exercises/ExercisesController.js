@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const ExercisesRepository_1 = __importDefault(require("../../repositories/exercises/ExercisesRepository"));
+const WorkoutsExercisesRepository_1 = __importDefault(require("../../repositories/workouts/WorkoutsExercisesRepository"));
 class ExercisesController {
     async index(req, res) {
         const exercises = await ExercisesRepository_1.default.findAll();
@@ -44,6 +45,8 @@ class ExercisesController {
                 exercise: null,
             });
         }
+        // Delete all connections with workouts
+        await WorkoutsExercisesRepository_1.default.deleteByExerciseId(parsedId);
         await ExercisesRepository_1.default.delete(parsedId);
         return res.sendStatus(200);
     }

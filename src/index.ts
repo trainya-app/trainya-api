@@ -33,6 +33,7 @@ import authPermissionsRoutes from './routes/AuthPermissions.routes';
 import aclRoutes from './routes/ACL.routes';
 import authRolePermissionsRoutes from './routes/AuthRolePermission.routes';
 import termsRoutes from './routes/Terms.routes';
+import privacyPoliciesRoutes from './routes/PrivacyPolicies.routes';
 import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 
@@ -112,7 +113,6 @@ app.use(aclRoutes);
 // Auth Role Permission Routes
 app.use(authRolePermissionsRoutes);
 // Terms Routes
-
 app.use(termsRoutes);
 // Privacy Routes
 app.use(privacyPoliciesRoutes);

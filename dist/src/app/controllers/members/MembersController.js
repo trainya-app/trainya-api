@@ -139,7 +139,7 @@ class MembersController {
         }
         const vWeight = Number.isNaN(Number(weight)) ? undefined : Number(weight);
         const vHeight = Number.isNaN(Number(height)) ? undefined : Number(height);
-        const updatedGym = await MembersRepository_1.default.updateMember({
+        const updatedMember = await MembersRepository_1.default.updateMember({
             id: parsedId,
             phone,
             name,
@@ -153,7 +153,7 @@ class MembersController {
             adress_number: adressNumber,
             birth_date: birthDate,
         });
-        return res.json({ message: 'Dados atualizados!', updatedGym });
+        return res.json({ message: 'Dados atualizados!', updatedMember });
     }
     async uploadAvatar(req, res) {
         const memberId = req.userId;

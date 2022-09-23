@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
+const WorkoutsPlansWorkoutsRepository_1 = __importDefault(require("../../repositories/workouts-plans/WorkoutsPlansWorkoutsRepository"));
 const WorkoutsExercisesRepository_1 = __importDefault(require("../../repositories/workouts/WorkoutsExercisesRepository"));
 const WorkoutsRepository_1 = __importDefault(require("../../repositories/workouts/WorkoutsRepository"));
 class WorkoutsController {
@@ -59,6 +60,7 @@ class WorkoutsController {
         }
         // Delete all connections of workout and its exercises
         await WorkoutsExercisesRepository_1.default.deleteByWorkoutId(parsedId);
+        await WorkoutsPlansWorkoutsRepository_1.default.deleteByWorkoutId(parsedId);
         await WorkoutsRepository_1.default.delete(parsedId);
         return res.sendStatus(200);
     }

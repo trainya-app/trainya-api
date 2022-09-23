@@ -10,7 +10,7 @@ class TermsController {
         return res.status(200).json({ message: 'Termos de uso', term });
     }
     async store(req, res) {
-        const { content } = req.body;
+        const content = req.body;
         const termExists = await TermsRepository_1.default.getTerms();
         if (termExists) {
             return res

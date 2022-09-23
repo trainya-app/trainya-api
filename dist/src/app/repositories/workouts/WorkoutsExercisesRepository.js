@@ -90,5 +90,12 @@ class WorkoutsExercisesRepository {
             },
         });
     }
+    async deleteByExerciseId(exerciseId) {
+        await workoutExercise.deleteMany({
+            where: {
+                exercise_id: exerciseId,
+            },
+        });
+    }
 }
 exports.default = new WorkoutsExercisesRepository();

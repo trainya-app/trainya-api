@@ -38,6 +38,7 @@ const AuthPermissions_routes_1 = __importDefault(require("./routes/AuthPermissio
 const ACL_routes_1 = __importDefault(require("./routes/ACL.routes"));
 const AuthRolePermission_routes_1 = __importDefault(require("./routes/AuthRolePermission.routes"));
 const Terms_routes_1 = __importDefault(require("./routes/Terms.routes"));
+const PrivacyPolicies_routes_1 = __importDefault(require("./routes/PrivacyPolicies.routes"));
 const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -114,4 +115,6 @@ app.use(ACL_routes_1.default);
 app.use(AuthRolePermission_routes_1.default);
 // Terms Routes
 app.use(Terms_routes_1.default);
+// Privacy Routes
+app.use(PrivacyPolicies_routes_1.default);
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

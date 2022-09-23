@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
 const WorkoutsPlansRepository_1 = __importDefault(require("../../repositories/workouts-plans/WorkoutsPlansRepository"));
+const WorkoutsPlansWorkoutsRepository_1 = __importDefault(require("../../repositories/workouts-plans/WorkoutsPlansWorkoutsRepository"));
 class WorkoutsPlansController {
     async index(req, res) {
         const workoutPlans = await WorkoutsPlansRepository_1.default.findAll();
@@ -45,6 +46,8 @@ class WorkoutsPlansController {
                 workoutPlan: null,
             });
         }
+        // Delete all connections for this workout plan
+        await WorkoutsPlansWorkoutsRepository_1.default.deleteByWorkoutPlanId(parsedId);
         await WorkoutsPlansRepository_1.default.delete(parsedId);
         return res.sendStatus(200);
     }
