@@ -36,6 +36,7 @@ import termsRoutes from './routes/Terms.routes';
 import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import privacyPoliciesRoutes from './routes/PrivacyPolicies.routes';
 
 const app = express();
 app.use(cors());
@@ -115,5 +116,7 @@ app.use(authRolePermissionsRoutes);
 // Terms Routes
 app.use(bodyParser.text());
 app.use(termsRoutes);
+// Privacy Routes
+app.use(privacyPoliciesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

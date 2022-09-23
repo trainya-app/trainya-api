@@ -754,11 +754,20 @@ model EmployeePermision {
 }
 
 //// Terms Section
-model Term {
+model TermAndCondition {
   id      Int    @id @default(autoincrement())
   title   String @default("Termos e Condições")
   content String @db.Text
 
   @@fulltext([content])
-  @@map("terms")
+  @@map("terms_and_conditions")
+}
+
+model PrivacyPolicies {
+  id      Int    @id @default(autoincrement())
+  title   String @default("Políticas de Privacidade")
+  content String @db.Text
+
+  @@fulltext([content])
+  @@map("privacy_policies")
 }
