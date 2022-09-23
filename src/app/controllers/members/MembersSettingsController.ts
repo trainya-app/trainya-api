@@ -11,7 +11,8 @@ class MembersSettingsController {
   }
 
   async store(req: Request, res: Response) {
-    const { memberId, settingOptionId, value } = req.body;
+    const memberId = req.userId;
+    const { settingOptionId, value } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([memberId, settingOptionId, value]);
     if (someFieldIsEmpty) {
