@@ -8,7 +8,7 @@ class TermsController {
   }
 
   async store(req: Request, res: Response) {
-    const { content } = req.body;
+    const content = req.body;
 
     const termExists = await TermsRepository.getTerms();
     if (termExists) {

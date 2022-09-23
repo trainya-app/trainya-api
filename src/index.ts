@@ -114,5 +114,7 @@ app.use(authRolePermissionsRoutes);
 // Terms Routes
 
 app.use(termsRoutes);
+// Privacy Routes
+app.use(privacyPoliciesRoutes);
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

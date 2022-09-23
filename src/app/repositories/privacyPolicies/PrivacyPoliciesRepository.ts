@@ -1,14 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-const { termAndCondition } = new PrismaClient();
+const { privacyPolicies } = new PrismaClient();
 
-class TermsRepository {
-  async getTerms() {
-    const terms = await termAndCondition.findFirst();
-    return terms as { id: number; content: string };
+class PrivacyPoliciesRepository {
+  async findAll() {
+    return privacyPolicies.findFirst();
   }
 
   async create(content: string) {
-    const createdTerm = await termAndCondition.create({
+    return privacyPolicies.create({
       data: {
         content,
       },
@@ -17,12 +16,10 @@ class TermsRepository {
         content: true,
       },
     });
-
-    return createdTerm;
   }
 
   async update({ id, content }: { id: number; content: string }) {
-    const updatedTerm = await termAndCondition.update({
+    return await privacyPolicies.update({
       where: {
         id,
       },
@@ -34,9 +31,7 @@ class TermsRepository {
         content: true,
       },
     });
-
-    return updatedTerm;
   }
 }
 
-export default new TermsRepository();
+export default new PrivacyPoliciesRepository();
