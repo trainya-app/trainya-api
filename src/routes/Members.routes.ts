@@ -16,5 +16,6 @@ membersRoutes.put(
   uploadFile,
   MembersController.uploadAvatar
 );
+membersRoutes.get('/member-workouts', MembersController.showWorkouts);
 
 export default membersRoutes;
