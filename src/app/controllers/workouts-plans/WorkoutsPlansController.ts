@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
 import WorkoutsPlansRepository from '../../repositories/workouts-plans/WorkoutsPlansRepository';
+import WorkoutsPlansWorkoutsRepository from '../../repositories/workouts-plans/WorkoutsPlansWorkoutsRepository';
 
 class WorkoutsPlansController {
   async index(req: Request, res: Response) {
@@ -48,6 +49,9 @@ class WorkoutsPlansController {
         workoutPlan: null,
       });
     }
+
+    // Delete all connections for this workout plan
+    await WorkoutsPlansWorkoutsRepository.deleteByWorkoutPlanId(parsedId);
 
     await WorkoutsPlansRepository.delete(parsedId);
     return res.sendStatus(200);

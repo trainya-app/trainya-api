@@ -56,7 +56,7 @@ model Member {
   avatar_url          String?
   phone               String
   name                String                @db.VarChar(256)
-  birth_date          String                @default("")
+  birth_date          String
   weight              Decimal
   height              Decimal
   email               String

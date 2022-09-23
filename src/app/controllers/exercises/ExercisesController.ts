@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import ExercisesRepository from '../../repositories/exercises/ExercisesRepository';
+import WorkoutsExercisesRepository from '../../repositories/workouts/WorkoutsExercisesRepository';
 
 class ExercisesController {
   async index(req: Request, res: Response) {
@@ -47,6 +48,9 @@ class ExercisesController {
         exercise: null,
       });
     }
+
+    // Delete all connections with workouts
+    await WorkoutsExercisesRepository.deleteByExerciseId(parsedId);
 
     await ExercisesRepository.delete(parsedId);
     return res.sendStatus(200);

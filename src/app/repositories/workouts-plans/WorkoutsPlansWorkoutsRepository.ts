@@ -128,6 +128,26 @@ class WorkoutsPlansWorkoutsRepository {
 
     return updatedWorkoutPlanWorkout;
   }
+
+  async deleteByWorkoutId(workout_id: number) {
+    await workoutPlanWorkout.deleteMany({
+      where: {
+        workout_id,
+      },
+    });
+
+    return true;
+  }
+
+  async deleteByWorkoutPlanId(workouts_plan_id: number) {
+    await workoutPlanWorkout.deleteMany({
+      where: {
+        workouts_plan_id,
+      },
+    });
+
+    return true;
+  }
 }
 
 export default new WorkoutsPlansWorkoutsRepository();
