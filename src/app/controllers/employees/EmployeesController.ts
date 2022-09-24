@@ -100,15 +100,15 @@ class EmployeesController {
     const { id } = req.params;
     const parsedId = Number(id);
 
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', employee: null });
+    }
+
     const employeeExists = await EmployeesRepository.findById(parsedId);
     if (!employeeExists) {
       return res
         .status(404)
         .json({ message: 'Funcionário não encontrado', employee: null });
-    }
-
-    if (Number.isNaN(parsedId)) {
-      return res.status(400).json({ message: 'ID inválido', gym: null });
     }
 
     return res.status(200).json({
