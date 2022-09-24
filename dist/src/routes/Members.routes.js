@@ -15,4 +15,5 @@ membersRoutes.delete('/members/:id', MembersController_1.default.delete);
 membersRoutes.put('/members/password/:id', MembersController_1.default.updatePassword);
 membersRoutes.put('/members/:id', MembersController_1.default.update);
 membersRoutes.put('/members-avatar', MulterMiddleware_1.default.single('avatar'), firebase_1.default, MembersController_1.default.uploadAvatar);
+membersRoutes.get('/member-workouts', MembersController_1.default.showWorkouts);
 exports.default = membersRoutes;

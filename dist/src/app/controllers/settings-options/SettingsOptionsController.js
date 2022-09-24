@@ -79,7 +79,6 @@ class SettingsOptionsController {
         const descriptionExists = await SettingsOptionsRepository_1.default.findByDescription({ description });
         if (descriptionExists) {
             const idByDescription = await SettingsOptionsRepository_1.default.findIdByDescription({ description });
-            console.log({ idByDescription });
             let id = idByDescription.id;
             if (id != parsedId) {
                 return res.status(400).send({

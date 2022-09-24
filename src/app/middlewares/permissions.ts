@@ -7,7 +7,6 @@ export default function can(permissionsRoute: string[]) {
     const { userId } = req;
 
     const user = await MembersRepository.findById(Number(userId));
-    console.log({ user });
 
     const userPermissions = await ACLRepository.findMemberPermissionByMemberId(
       Number(userId)
@@ -20,8 +19,6 @@ export default function can(permissionsRoute: string[]) {
     const permisisonExists = userPermissions
       .map((permission) => permission.permission?.name)
       .some((permission) => permissionsRoute.includes(permission as string));
-
-    console.log({ permisisonExists, permissionsRoute }, userPermissions);
 
     if (!permisisonExists) {
       return res
@@ -38,7 +35,6 @@ export function is(rolesRoute: string[]) {
     const { userId } = req;
 
     const user = await MembersRepository.findById(Number(userId));
-    console.log({ user });
 
     const userRoles = await ACLRepository.findMemberRoleByMemberId(
       Number(userId)

@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const MemberAuthController_1 = __importDefault(require("../app/controllers/auth/MemberAuthController"));
-const GymAuthController_1 = __importDefault(require("../app/controllers/auth/GymAuthController"));
+const EmployeeAuthController_1 = __importDefault(require("../app/controllers/auth/EmployeeAuthController"));
 const authRoutes = (0, express_1.Router)();
 authRoutes.post('/auth/members', MemberAuthController_1.default.authenticate);
-authRoutes.post('/auth/gyms', GymAuthController_1.default.authenticate);
+authRoutes.post('/auth/employees', EmployeeAuthController_1.default.authenticate);
 exports.default = authRoutes;

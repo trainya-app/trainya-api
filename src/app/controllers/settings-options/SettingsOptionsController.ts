@@ -99,7 +99,6 @@ class SettingsOptionsController {
       const idByDescription =
         await SettingsOptionsRepository.findIdByDescription({ description });
 
-      console.log({ idByDescription });
       let id = idByDescription.id;
       if (id != parsedId) {
         return res.status(400).send({

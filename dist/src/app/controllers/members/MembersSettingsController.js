@@ -13,7 +13,8 @@ class MembersSettingsController {
         return res.send({ memberSettings });
     }
     async store(req, res) {
-        const { memberId, settingOptionId, value } = req.body;
+        const memberId = req.userId;
+        const { settingOptionId, value } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([memberId, settingOptionId, value]);
         if (someFieldIsEmpty) {
             return res.status(400).send({

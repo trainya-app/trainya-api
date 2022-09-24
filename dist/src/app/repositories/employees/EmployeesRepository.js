@@ -33,6 +33,13 @@ class EmployeesRepository {
             where: {
                 email,
             },
+            include: {
+                role: {
+                    select: {
+                        access_level: true,
+                    },
+                },
+            },
         });
         return employeeExists;
     }
