@@ -4,7 +4,35 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
 import { createToken } from '../../../utils/createToken';
+import { SECRET } from '../../contants/secret.token';
+
+interface JWTPayload {
+  id: number;
+  accessLevel: string;
+}
 class EmployeeAuthController {
+  async isAuthenticated(req: Request, res: Response) {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      return res.sendStatus(401);
+    }
+
+    const token = authorization.split(' ')[1];
+
+    try {
+      const tokenDecoded = jwt.verify(token, SECRET) as JWTPayload;
+
+      if (tokenDecoded) {
+        return res.sendStatus(200);
+      }
+
+      return res.sendStatus(401);
+    } catch {
+      return res.sendStatus(401);
+    }
+  }
+
   async authenticate(req: Request, res: Response) {
     const { email, password } = req.body;
     const someFieldIsEmpty = isSomeEmpty([email, password]);
@@ -35,7 +63,7 @@ class EmployeeAuthController {
     const token = createToken({
       id: employee.id,
       accessLevel: employee.role?.access_level,
-    });
+    } as JWTPayload);
 
     return res.status(200).send({ message: 'Logado', token });
   }

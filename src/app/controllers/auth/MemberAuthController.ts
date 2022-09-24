@@ -3,6 +3,7 @@ import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import MembersRepository from '../../repositories/members/MembersRepository';
+import { SECRET } from '../../contants/secret.token';
 
 class MemberAuthController {
   async authenticate(req: Request, res: Response) {
@@ -31,12 +32,11 @@ class MemberAuthController {
         .json({ message: 'Senha incorreta', member: null, token: null });
     }
 
-    const secret = process.env.SECRET || 'secret';
     const token = jwt.sign(
       {
         id: memberExists.id,
       },
-      secret,
+      SECRET,
       {
         expiresIn: process.env.EXPIRES_IN || '30d',
       }

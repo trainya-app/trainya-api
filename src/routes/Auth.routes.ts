@@ -4,6 +4,8 @@ import GymAuthController from '../app/controllers/auth/EmployeeAuthController';
 const authRoutes = Router();
 
 authRoutes.post('/auth/members', MemberAuthController.authenticate);
+
+authRoutes.get('/auth/employees/', GymAuthController.isAuthenticated);
 authRoutes.post('/auth/employees', GymAuthController.authenticate);
 
 export default authRoutes;
