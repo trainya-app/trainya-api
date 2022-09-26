@@ -16,6 +16,24 @@ class MembersWorkoutsPlansRepository {
                 finished_at,
                 started_at,
             },
+            select: {
+                id: true,
+                member_id: true,
+                member: {
+                    select: {
+                        name: true,
+                    },
+                },
+                workouts_plan_id: true,
+                workoutPlan: {
+                    select: {
+                        goal: true,
+                    },
+                },
+                finish_at: true,
+                started_at: true,
+                finished_at: true,
+            },
         });
         return createdMemberWorkoutPlan;
     }
@@ -49,6 +67,25 @@ class MembersWorkoutsPlansRepository {
             },
         });
         return updatedMemberWorkoutPlan;
+    }
+    async findByMemberId(member_id) {
+        const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
+            where: {
+                member_id,
+            },
+            select: {
+                workouts_plan_id: true,
+                workoutPlan: {
+                    select: {
+                        goal: true,
+                    },
+                },
+                finish_at: true,
+                finished_at: true,
+                started_at: true,
+            },
+        });
+        return memberWorkoutPlanExists;
     }
 }
 exports.default = new MembersWorkoutsPlansRepository();

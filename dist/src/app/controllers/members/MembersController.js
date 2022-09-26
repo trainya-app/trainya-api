@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
+const MembersWorkoutsPlansRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutsPlansRepository"));
 class MembersController {
     async index(req, res) {
         const members = await MembersRepository_1.default.findAll();
@@ -172,6 +173,19 @@ class MembersController {
         return res
             .status(200)
             .json({ message: 'Avatar atualizado', updatedMember });
+    }
+    async showWorkouts(req, res) {
+        const memberId = req.userId;
+        const memberWorkouts = await MembersWorkoutsPlansRepository_1.default.findByMemberId(memberId);
+        if (!memberWorkouts) {
+            return res.status(404).json({
+                message: 'Você ainda não possui planos de treino',
+                memberWorkouts: null,
+            });
+        }
+        return res
+            .status(200)
+            .json({ message: 'Planos de treino', memberWorkouts });
     }
 }
 exports.default = new MembersController();
