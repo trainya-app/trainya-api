@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import PrivacyPoliciesRepository from '../../repositories/privacyPolicies/PrivacyPoliciesRepository';
 
 class PrivacyPoliciesController {
-  index(req: Request, res: Response) {
-    const privacyPolicies = PrivacyPoliciesRepository.findAll();
+  async index(req: Request, res: Response) {
+    const privacyPolicies = await PrivacyPoliciesRepository.findAll();
     return res.json({ privacyPolicies });
   }
 
