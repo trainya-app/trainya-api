@@ -36,6 +36,7 @@ import termsRoutes from './routes/Terms.routes';
 import privacyPoliciesRoutes from './routes/PrivacyPolicies.routes';
 import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 
 const app = express();
 app.use(cors());
@@ -113,6 +114,7 @@ app.use(aclRoutes);
 // Auth Role Permission Routes
 app.use(authRolePermissionsRoutes);
 // Terms Routes
+app.use(bodyParser.text());
 app.use(termsRoutes);
 // Privacy Routes
 app.use(privacyPoliciesRoutes);
