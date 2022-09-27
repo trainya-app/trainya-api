@@ -24,6 +24,7 @@ class RolesRepository {
     const roleExists = role.findFirst({
       select: {
         title: true,
+        id: true,
       },
       where: {
         title,
