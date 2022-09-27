@@ -116,6 +116,27 @@ class MembersWorkoutsPlansRepository {
         workoutPlan: {
           select: {
             goal: true,
+            workoutPlanWorkout: {
+              select: {
+                workout: {
+                  select: {
+                    workoutExercise: {
+                      select: {
+                        exercise: {
+                          select: {
+                            name: true,
+                            comment: true,
+                          },
+                        },
+                        repetitions: true,
+                        sets: true,
+                      },
+                    },
+                    duration: true,
+                  },
+                },
+              },
+            },
           },
         },
         finish_at: true,
