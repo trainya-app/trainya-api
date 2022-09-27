@@ -52,7 +52,6 @@ class EmployeesController {
     }
 
     const role = await RolesRepository.findByTitle({ title: roleName });
-    console.log('ROLE', role);
 
     if (!role) {
       return res

@@ -108,13 +108,11 @@ class EmployeesRepository {
         role_id: Number(role_id),
         name,
         birth_date,
-        daily_workload,
-        weekdays_workload,
         phone,
         email,
         password,
         wage: Number(wage),
-        payment_date: !payment_date ? null : payment_date,
+        payment_date: !payment_date ? undefined : payment_date,
         profile_img,
         employeeDocument: {
           create: {
