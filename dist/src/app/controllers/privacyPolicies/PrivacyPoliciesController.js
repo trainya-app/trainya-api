@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const PrivacyPoliciesRepository_1 = __importDefault(require("../../repositories/privacyPolicies/PrivacyPoliciesRepository"));
 class PrivacyPoliciesController {
-    index(req, res) {
-        const privacyPolicies = PrivacyPoliciesRepository_1.default.findAll();
+    async index(req, res) {
+        const privacyPolicies = await PrivacyPoliciesRepository_1.default.findAll();
         return res.json({ privacyPolicies });
     }
     async store(req, res) {
