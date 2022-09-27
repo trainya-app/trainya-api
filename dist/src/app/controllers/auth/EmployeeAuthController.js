@@ -5,9 +5,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
 const createToken_1 = require("../../../utils/createToken");
+const secret_token_1 = require("../../contants/secret.token");
 class EmployeeAuthController {
+    async isAuthenticated(req, res) {
+        const { authorization } = req.headers;
+        if (!authorization) {
+            return res.sendStatus(401);
+        }
+        const token = authorization.split(' ')[1];
+        try {
+            const tokenDecoded = jsonwebtoken_1.default.verify(token, secret_token_1.SECRET);
+            if (tokenDecoded) {
+                return res.sendStatus(200);
+            }
+            return res.sendStatus(401);
+        }
+        catch (_a) {
+            return res.sendStatus(401);
+        }
+    }
     async authenticate(req, res) {
         var _a;
         const { email, password } = req.body;

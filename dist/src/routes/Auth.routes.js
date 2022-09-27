@@ -8,5 +8,6 @@ const MemberAuthController_1 = __importDefault(require("../app/controllers/auth/
 const EmployeeAuthController_1 = __importDefault(require("../app/controllers/auth/EmployeeAuthController"));
 const authRoutes = (0, express_1.Router)();
 authRoutes.post('/auth/members', MemberAuthController_1.default.authenticate);
+authRoutes.get('/auth/employees/', EmployeeAuthController_1.default.isAuthenticated);
 authRoutes.post('/auth/employees', EmployeeAuthController_1.default.authenticate);
 exports.default = authRoutes;

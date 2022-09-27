@@ -7,6 +7,7 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
+const secret_token_1 = require("../../contants/secret.token");
 class MemberAuthController {
     async authenticate(req, res) {
         const { email, password } = req.body;
@@ -30,10 +31,9 @@ class MemberAuthController {
                 .status(400)
                 .json({ message: 'Senha incorreta', member: null, token: null });
         }
-        const secret = process.env.SECRET || 'secret';
         const token = jsonwebtoken_1.default.sign({
             id: memberExists.id,
-        }, secret, {
+        }, secret_token_1.SECRET, {
             expiresIn: process.env.EXPIRES_IN || '30d',
         });
         return res.status(200).send({ message: 'Logado', token });

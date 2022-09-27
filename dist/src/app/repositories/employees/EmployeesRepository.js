@@ -51,20 +51,24 @@ class EmployeesRepository {
         });
         return employeeExists;
     }
-    async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, }) {
+    async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, document, documentTypeId, }) {
         const createdEmployee = await employee.create({
             data: {
-                role_id,
+                role_id: Number(role_id),
                 name,
                 birth_date,
-                daily_workload,
-                weekdays_workload,
                 phone,
                 email,
                 password,
-                wage,
-                payment_date,
+                wage: Number(wage),
+                payment_date: !payment_date ? undefined : payment_date,
                 profile_img,
+                employeeDocument: {
+                    create: {
+                        document_id: documentTypeId,
+                        value: document,
+                    },
+                },
             },
             select: {
                 id: true,
