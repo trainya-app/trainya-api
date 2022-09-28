@@ -18,6 +18,7 @@ class ExercisesRepository {
   async findAll() {
     const exercises = await exercise.findMany({
       select: {
+        id: true,
         name: true,
         comment: true,
         needs_equipment: true,
