@@ -52,10 +52,10 @@ model MemberGoal {
 //Relation to members_statistics as     1 in cardinality
 
 model Member {
-  id                  Int                   @id @default(autoincrement())
+  id                  Int                      @id @default(autoincrement())
   avatar_url          String?
   phone               String
-  name                String                @db.VarChar(256)
+  name                String                   @db.VarChar(256)
   birth_date          String
   weight              Decimal
   height              Decimal
@@ -63,11 +63,11 @@ model Member {
   password            String
   state               String
   city                String
-  street              String                @db.VarChar(256)
+  street              String                   @db.VarChar(256)
   adress_number       String
-  at_gym              Boolean               @default(false)
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
+  at_gym              Boolean                  @default(false)
+  created_at          DateTime                 @default(now())
+  updated_at          DateTime                 @updatedAt
   memberGoal          MemberGoal[]
   memberSetting       MemberSetting[]
   memberPayment       MemberPayment[]
@@ -81,6 +81,7 @@ model Member {
   memberStatistic     MemberStatistic[]
   MemberPermision     MemberPermision[]
   MemberRole          MemberRole[]
+  MonthDayProgress    MemberMonthDayProgress[]
 
   @@map("members")
 }
@@ -755,19 +756,48 @@ model EmployeePermision {
 
 //// Terms Section
 model TermAndCondition {
-  id      Int    @id @default(autoincrement())
-  title   String @default("Termos e Condições")
-  content String @db.Text
+  id         Int      @id @default(autoincrement())
+  title      String   @default("Termos e Condições")
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   @@fulltext([content])
   @@map("terms_and_conditions")
 }
 
-model PrivacyPolicies {
-  id      Int    @id @default(autoincrement())
-  title   String @default("Políticas de Privacidade")
-  content String @db.Text
+model PrivacyPolicie {
+  id         Int      @id @default(autoincrement())
+  title      String   @default("Políticas de Privacidade")
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
   @@fulltext([content])
   @@map("privacy_policies")
+}
+
+//// Days Frequency Section
+
+model Month {
+  id               Int                      @id @default(autoincrement())
+  name             String
+  created_at       DateTime                 @default(now())
+  updated_at       DateTime                 @updatedAt
+  MonthDayProgress MemberMonthDayProgress[]
+
+  @@map("months")
+}
+
+model MemberMonthDayProgress {
+  id               Int      @id @default(autoincrement())
+  member           Member?  @relation(fields: [member_id], references: [id]) //Reference
+  member_id        Int
+  month            Month?   @relation(fields: [month_id], references: [id])
+  month_id         Int
+  current_progress Int
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  @@map("member_months_day_rogress")
 }
