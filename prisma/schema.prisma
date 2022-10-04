@@ -760,7 +760,7 @@ model TermAndCondition {
   title      String   @default("Termos e Condições")
   content    String   @db.Text
   created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  updated_at DateTime @updatedAt
 
   @@fulltext([content])
   @@map("terms_and_conditions")
@@ -771,7 +771,7 @@ model PrivacyPolicie {
   title      String   @default("Políticas de Privacidade")
   content    String   @db.Text
   created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+  updated_at DateTime @updatedAt
 
   @@fulltext([content])
   @@map("privacy_policies")
@@ -795,9 +795,9 @@ model MemberMonthDayProgress {
   member_id        Int
   month            Month?   @relation(fields: [month_id], references: [id])
   month_id         Int
-  current_progress Int
+  current_progress Int      @default(0)
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
 
-  @@map("member_months_day_rogress")
+  @@map("member_months_day_progress")
 }

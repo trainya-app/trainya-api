@@ -13,12 +13,12 @@ class MonthsController {
     const monthExists = await MonthsRepository.findByName(name);
     if (monthExists) {
       return res
-        .status(200)
+        .status(400)
         .json({ message: 'Mês já cadastrado', monthExists });
     }
 
     const createdMonth = await MonthsRepository.create({ name });
-    return res.status(400).json({ message: 'Mês criado', createdMonth });
+    return res.status(200).json({ message: 'Mês criado', createdMonth });
   }
 }
 
