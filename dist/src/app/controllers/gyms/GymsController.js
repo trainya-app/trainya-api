@@ -8,6 +8,7 @@ const GymsRepository_1 = __importDefault(require("../../repositories/gyms/GymsRe
 const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
+const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
@@ -158,9 +159,10 @@ class GymsController {
         return res.json({ message: 'Dados atualizados!', updatedGym });
     }
     async updateCapacity(req, res) {
-        const { gymId, memberId } = req.params;
+        const { gymId, memberId, monthId } = req.params;
         const parsedGymId = Number(gymId);
         const parsedMemberId = Number(memberId);
+        const parsedMonthId = Number(monthId);
         const gymExists = await GymsRepository_1.default.findById(parsedGymId);
         if (!gymExists) {
             return res
@@ -185,10 +187,25 @@ class GymsController {
                 inGym: true,
                 id: parsedMemberId,
             });
+            const progress = await MemberMonthsDayProgressRepository_1.default.findByMemberAndMonthId({
+                member_id: parsedMemberId,
+                month_id: parsedMonthId,
+            });
+            if (!progress) {
+                return res
+                    .send(404)
+                    .json({ message: 'Progresso não encontrado', progress: null });
+            }
+            const newCurrentProgress = progress.current_progress + 1;
+            const updatedProgress = await MemberMonthsDayProgressRepository_1.default.updateProgress({
+                id: progress.id,
+                current_progress: newCurrentProgress,
+            });
             return res.status(200).json({
                 message: 'Entrada registrada',
                 updatedCapacity,
                 updatedMember,
+                updatedProgress,
             });
         }
         if (memberExists.at_gym === true) {

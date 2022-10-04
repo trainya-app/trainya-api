@@ -7,6 +7,7 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 const MembersWorkoutsPlansRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutsPlansRepository"));
+const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
 class MembersController {
     async index(req, res) {
         const members = await MembersRepository_1.default.findAll();
@@ -60,6 +61,7 @@ class MembersController {
                 member: null,
             });
         }
+        await MemberMonthsDayProgressRepository_1.default.createForAllMonths(member.id);
         return res.status(200).json({ message: 'Membro criado', member });
     }
     async delete(req, res) {

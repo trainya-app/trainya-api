@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
-const { privacyPolicies } = new client_1.PrismaClient();
+const { privacyPolicie } = new client_1.PrismaClient();
 class PrivacyPoliciesRepository {
     async findAll() {
-        return privacyPolicies.findFirst();
+        return privacyPolicie.findFirst();
     }
     async create(content) {
-        return privacyPolicies.create({
+        return privacyPolicie.create({
             data: {
                 content,
             },
@@ -18,7 +18,7 @@ class PrivacyPoliciesRepository {
         });
     }
     async update({ id, content }) {
-        return await privacyPolicies.update({
+        return await privacyPolicie.update({
             where: {
                 id,
             },
