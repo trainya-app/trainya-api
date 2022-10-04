@@ -34,16 +34,13 @@ class MemberMonthsDayProgressController {
   async deleteAllByMember(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = Number(id);
-
     const memberExists = await MembersRepository.findById(parsedId);
     if (!memberExists) {
       return res
         .status(404)
         .json({ message: 'Membro não encontrado', member: null });
     }
-
     await MemberMonthsDayProgressRepository.deleteAllByMember(parsedId);
-
     return res.sendStatus(200);
   }
 
