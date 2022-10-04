@@ -10,5 +10,13 @@ memberMonthsDayProgressRoutes.post(
   '/memberMonthsDayProgressRoutes',
   MemberMonthsDayProgressController.store
 );
+memberMonthsDayProgressRoutes.delete(
+  '/memberMonthsDayProgressRoutes/:id',
+  MemberMonthsDayProgressController.deleteAllByMember
+);
+memberMonthsDayProgressRoutes.get(
+  '/memberMonthsDayProgressRoutes-member',
+  MemberMonthsDayProgressController.showByMember
+);
 
 export default memberMonthsDayProgressRoutes;

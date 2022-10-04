@@ -30,6 +30,41 @@ class MemberMonthsDayProgressController {
       createdMemberMonthsDayProgresses,
     });
   }
+
+  async deleteAllByMember(req: Request, res: Response) {
+    const { id } = req.params;
+    const parsedId = Number(id);
+
+    const memberExists = await MembersRepository.findById(parsedId);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    await MemberMonthsDayProgressRepository.deleteAllByMember(parsedId);
+
+    return res.sendStatus(200);
+  }
+
+  async showByMember(req: Request, res: Response) {
+    const member_id = req.userId;
+
+    const memberExists = await MembersRepository.findById(member_id);
+    if (!memberExists) {
+      return res
+        .status(404)
+        .json({ message: 'Membro não encontrado', member: null });
+    }
+
+    const memberMonthsDayProgresses =
+      await MemberMonthsDayProgressRepository.findByMemberId(member_id);
+
+    return res.status(200).json({
+      message: ' Progressos de dias dos meses do membro encontrados ',
+      memberMonthsDayProgresses,
+    });
+  }
 }
 
 export default new MemberMonthsDayProgressController();
