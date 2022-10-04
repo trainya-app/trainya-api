@@ -120,6 +120,8 @@ class MembersWorkoutsPlansRepository {
               select: {
                 workout: {
                   select: {
+                    id: true,
+                    title: true,
                     workoutExercise: {
                       select: {
                         exercise: {

@@ -1,13 +1,13 @@
 import { PrismaClient } from '@prisma/client';
-const { privacyPolicies } = new PrismaClient();
+const { privacyPolicie } = new PrismaClient();
 
 class PrivacyPoliciesRepository {
   async findAll() {
-    return privacyPolicies.findFirst();
+    return privacyPolicie.findFirst();
   }
 
   async create(content: string) {
-    return privacyPolicies.create({
+    return privacyPolicie.create({
       data: {
         content,
       },
@@ -19,7 +19,7 @@ class PrivacyPoliciesRepository {
   }
 
   async update({ id, content }: { id: number; content: string }) {
-    return await privacyPolicies.update({
+    return await privacyPolicie.update({
       where: {
         id,
       },

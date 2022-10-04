@@ -37,6 +37,8 @@ import privacyPoliciesRoutes from './routes/PrivacyPolicies.routes';
 import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import monthsRoutes from './routes/Months.routes';
+import memberMonthsDayProgressRoutes from './routes/MemberMonthsDayProgress.routes';
 
 const app = express();
 app.use(cors());
@@ -113,6 +115,10 @@ app.use(authPermissionsRoutes);
 app.use(aclRoutes);
 // Auth Role Permission Routes
 app.use(authRolePermissionsRoutes);
+// Months Routes
+app.use(monthsRoutes);
+// Member Months Day Progress Routes
+app.use(memberMonthsDayProgressRoutes);
 // Terms Routes
 app.use(bodyParser.text());
 app.use(termsRoutes);

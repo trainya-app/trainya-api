@@ -10,7 +10,7 @@ gymsRoutes.get('/gyms/:id', GymsController.show);
 gymsRoutes.put('/gyms/password/:id', GymsController.updatePassword);
 gymsRoutes.put('/gyms/:id', GymsController.update);
 gymsRoutes.put(
-  '/gyms/capacity/:gymId/:memberId',
+  '/gyms/capacity/:gymId/:memberId/:monthId',
   GymsController.updateCapacity
 );
 gymsRoutes.get('/gyms-member', GymsController.showByMember);

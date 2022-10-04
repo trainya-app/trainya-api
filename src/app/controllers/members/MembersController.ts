@@ -3,6 +3,7 @@ import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
+import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -77,6 +78,8 @@ class MembersController {
         member: null,
       });
     }
+
+    await MemberMonthsDayProgressRepository.createForAllMonths(member.id);
 
     return res.status(200).json({ message: 'Membro criado', member });
   }
