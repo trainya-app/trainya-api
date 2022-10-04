@@ -3,6 +3,7 @@ import EmployeesRepository from '../../repositories/employees/EmployeesRepositor
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import RolesRepository from '../../repositories/roles/RolesRepository';
 import bcrypt from 'bcrypt';
+import DocumentsRepository from '../../repositories/documents/DocumentsRepository';
 
 class EmployeesController {
   async index(req: Request, res: Response) {
@@ -12,7 +13,7 @@ class EmployeesController {
 
   async store(req: Request, res: Response) {
     const {
-      roleId,
+      roleName,
       name,
       birthDate,
       dailyWorkload,
@@ -23,20 +24,17 @@ class EmployeesController {
       wage,
       profileImg,
       paymentDate,
+      documentType,
+      documentValue,
     } = req.body;
-
     const someFieldIsEmpty = isSomeEmpty([
-      roleId,
+      roleName,
       name,
       birthDate,
-      dailyWorkload,
-      weeksdaysWorkload,
-      phone,
       email,
       password,
-      wage,
-      profileImg,
-      paymentDate,
+      documentType,
+      documentValue,
     ]);
 
     if (someFieldIsEmpty) {
@@ -53,16 +51,19 @@ class EmployeesController {
         .json({ message: 'Email já está em uso', employee: null });
     }
 
-    const roleExists = await RolesRepository.findById(roleId);
-    if (!roleExists) {
+    const role = await RolesRepository.findByTitle({ title: roleName });
+
+    if (!role) {
       return res
         .status(404)
         .json({ message: 'Cargo não encontrado', employee: null });
     }
 
+    const document = await DocumentsRepository.findByName(documentType);
+
     const hashedPassword = await bcrypt.hash(password, 8);
     const employee = await EmployeesRepository.create({
-      role_id: roleId,
+      role_id: role?.id as number,
       name,
       birth_date: birthDate,
       daily_workload: dailyWorkload,
@@ -73,6 +74,8 @@ class EmployeesController {
       wage,
       profile_img: profileImg,
       payment_date: paymentDate,
+      documentTypeId: document?.id as number,
+      document: documentValue,
     });
 
     return res.json({
@@ -100,15 +103,15 @@ class EmployeesController {
     const { id } = req.params;
     const parsedId = Number(id);
 
+    if (Number.isNaN(parsedId)) {
+      return res.status(400).json({ message: 'ID inválido', employee: null });
+    }
+
     const employeeExists = await EmployeesRepository.findById(parsedId);
     if (!employeeExists) {
       return res
         .status(404)
         .json({ message: 'Funcionário não encontrado', employee: null });
-    }
-
-    if (Number.isNaN(parsedId)) {
-      return res.status(400).json({ message: 'ID inválido', gym: null });
     }
 
     return res.status(200).json({

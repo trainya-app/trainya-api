@@ -352,14 +352,14 @@ model Employee {
   role_id           Int
   name              String              @db.VarChar(256)
   birth_date        String
-  payment_date      DateTime
-  daily_workload    Int
-  weekdays_workload Int
-  phone             String
+  payment_date      DateTime?
+  daily_workload    Int?
+  weekdays_workload Int?
+  phone             String?
   email             String              @db.VarChar(256)
-  wage              Int
+  wage              Int?
   password          String              @db.VarChar(256)
-  profile_img       String
+  profile_img       String?
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
   employeeClasse    EmployeeClass[]
@@ -419,7 +419,7 @@ model EmployeeDocument {
   employee_id Int
   document    Document? @relation(fields: [document_id], references: [id]) //Reference
   document_id Int
-  value       Int
+  value       String
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
 

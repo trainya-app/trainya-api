@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { Employee } from '@prisma/client';
 import gymEmployeesRoutes from '../../../routes/GymEmployees.routes';
+import { DocumentsTypes } from '../../contants/documents.token';
 const { employee } = new PrismaClient();
 
 interface IUpdateEmployee {
@@ -29,6 +30,8 @@ interface IEmployee {
   email: string;
   payment_date: string;
   password: string;
+  documentTypeId: DocumentsTypes;
+  document: string;
 }
 
 class EmployeesRepository {
@@ -63,6 +66,13 @@ class EmployeesRepository {
       where: {
         email,
       },
+      include: {
+        role: {
+          select: {
+            access_level: true,
+          },
+        },
+      },
     });
 
     return employeeExists;
@@ -90,20 +100,26 @@ class EmployeesRepository {
     wage,
     payment_date,
     profile_img,
+    document,
+    documentTypeId,
   }: IEmployee) {
     const createdEmployee = await employee.create({
       data: {
-        role_id,
+        role_id: Number(role_id),
         name,
         birth_date,
-        daily_workload,
-        weekdays_workload,
         phone,
         email,
         password,
-        wage,
-        payment_date,
+        wage: Number(wage),
+        payment_date: !payment_date ? undefined : payment_date,
         profile_img,
+        employeeDocument: {
+          create: {
+            document_id: documentTypeId,
+            value: document,
+          },
+        },
       },
       select: {
         id: true,

@@ -11,7 +11,6 @@ class ExercisesController {
 
   async store(req: Request, res: Response) {
     const { name, comment, needsEquipment } = req.body;
-    console.log({ name, comment, needsEquipment });
 
     const someFieldIsEmpty = isSomeEmpty([name, needsEquipment, comment]);
     if (someFieldIsEmpty) {

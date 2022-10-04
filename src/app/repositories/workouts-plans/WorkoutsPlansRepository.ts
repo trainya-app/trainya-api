@@ -1,9 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, WorkoutPlanWorkout } from '@prisma/client';
 const { workoutPlan } = new PrismaClient();
 
 interface IWorkoutPlan {
   employee_id: number;
   goal: string;
+  workoutPlanWorkouts: WorkoutPlanWorkout[];
 }
 
 interface IUpdateWorkoutPlan {
@@ -18,22 +19,38 @@ class WorkoutsPlansRepository {
       select: {
         id: true,
         employee_id: true,
+        goal: true,
         employee: {
           select: {
             name: true,
           },
         },
-        goal: true,
+        workoutPlanWorkout: {
+          select: {
+            id: true,
+            workout: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
       },
     });
     return workoutPlans;
   }
 
-  async create({ employee_id, goal }: IWorkoutPlan) {
+  async create({ employee_id, goal, workoutPlanWorkouts }: IWorkoutPlan) {
     const createdWorkoutPlan = await workoutPlan.create({
       data: {
         employee_id,
         goal,
+        workoutPlanWorkout: {
+          createMany: {
+            data: workoutPlanWorkouts,
+          },
+        },
       },
       select: {
         id: true,

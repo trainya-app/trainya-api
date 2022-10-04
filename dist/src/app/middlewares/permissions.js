@@ -10,7 +10,6 @@ function can(permissionsRoute) {
     return async (req, res, next) => {
         const { userId } = req;
         const user = await MembersRepository_1.default.findById(Number(userId));
-        console.log({ user });
         const userPermissions = await ACLRepository_1.default.findMemberPermissionByMemberId(Number(userId));
         if (!user) {
             return res.status(400).json({ message: 'Usuário não encontrado' });
@@ -18,7 +17,6 @@ function can(permissionsRoute) {
         const permisisonExists = userPermissions
             .map((permission) => { var _a; return (_a = permission.permission) === null || _a === void 0 ? void 0 : _a.name; })
             .some((permission) => permissionsRoute.includes(permission));
-        console.log({ permisisonExists, permissionsRoute }, userPermissions);
         if (!permisisonExists) {
             return res
                 .status(401)
@@ -32,7 +30,6 @@ function is(rolesRoute) {
     return async (req, res, next) => {
         const { userId } = req;
         const user = await MembersRepository_1.default.findById(Number(userId));
-        console.log({ user });
         const userRoles = await ACLRepository_1.default.findMemberRoleByMemberId(Number(userId));
         if (!user) {
             return res.status(400).json({ message: 'Usuário não encontrado' });

@@ -1,30 +1,20 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\arrud\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add body-parses
+  C:\Program Files\nodejs\node.exe C:\Users\bryan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/multer -D
 
 PATH: 
-  C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\arrud\AppData\Local\Microsoft\WindowsApps;C:\Users\arrud\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\arrud\AppData\Roaming\npm;C:\Users\arrud\AppData\Local\ComposerSetup\bin;C:\Users\arrud\AppData\Roaming\Composer\vendor\bin;C:\laragon\bin\php\php-8.1.10-Win32-vs16-x64
+  C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\bryan\AppData\Local\Microsoft\WindowsApps;;C:\Users\bryan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\bryan\AppData\Roaming\npm
 
 Yarn version: 
-  1.22.18
+  1.22.19
 
 Node version: 
-  16.15.0
+  16.16.0
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/body-parses: Not found
-      at Request.params.callback [as _callback] (C:\Users\arrud\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66138:18)
-      at Request.self.callback (C:\Users\arrud\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
-      at Request.emit (node:events:527:28)
-      at Request.<anonymous> (C:\Users\arrud\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
-      at Request.emit (node:events:527:28)
-      at IncomingMessage.<anonymous> (C:\Users\arrud\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
-      at Object.onceWrapper (node:events:641:28)
-      at IncomingMessage.emit (node:events:539:35)
-      at endReadableNT (node:internal/streams/readable:1345:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: EPERM: operation not permitted, unlink 'C:\Users\bryan\Documents\trainya-app\trainya-admin-api\node_modules\@prisma\engines\query_engine-windows.dll.node'
 
 npm manifest: 
   {

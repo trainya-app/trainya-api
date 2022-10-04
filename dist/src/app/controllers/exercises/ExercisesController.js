@@ -13,7 +13,6 @@ class ExercisesController {
     }
     async store(req, res) {
         const { name, comment, needsEquipment } = req.body;
-        console.log({ name, comment, needsEquipment });
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, needsEquipment, comment]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
