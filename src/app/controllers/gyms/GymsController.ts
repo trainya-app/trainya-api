@@ -4,6 +4,7 @@ import GymsRepository from '../../repositories/gyms/GymsRepository';
 import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
+import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -213,10 +214,11 @@ class GymsController {
   }
 
   async updateCapacity(req: Request, res: Response) {
-    const { gymId, memberId } = req.params;
+    const { gymId, memberId, monthId } = req.params;
 
     const parsedGymId = Number(gymId);
     const parsedMemberId = Number(memberId);
+    const parsedMonthId = Number(monthId);
 
     const gymExists = await GymsRepository.findById(parsedGymId);
     if (!gymExists) {
@@ -247,10 +249,29 @@ class GymsController {
         id: parsedMemberId,
       });
 
+      const progress =
+        await MemberMonthsDayProgressRepository.findByMemberAndMonthId({
+          member_id: parsedMemberId,
+          month_id: parsedMonthId,
+        });
+
+      if (!progress) {
+        return res
+          .send(404)
+          .json({ message: 'Progresso não encontrado', progress: null });
+      }
+      const newCurrentProgress = progress.current_progress + 1;
+      const updatedProgress =
+        await MemberMonthsDayProgressRepository.updateProgress({
+          id: progress.id,
+          current_progress: newCurrentProgress,
+        });
+
       return res.status(200).json({
         message: 'Entrada registrada',
         updatedCapacity,
         updatedMember,
+        updatedProgress,
       });
     }
 
