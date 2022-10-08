@@ -10,8 +10,16 @@ class ClassesController {
   }
 
   async create(req: Request, res: Response) {
-    const { gymId, title, description } = req.body;
-    const someFieldIsEmpty = isSomeEmpty([gymId, title, description]);
+    const { gymId, title, description, hour, minMembers, maxMembers } =
+      req.body;
+    const someFieldIsEmpty = isSomeEmpty([
+      gymId,
+      title,
+      description,
+      hour,
+      minMembers,
+      maxMembers,
+    ]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram preenchidos',
@@ -27,18 +35,13 @@ class ClassesController {
       });
     }
 
-    const titleExists = await ClassesRepository.findByTitle(title);
-    if (titleExists) {
-      return res.status(400).json({
-        message: 'Aula já cadastrada',
-        class: null,
-      });
-    }
-
     const createdClass = await ClassesRepository.create({
       gym_id: gymId,
       title,
       description,
+      hour,
+      min_members: minMembers,
+      max_members: maxMembers,
     });
 
     return res
@@ -80,8 +83,16 @@ class ClassesController {
   async update(req: Request, res: Response) {
     const { id } = req.params;
     const parsedId = Number(id);
-    const { gymId, title, description } = req.body;
-    const someFieldIsEmpty = isSomeEmpty([gymId, title, description]);
+    const { gymId, title, description, hour, minMembers, maxMembers } =
+      req.body;
+    const someFieldIsEmpty = isSomeEmpty([
+      gymId,
+      title,
+      description,
+      hour,
+      minMembers,
+      maxMembers,
+    ]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram preenchidos',
@@ -121,6 +132,9 @@ class ClassesController {
       gym_id,
       title,
       description,
+      hour,
+      min_members: minMembers,
+      max_members: maxMembers,
     });
     return res
       .status(200)

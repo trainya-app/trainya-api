@@ -58,6 +58,44 @@ class MembersClassesRepository {
     });
     return updatedMemberClass;
   }
+
+  async findByMember(member_id: number) {
+    return await memberClass.findMany({
+      where: {
+        member_id,
+      },
+      select: {
+        class: {
+          select: {
+            title: true,
+            min_members: true,
+            max_members: true,
+
+            hour: true,
+            classWeekDay: {
+              select: {
+                weekDay: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+            employeeClass: {
+              select: {
+                employee: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+        member_id: true,
+      },
+    });
+  }
 }
 
 export default new MembersClassesRepository();

@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
 import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
+import GymsRepository from '../../repositories/gyms/GymsRepository';
+import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
+import ClassesRepository from '../../repositories/classes/ClassesRepository';
+import MembersClassesRepository from '../../repositories/members/MembersClassesRepository';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -251,6 +255,24 @@ class MembersController {
     return res
       .status(200)
       .json({ message: 'Planos de treino', memberWorkouts });
+  }
+
+  async showClassesByGym(req: Request, res: Response) {
+    const member_id = req.userId;
+
+    const gym_id = await GymsMembersRepository.findByMember(member_id);
+    const gymClasses = await ClassesRepository.findByGym(
+      Number(gym_id?.gym_id)
+    );
+
+    return res.status(200).json({ message: 'Aulas encontradas', gymClasses });
+  }
+
+  async showClassesByMember(req: Request, res: Response) {
+    const member_id = req.userId;
+    const classes = await MembersClassesRepository.findByMember(member_id);
+
+    return res.status(200).json({ message: 'Aulas encontradas', classes });
   }
 }
 

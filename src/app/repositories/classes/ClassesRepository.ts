@@ -5,6 +5,9 @@ interface IClass {
   gym_id: number;
   title: string;
   description: string;
+  hour: number;
+  min_members: number;
+  max_members: number;
 }
 
 interface IUpdateClass {
@@ -12,6 +15,9 @@ interface IUpdateClass {
   gym_id?: number;
   title: string;
   description: string;
+  hour: number;
+  min_members: number;
+  max_members: number;
 }
 
 class ClassesRepository {
@@ -27,12 +33,22 @@ class ClassesRepository {
     return titleExists;
   }
 
-  async create({ gym_id, title, description }: IClass) {
+  async create({
+    gym_id,
+    title,
+    description,
+    hour,
+    min_members,
+    max_members,
+  }: IClass) {
     const createdClass = await prisma.class.create({
       data: {
         gym_id,
         title,
         description,
+        hour,
+        min_members,
+        max_members,
       },
     });
     return createdClass;
@@ -52,16 +68,58 @@ class ClassesRepository {
     return true;
   }
 
-  async update({ id, gym_id, title, description }: IUpdateClass) {
+  async update({
+    id,
+    gym_id,
+    title,
+    description,
+    hour,
+    min_members,
+    max_members,
+  }: IUpdateClass) {
     const updatedClass = await prisma.class.update({
       where: { id },
       data: {
         title,
         gym_id,
         description,
+        hour,
+        min_members,
+        max_members,
       },
     });
     return updatedClass;
+  }
+
+  async findByGym(gym_id: number) {
+    return await prisma.class.findMany({
+      where: {
+        gym_id,
+      },
+      select: {
+        employeeClass: {
+          select: {
+            employee: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        classWeekDay: {
+          select: {
+            weekDay: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        hour: true,
+        min_members: true,
+        max_members: true,
+      },
+    });
   }
 }
 
