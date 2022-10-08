@@ -468,6 +468,9 @@ model Class {
   gym_id        Int
   title         String
   description   String          @db.VarChar(256)
+  hour          Float
+  min_members   Int
+  max_members   Int
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
   employeeClass EmployeeClass[]

@@ -5,6 +5,7 @@ import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
+import ClassesRepository from '../../repositories/classes/ClassesRepository';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -299,6 +300,21 @@ class GymsController {
     const gym = await GymsMembersRepository.findByMember(memberId);
 
     return res.status(200).json({ message: 'Academia encontrada', gym });
+  }
+
+  async showByClass(req: Request, res: Response) {
+    const { gymId } = req.params;
+    const parsedId = Number(gymId);
+
+    const gymExists = await GymsRepository.findById(parsedId);
+    if (!gymExists) {
+      return res
+        .status(404)
+        .json({ message: 'Academia não encontrada', gymClass: null });
+    }
+
+    const gymClasses = await ClassesRepository.findByGym(parsedId);
+    return res.send({ gymClasses });
   }
 }
 
