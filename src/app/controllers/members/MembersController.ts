@@ -125,6 +125,13 @@ class MembersController {
     const parsedId = Number(id);
 
     const { firstNewPassword, secondNewPassword } = req.body;
+    const someFieldIsEmpty = isSomeEmpty([firstNewPassword, secondNewPassword]);
+    if (someFieldIsEmpty) {
+      return res.status(400).json({
+        message: 'Campos obrigatórios não foram enviados',
+        password: null,
+      });
+    }
 
     if (firstNewPassword !== secondNewPassword) {
       return res
