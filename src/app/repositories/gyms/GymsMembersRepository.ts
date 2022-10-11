@@ -13,7 +13,7 @@ interface IUpdateGymMember {
 }
 
 class GymsMembersRepository {
-  async findAll() {
+  async findAll({ gymId }: { gymId: number }) {
     const gymMembers = await gymMember.findMany({
       select: {
         id: true,
@@ -28,6 +28,9 @@ class GymsMembersRepository {
             name: true,
           },
         },
+      },
+      where: {
+        gym_id: gymId,
       },
     });
 

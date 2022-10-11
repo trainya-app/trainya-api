@@ -36,6 +36,11 @@ class WorkoutsPlansRepository {
             },
           },
         },
+        memberWorkoutPlan: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     return workoutPlans;
@@ -70,6 +75,32 @@ class WorkoutsPlansRepository {
     const workoutPlanExists = await workoutPlan.findFirst({
       where: {
         id,
+      },
+      select: {
+        id: true,
+        employee_id: true,
+        goal: true,
+        employee: {
+          select: {
+            name: true,
+          },
+        },
+        workoutPlanWorkout: {
+          select: {
+            id: true,
+            workout: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+        memberWorkoutPlan: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
     return workoutPlanExists;

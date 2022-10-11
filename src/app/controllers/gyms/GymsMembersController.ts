@@ -6,9 +6,21 @@ import MembersRepository from '../../repositories/members/MembersRepository';
 
 class GymsMembersController {
   async index(req: Request, res: Response) {
-    const gymMembers = await GymsMembersRepository.findAll();
+    const { gymId } = req.params;
+    if (!gymId || Number.isNaN(Number(gymId))) {
+      return res
+        .status(400)
+        .json({ message: 'O id da academia precisa ser informado. ' });
+    }
 
-    return res.json({ gymMembers });
+    const gymMembers = await GymsMembersRepository.findAll({
+      gymId: Number(gymId),
+    });
+
+    return res.json({
+      message: 'Membros da academia encontrados.',
+      gymMembers,
+    });
   }
 
   async store(req: Request, res: Response) {
@@ -58,12 +70,10 @@ class GymsMembersController {
       });
     }
 
-    return res
-      .status(200)
-      .json({
-        message: 'Membro da academia encontrado',
-        gymMember: gymMemberExists,
-      });
+    return res.status(200).json({
+      message: 'Membro da academia encontrado',
+      gymMember: gymMemberExists,
+    });
   }
 
   async delete(req: Request, res: Response) {
