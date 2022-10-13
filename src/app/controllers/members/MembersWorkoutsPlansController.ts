@@ -14,7 +14,7 @@ class MembersWorkoutsPlansController {
   async store(req: Request, res: Response) {
     const { memberId, workoutPlanId, startedAt, finishedAt } = req.body;
 
-    const someFieldIsEmpty = isSomeEmpty([memberId, workoutPlanId, finishAt]);
+    const someFieldIsEmpty = isSomeEmpty([memberId, workoutPlanId]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',
