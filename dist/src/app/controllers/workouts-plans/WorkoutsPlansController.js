@@ -13,7 +13,7 @@ class WorkoutsPlansController {
         res.send({ workoutPlans });
     }
     async store(req, res) {
-        const { employeeId, goal } = req.body;
+        const { employeeId, goal, workoutPlanWorkouts } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([employeeId, goal]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -31,6 +31,7 @@ class WorkoutsPlansController {
         const workoutPlan = await WorkoutsPlansRepository_1.default.create({
             employee_id: employeeId,
             goal,
+            workoutPlanWorkouts,
         });
         return res
             .status(200)

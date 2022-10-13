@@ -3,6 +3,7 @@ import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
 import WorkoutsPlansRepository from '../../repositories/workouts-plans/WorkoutsPlansRepository';
+import dayjs from 'dayjs';
 
 class MembersWorkoutsPlansController {
   async index(req: Request, res: Response) {
@@ -11,8 +12,8 @@ class MembersWorkoutsPlansController {
   }
 
   async store(req: Request, res: Response) {
-    const { memberId, workoutPlanId, startedAt, finishAt, finishedAt } =
-      req.body;
+    const { memberId, workoutPlanId, startedAt, finishedAt } = req.body;
+
     const someFieldIsEmpty = isSomeEmpty([memberId, workoutPlanId, finishAt]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
@@ -38,6 +39,7 @@ class MembersWorkoutsPlansController {
       });
     }
 
+    const finishAt = dayjs().add(30, 'day').toISOString();
     const memberWorkoutPlans = await MembersWorkoutsPlansRepository.create({
       member_id: memberId,
       workouts_plan_id: workoutPlanId,

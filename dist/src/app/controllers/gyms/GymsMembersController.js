@@ -9,8 +9,19 @@ const GymsRepository_1 = __importDefault(require("../../repositories/gyms/GymsRe
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 class GymsMembersController {
     async index(req, res) {
-        const gymMembers = await GymsMembersRepository_1.default.findAll();
-        return res.json({ gymMembers });
+        const { gymId } = req.params;
+        if (!gymId || Number.isNaN(Number(gymId))) {
+            return res
+                .status(400)
+                .json({ message: 'O id da academia precisa ser informado. ' });
+        }
+        const gymMembers = await GymsMembersRepository_1.default.findAll({
+            gymId: Number(gymId),
+        });
+        return res.json({
+            message: 'Membros da academia encontrados.',
+            gymMembers,
+        });
     }
     async store(req, res) {
         const { gymId, memberId } = req.body;
@@ -51,9 +62,7 @@ class GymsMembersController {
                 gymMember: null,
             });
         }
-        return res
-            .status(200)
-            .json({
+        return res.status(200).json({
             message: 'Membro da academia encontrado',
             gymMember: gymMemberExists,
         });

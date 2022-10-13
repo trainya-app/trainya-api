@@ -30,6 +30,23 @@ class WorkoutsRepository {
             where: {
                 title,
             },
+            include: {
+                workoutExercise: {
+                    select: {
+                        id: true,
+                        sets: true,
+                        repetitions: true,
+                        duration: true,
+                        exercise: {
+                            select: {
+                                id: true,
+                                name: true,
+                                comment: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
         return titleExists;
     }
@@ -68,6 +85,23 @@ class WorkoutsRepository {
         const workoutExists = await workout.findFirst({
             where: {
                 id,
+            },
+            include: {
+                workoutExercise: {
+                    select: {
+                        id: true,
+                        sets: true,
+                        repetitions: true,
+                        duration: true,
+                        exercise: {
+                            select: {
+                                id: true,
+                                name: true,
+                                comment: true,
+                            },
+                        },
+                    },
+                },
             },
         });
         return workoutExists;

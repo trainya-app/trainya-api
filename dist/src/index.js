@@ -43,6 +43,7 @@ const cors_1 = __importDefault(require("cors"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const Months_routes_1 = __importDefault(require("./routes/Months.routes"));
 const MemberMonthsDayProgress_routes_1 = __importDefault(require("./routes/MemberMonthsDayProgress.routes"));
+const EmployeesClasses_routes_1 = __importDefault(require("./routes/EmployeesClasses.routes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -120,6 +121,8 @@ app.use(AuthRolePermission_routes_1.default);
 app.use(Months_routes_1.default);
 // Member Months Day Progress Routes
 app.use(MemberMonthsDayProgress_routes_1.default);
+// Employees Classes Routes
+app.use(EmployeesClasses_routes_1.default);
 // Terms Routes
 app.use(body_parser_1.default.text());
 app.use(Terms_routes_1.default);

@@ -14,7 +14,7 @@ class EmployeesController {
         res.send({ employees });
     }
     async store(req, res) {
-        const { roleName, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, password, wage, profileImg, paymentDate, documentType, documentValue, } = req.body;
+        const { roleName, name, birthDate, dailyWorkload, weeksdaysWorkload, phone, email, password, wage, profileImg, paymentDate, documentType, documentValue, gymId, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             roleName,
             name,
@@ -23,6 +23,7 @@ class EmployeesController {
             password,
             documentType,
             documentValue,
+            gymId,
         ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -58,6 +59,7 @@ class EmployeesController {
             payment_date: paymentDate,
             documentTypeId: document === null || document === void 0 ? void 0 : document.id,
             document: documentValue,
+            gymId: Number(gymId),
         });
         return res.json({
             message: 'Funcionário cadastrado com sucesso',

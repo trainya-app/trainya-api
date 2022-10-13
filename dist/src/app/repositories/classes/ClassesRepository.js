@@ -13,12 +13,15 @@ class ClassesRepository {
         });
         return titleExists;
     }
-    async create({ gym_id, title, description }) {
+    async create({ gym_id, title, description, hour, min_members, max_members, }) {
         const createdClass = await prisma.class.create({
             data: {
                 gym_id,
                 title,
                 description,
+                hour,
+                min_members,
+                max_members,
             },
         });
         return createdClass;
@@ -35,16 +38,49 @@ class ClassesRepository {
         });
         return true;
     }
-    async update({ id, gym_id, title, description }) {
+    async update({ id, gym_id, title, description, hour, min_members, max_members, }) {
         const updatedClass = await prisma.class.update({
             where: { id },
             data: {
                 title,
                 gym_id,
                 description,
+                hour,
+                min_members,
+                max_members,
             },
         });
         return updatedClass;
+    }
+    async findByGym(gym_id) {
+        return await prisma.class.findMany({
+            where: {
+                gym_id,
+            },
+            select: {
+                employeeClass: {
+                    select: {
+                        employee: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                classWeekDay: {
+                    select: {
+                        weekDay: {
+                            select: {
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                hour: true,
+                min_members: true,
+                max_members: true,
+            },
+        });
     }
 }
 exports.default = new ClassesRepository();

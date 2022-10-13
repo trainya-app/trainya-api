@@ -8,21 +8,42 @@ class WorkoutsPlansRepository {
             select: {
                 id: true,
                 employee_id: true,
+                goal: true,
                 employee: {
                     select: {
                         name: true,
                     },
                 },
-                goal: true,
+                workoutPlanWorkout: {
+                    select: {
+                        id: true,
+                        workout: {
+                            select: {
+                                id: true,
+                                title: true,
+                            },
+                        },
+                    },
+                },
+                memberWorkoutPlan: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         });
         return workoutPlans;
     }
-    async create({ employee_id, goal }) {
+    async create({ employee_id, goal, workoutPlanWorkouts }) {
         const createdWorkoutPlan = await workoutPlan.create({
             data: {
                 employee_id,
                 goal,
+                workoutPlanWorkout: {
+                    createMany: {
+                        data: workoutPlanWorkouts,
+                    },
+                },
             },
             select: {
                 id: true,
@@ -41,6 +62,32 @@ class WorkoutsPlansRepository {
         const workoutPlanExists = await workoutPlan.findFirst({
             where: {
                 id,
+            },
+            select: {
+                id: true,
+                employee_id: true,
+                goal: true,
+                employee: {
+                    select: {
+                        name: true,
+                    },
+                },
+                workoutPlanWorkout: {
+                    select: {
+                        id: true,
+                        workout: {
+                            select: {
+                                id: true,
+                                title: true,
+                            },
+                        },
+                    },
+                },
+                memberWorkoutPlan: {
+                    select: {
+                        id: true,
+                    },
+                },
             },
         });
         return workoutPlanExists;
