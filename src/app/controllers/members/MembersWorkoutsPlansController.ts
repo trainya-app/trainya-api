@@ -32,6 +32,7 @@ class MembersWorkoutsPlansController {
     const workoutPlanExists = await WorkoutsPlansRepository.findById(
       workoutPlanId
     );
+
     if (!workoutPlanExists) {
       return res.status(400).json({
         message: 'Plano de treino não encontrado',
@@ -39,17 +40,30 @@ class MembersWorkoutsPlansController {
       });
     }
 
+    const memberAlreadyIsInWorkoutPlan =
+      await MembersWorkoutsPlansRepository.findByMemberIdAndWorkoutPlanId({
+        memberId: Number(memberId),
+        workoutPlanId: Number(workoutPlanId),
+      });
+
+    if (memberAlreadyIsInWorkoutPlan) {
+      return res
+        .status(400)
+        .json({ message: 'Este membro já está nesse plano de treino.' });
+    }
+
     const finishAt = dayjs().add(30, 'day').toISOString();
-    const memberWorkoutPlans = await MembersWorkoutsPlansRepository.create({
+    const memberWorkoutPlan = await MembersWorkoutsPlansRepository.create({
       member_id: memberId,
       workouts_plan_id: workoutPlanId,
       started_at: startedAt,
       finish_at: finishAt,
       finished_at: finishedAt,
     });
+
     return res.status(200).send({
       message: 'Plano de treino do membro criado',
-      memberWorkoutPlans,
+      memberWorkoutPlan,
     });
   }
 
