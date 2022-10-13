@@ -83,6 +83,13 @@ class EmployeesRepository {
       where: {
         id,
       },
+      include: {
+        gymEmployee: {
+          select: {
+            gym_id: true,
+          },
+        },
+      },
     });
 
     return employeeExists;
