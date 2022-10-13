@@ -32,6 +32,7 @@ interface IEmployee {
   password: string;
   documentTypeId: DocumentsTypes;
   document: string;
+  gymId: number;
 }
 
 class EmployeesRepository {
@@ -92,7 +93,12 @@ class EmployeesRepository {
       },
     });
 
-    return employeeExists;
+    const formatted = {
+      ...employeeExists,
+      gymEmployee: { gym_id: employeeExists?.gymEmployee[0].gym_id },
+    };
+
+    return formatted;
   }
 
   async create({
@@ -109,6 +115,7 @@ class EmployeesRepository {
     profile_img,
     document,
     documentTypeId,
+    gymId,
   }: IEmployee) {
     const createdEmployee = await employee.create({
       data: {
@@ -125,6 +132,11 @@ class EmployeesRepository {
           create: {
             document_id: documentTypeId,
             value: document,
+          },
+        },
+        gymEmployee: {
+          create: {
+            gym_id: gymId,
           },
         },
       },
@@ -147,10 +159,20 @@ class EmployeesRepository {
             access_level: true,
           },
         },
+        gymEmployee: {
+          select: {
+            gym_id: true,
+          },
+        },
       },
     });
 
-    return createdEmployee;
+    const formatted = {
+      ...createdEmployee,
+      gymEmployee: { gym_id: createdEmployee.gymEmployee[0].gym_id },
+    };
+
+    return formatted;
   }
 
   async delete(id: number) {

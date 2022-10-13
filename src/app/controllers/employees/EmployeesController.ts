@@ -26,6 +26,7 @@ class EmployeesController {
       paymentDate,
       documentType,
       documentValue,
+      gymId,
     } = req.body;
     const someFieldIsEmpty = isSomeEmpty([
       roleName,
@@ -35,6 +36,7 @@ class EmployeesController {
       password,
       documentType,
       documentValue,
+      gymId,
     ]);
 
     if (someFieldIsEmpty) {
