@@ -78,6 +78,7 @@ class EmployeesController {
       payment_date: paymentDate,
       documentTypeId: document?.id as number,
       document: documentValue,
+      gymId: Number(gymId),
     });
 
     return res.json({
