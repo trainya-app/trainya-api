@@ -95,7 +95,7 @@ class EmployeesRepository {
 
     const formatted = {
       ...employeeExists,
-      gymEmployee: { gym_id: employeeExists?.gymEmployee[0].gym_id },
+      gymEmployee: { gym_id: employeeExists?.gymEmployee[0]?.gym_id },
     };
 
     return formatted;
@@ -169,7 +169,7 @@ class EmployeesRepository {
 
     const formatted = {
       ...createdEmployee,
-      gymEmployee: { gym_id: createdEmployee.gymEmployee[0].gym_id },
+      gymEmployee: { gym_id: createdEmployee.gymEmployee[0]?.gym_id },
     };
 
     return formatted;
