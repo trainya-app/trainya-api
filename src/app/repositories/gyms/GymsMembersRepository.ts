@@ -26,6 +26,9 @@ class GymsMembersRepository {
         member: {
           select: {
             name: true,
+            email: true,
+            phone: true,
+            at_gym: true,
             memberDocument: {
               select: {
                 document: {
