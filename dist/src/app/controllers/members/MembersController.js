@@ -8,6 +8,9 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 const MembersWorkoutsPlansRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutsPlansRepository"));
 const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
+const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
+const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
+const MembersClassesRepository_1 = __importDefault(require("../../repositories/members/MembersClassesRepository"));
 class MembersController {
     async index(req, res) {
         const members = await MembersRepository_1.default.findAll();
@@ -93,6 +96,13 @@ class MembersController {
         const { id } = req.params;
         const parsedId = Number(id);
         const { firstNewPassword, secondNewPassword } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([firstNewPassword, secondNewPassword]);
+        if (someFieldIsEmpty) {
+            return res.status(400).json({
+                message: 'Campos obrigatórios não foram enviados',
+                password: null,
+            });
+        }
         if (firstNewPassword !== secondNewPassword) {
             return res
                 .status(400)
@@ -187,6 +197,17 @@ class MembersController {
         return res
             .status(200)
             .json({ message: 'Planos de treino', memberWorkouts });
+    }
+    async showClassesByGym(req, res) {
+        const member_id = req.userId;
+        const gym_id = await GymsMembersRepository_1.default.findByMember(member_id);
+        const gymClasses = await ClassesRepository_1.default.findByGym(Number(gym_id === null || gym_id === void 0 ? void 0 : gym_id.gym_id));
+        return res.status(200).json({ message: 'Aulas encontradas', gymClasses });
+    }
+    async showClassesByMember(req, res) {
+        const member_id = req.userId;
+        const classes = await MembersClassesRepository_1.default.findByMember(member_id);
+        return res.status(200).json({ message: 'Aulas encontradas', classes });
     }
 }
 exports.default = new MembersController();

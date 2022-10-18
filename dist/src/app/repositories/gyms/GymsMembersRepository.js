@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@prisma/client");
 const { gymMember } = new client_1.PrismaClient();
 class GymsMembersRepository {
-    async findAll() {
+    async findAll({ gymId }) {
         const gymMembers = await gymMember.findMany({
             select: {
                 id: true,
@@ -18,6 +18,9 @@ class GymsMembersRepository {
                         name: true,
                     },
                 },
+            },
+            where: {
+                gym_id: gymId,
             },
         });
         return gymMembers;

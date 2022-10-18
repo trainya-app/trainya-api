@@ -9,6 +9,7 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
 const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
+const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
@@ -227,6 +228,18 @@ class GymsController {
         const memberId = req.userId;
         const gym = await GymsMembersRepository_1.default.findByMember(memberId);
         return res.status(200).json({ message: 'Academia encontrada', gym });
+    }
+    async showByClass(req, res) {
+        const { gymId } = req.params;
+        const parsedId = Number(gymId);
+        const gymExists = await GymsRepository_1.default.findById(parsedId);
+        if (!gymExists) {
+            return res
+                .status(404)
+                .json({ message: 'Academia não encontrada', gymClass: null });
+        }
+        const gymClasses = await ClassesRepository_1.default.findByGym(parsedId);
+        return res.send({ gymClasses });
     }
 }
 exports.default = new GymsController();

@@ -12,8 +12,15 @@ class ClassesController {
         return res.send({ classes });
     }
     async create(req, res) {
-        const { gymId, title, description } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([gymId, title, description]);
+        const { gymId, title, description, hour, minMembers, maxMembers } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
+            gymId,
+            title,
+            description,
+            hour,
+            minMembers,
+            maxMembers,
+        ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram preenchidos',
@@ -27,17 +34,13 @@ class ClassesController {
                 class: null,
             });
         }
-        const titleExists = await ClassesRepository_1.default.findByTitle(title);
-        if (titleExists) {
-            return res.status(400).json({
-                message: 'Aula já cadastrada',
-                class: null,
-            });
-        }
         const createdClass = await ClassesRepository_1.default.create({
             gym_id: gymId,
             title,
             description,
+            hour,
+            min_members: minMembers,
+            max_members: maxMembers,
         });
         return res
             .status(200)
@@ -73,8 +76,15 @@ class ClassesController {
     async update(req, res) {
         const { id } = req.params;
         const parsedId = Number(id);
-        const { gymId, title, description } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([gymId, title, description]);
+        const { gymId, title, description, hour, minMembers, maxMembers } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
+            gymId,
+            title,
+            description,
+            hour,
+            minMembers,
+            maxMembers,
+        ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram preenchidos',
@@ -111,6 +121,9 @@ class ClassesController {
             gym_id,
             title,
             description,
+            hour,
+            min_members: minMembers,
+            max_members: maxMembers,
         });
         return res
             .status(200)

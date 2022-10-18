@@ -98,6 +98,7 @@ class EmployeesController {
         .json({ message: 'Funcionário não encontrado', employee: null });
     }
 
+    
     await EmployeesRepository.delete(parsedId);
     return res.sendStatus(200);
   }
