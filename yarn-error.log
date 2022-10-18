@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\bryan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/multer -D
+  C:\Program Files\nodejs\node.exe C:\Users\bryan\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
 
 PATH: 
   C:\ProgramData\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\bryan\AppData\Local\Microsoft\WindowsApps;;C:\Users\bryan\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\bryan\AppData\Roaming\npm
@@ -24,8 +24,8 @@ npm manifest:
     "license": "MIT",
     "dependencies": {
       "@prisma/client": "^4.3.1",
-      "@types/multer": "^1.4.7",
       "bcrypt": "^5.0.1",
+      "body-parser": "^1.20.0",
       "cors": "^2.8.5",
       "express": "^4.18.1",
       "firebase-admin": "^11.0.1",
@@ -51,6 +51,7 @@ npm manifest:
       "@types/jest": "^28.1.6",
       "@types/jsonwebtoken": "^8.5.9",
       "@types/mocha": "^9.1.1",
+      "@types/multer": "^1.4.7",
       "@types/node": "^17.0.39",
       "@types/typescript": "^2.0.0",
       "@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -1695,6 +1696,24 @@ Lockfile:
   body-parser@1.20.0:
     version "1.20.0"
     resolved "https://registry.npmjs.org/body-parser/-/body-parser-1.20.0.tgz"
+    integrity sha512-DfJ+q6EPcGKZD1QWUjSpqp+Q7bDQTsQIF4zfUAtZ6qk+H/3/QRhg9CEp39ss+/T2vw0+HaidC0ecJj/DRLIaKg==
+    dependencies:
+      bytes "3.1.2"
+      content-type "~1.0.4"
+      debug "2.6.9"
+      depd "2.0.0"
+      destroy "1.2.0"
+      http-errors "2.0.0"
+      iconv-lite "0.4.24"
+      on-finished "2.4.1"
+      qs "6.10.3"
+      raw-body "2.5.1"
+      type-is "~1.6.18"
+      unpipe "1.0.0"
+  
+  body-parser@^1.20.0:
+    version "1.20.0"
+    resolved "https://registry.yarnpkg.com/body-parser/-/body-parser-1.20.0.tgz#3de69bd89011c11573d7bfee6a64f11b6bd27cc5"
     integrity sha512-DfJ+q6EPcGKZD1QWUjSpqp+Q7bDQTsQIF4zfUAtZ6qk+H/3/QRhg9CEp39ss+/T2vw0+HaidC0ecJj/DRLIaKg==
     dependencies:
       bytes "3.1.2"

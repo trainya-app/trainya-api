@@ -3,6 +3,7 @@ import { isSomeEmpty } from '../../../utils/isSomeEmpty';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
 import WorkoutsPlansRepository from '../../repositories/workouts-plans/WorkoutsPlansRepository';
+import dayjs from 'dayjs';
 
 class MembersWorkoutsPlansController {
   async index(req: Request, res: Response) {
@@ -11,9 +12,9 @@ class MembersWorkoutsPlansController {
   }
 
   async store(req: Request, res: Response) {
-    const { memberId, workoutPlanId, startedAt, finishAt, finishedAt } =
-      req.body;
-    const someFieldIsEmpty = isSomeEmpty([memberId, workoutPlanId, finishAt]);
+    const { memberId, workoutPlanId, startedAt, finishedAt } = req.body;
+
+    const someFieldIsEmpty = isSomeEmpty([memberId, workoutPlanId]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',
@@ -31,6 +32,7 @@ class MembersWorkoutsPlansController {
     const workoutPlanExists = await WorkoutsPlansRepository.findById(
       workoutPlanId
     );
+
     if (!workoutPlanExists) {
       return res.status(400).json({
         message: 'Plano de treino não encontrado',
@@ -38,16 +40,30 @@ class MembersWorkoutsPlansController {
       });
     }
 
-    const memberWorkoutPlans = await MembersWorkoutsPlansRepository.create({
+    const memberAlreadyIsInWorkoutPlan =
+      await MembersWorkoutsPlansRepository.findByMemberIdAndWorkoutPlanId({
+        memberId: Number(memberId),
+        workoutPlanId: Number(workoutPlanId),
+      });
+
+    if (memberAlreadyIsInWorkoutPlan) {
+      return res
+        .status(400)
+        .json({ message: 'Este membro já está nesse plano de treino.' });
+    }
+
+    const finishAt = dayjs().add(30, 'day').toISOString();
+    const memberWorkoutPlan = await MembersWorkoutsPlansRepository.create({
       member_id: memberId,
       workouts_plan_id: workoutPlanId,
       started_at: startedAt,
       finish_at: finishAt,
       finished_at: finishedAt,
     });
+
     return res.status(200).send({
       message: 'Plano de treino do membro criado',
-      memberWorkoutPlans,
+      memberWorkoutPlan,
     });
   }
 

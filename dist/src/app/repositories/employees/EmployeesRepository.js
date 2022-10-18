@@ -44,14 +44,24 @@ class EmployeesRepository {
         return employeeExists;
     }
     async findById(id) {
+        var _a;
         const employeeExists = await employee.findFirst({
             where: {
                 id,
             },
+            include: {
+                gymEmployee: {
+                    select: {
+                        gym_id: true,
+                    },
+                },
+            },
         });
-        return employeeExists;
+        const formatted = Object.assign(Object.assign({}, employeeExists), { gymEmployee: { gym_id: (_a = employeeExists === null || employeeExists === void 0 ? void 0 : employeeExists.gymEmployee[0]) === null || _a === void 0 ? void 0 : _a.gym_id } });
+        return formatted;
     }
-    async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, document, documentTypeId, }) {
+    async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, document, documentTypeId, gymId, }) {
+        var _a;
         const createdEmployee = await employee.create({
             data: {
                 role_id: Number(role_id),
@@ -67,6 +77,11 @@ class EmployeesRepository {
                     create: {
                         document_id: documentTypeId,
                         value: document,
+                    },
+                },
+                gymEmployee: {
+                    create: {
+                        gym_id: gymId,
                     },
                 },
             },
@@ -89,9 +104,15 @@ class EmployeesRepository {
                         access_level: true,
                     },
                 },
+                gymEmployee: {
+                    select: {
+                        gym_id: true,
+                    },
+                },
             },
         });
-        return createdEmployee;
+        const formatted = Object.assign(Object.assign({}, createdEmployee), { gymEmployee: { gym_id: (_a = createdEmployee.gymEmployee[0]) === null || _a === void 0 ? void 0 : _a.gym_id } });
+        return formatted;
     }
     async delete(id) {
         await employee.delete({

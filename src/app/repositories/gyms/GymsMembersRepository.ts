@@ -26,6 +26,16 @@ class GymsMembersRepository {
         member: {
           select: {
             name: true,
+            memberDocument: {
+              select: {
+                document: {
+                  select: {
+                    name: true,
+                  },
+                },
+                value: true,
+              },
+            },
           },
         },
       },
