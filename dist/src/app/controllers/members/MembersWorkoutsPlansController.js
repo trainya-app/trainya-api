@@ -7,14 +7,15 @@ const isSomeEmpty_1 = require("../../../utils/isSomeEmpty");
 const MembersRepository_1 = __importDefault(require("../../repositories/members/MembersRepository"));
 const MembersWorkoutsPlansRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutsPlansRepository"));
 const WorkoutsPlansRepository_1 = __importDefault(require("../../repositories/workouts-plans/WorkoutsPlansRepository"));
+const dayjs_1 = __importDefault(require("dayjs"));
 class MembersWorkoutsPlansController {
     async index(req, res) {
         const memberWorkoutPlans = await MembersWorkoutsPlansRepository_1.default.findAll();
         return res.send({ memberWorkoutPlans });
     }
     async store(req, res) {
-        const { memberId, workoutPlanId, startedAt, finishAt, finishedAt } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([memberId, workoutPlanId, finishAt]);
+        const { memberId, workoutPlanId, startedAt, finishedAt } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([memberId, workoutPlanId]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram enviados',
@@ -34,7 +35,17 @@ class MembersWorkoutsPlansController {
                 memberWorkoutPlan: null,
             });
         }
-        const memberWorkoutPlans = await MembersWorkoutsPlansRepository_1.default.create({
+        const memberAlreadyIsInWorkoutPlan = await MembersWorkoutsPlansRepository_1.default.findByMemberIdAndWorkoutPlanId({
+            memberId: Number(memberId),
+            workoutPlanId: Number(workoutPlanId),
+        });
+        if (memberAlreadyIsInWorkoutPlan) {
+            return res
+                .status(400)
+                .json({ message: 'Este membro já está nesse plano de treino.' });
+        }
+        const finishAt = (0, dayjs_1.default)().add(30, 'day').toISOString();
+        const memberWorkoutPlan = await MembersWorkoutsPlansRepository_1.default.create({
             member_id: memberId,
             workouts_plan_id: workoutPlanId,
             started_at: startedAt,
@@ -43,7 +54,7 @@ class MembersWorkoutsPlansController {
         });
         return res.status(200).send({
             message: 'Plano de treino do membro criado',
-            memberWorkoutPlans,
+            memberWorkoutPlan,
         });
     }
     async delete(req, res) {

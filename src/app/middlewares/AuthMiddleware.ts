@@ -30,7 +30,8 @@ export default function AuthMiddleware(
     req.userId = Number(id);
 
     return next();
-  } catch {
+  } catch (err) {
+    console.log({ err });
     return res.status(401).json({
       message: 'O token está inválido',
       error: true,

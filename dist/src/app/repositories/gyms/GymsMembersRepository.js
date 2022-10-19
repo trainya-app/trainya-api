@@ -15,7 +15,11 @@ class GymsMembersRepository {
                 member_id: true,
                 member: {
                     select: {
+                        id: true,
                         name: true,
+                        email: true,
+                        phone: true,
+                        at_gym: true,
                         memberDocument: {
                             select: {
                                 document: {
