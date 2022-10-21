@@ -65,6 +65,8 @@ class EmployeeAuthController {
       accessLevel: employee.role?.access_level,
     } as JWTPayload);
 
+    console.log({ token });
+
     return res.status(200).send({ message: 'Logado', token });
   }
 }

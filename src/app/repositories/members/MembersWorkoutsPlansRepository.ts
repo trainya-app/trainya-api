@@ -62,10 +62,29 @@ class MembersWorkoutsPlansRepository {
     return createdMemberWorkoutPlan;
   }
 
-  async findById(id: number) {
+  async findById(memberId: number) {
     const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
       where: {
-        id,
+        member_id: memberId,
+      },
+      include: {
+        workoutPlan: {
+          include: {
+            workoutPlanWorkout: {
+              include: {
+                workout: {
+                  include: {
+                    workoutExercise: {
+                      include: {
+                        exercise: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
     return memberWorkoutPlanExists;
