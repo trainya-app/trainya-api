@@ -63,9 +63,12 @@ class MembersWorkoutsPlansRepository {
   }
 
   async findById(memberId: number) {
-    const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
+    const memberWorkoutPlanExists = await memberWorkoutPlan.findMany({
       where: {
         member_id: memberId,
+      },
+      orderBy: {
+        created_at: 'desc',
       },
       include: {
         workoutPlan: {
@@ -87,7 +90,7 @@ class MembersWorkoutsPlansRepository {
         },
       },
     });
-    return memberWorkoutPlanExists;
+    return memberWorkoutPlanExists[0];
   }
 
   async delete(id: number) {
