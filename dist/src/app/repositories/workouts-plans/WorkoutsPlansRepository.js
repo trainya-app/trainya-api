@@ -85,7 +85,7 @@ class WorkoutsPlansRepository {
                 },
                 memberWorkoutPlan: {
                     select: {
-                        id: true,
+                        member: true,
                     },
                 },
             },

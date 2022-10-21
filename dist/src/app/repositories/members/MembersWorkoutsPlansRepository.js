@@ -110,5 +110,14 @@ class MembersWorkoutsPlansRepository {
         });
         return memberWorkoutPlanExists;
     }
+    async findByMemberIdAndWorkoutPlanId({ memberId, workoutPlanId, }) {
+        const memberExistsInWorkoutPlan = await memberWorkoutPlan.findFirst({
+            where: {
+                member_id: memberId,
+                workouts_plan_id: workoutPlanId,
+            },
+        });
+        return memberExistsInWorkoutPlan;
+    }
 }
 exports.default = new MembersWorkoutsPlansRepository();

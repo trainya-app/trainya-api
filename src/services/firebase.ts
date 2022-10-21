@@ -16,10 +16,10 @@ const uploadFile = (req: Request, res: Response, next: NextFunction) => {
   if (!req.file) {
     return next();
   }
-  const userId = req.userId;
+  const date = (new Date()).getTime()
 
   const reqFile = req.file;
-  const fileName = userId + '.' + reqFile.originalname.split('.').pop();
+  const fileName = date + '.' + reqFile.originalname.split('.').pop();
 
   const file = bucket.file('avatars/' + fileName);
 
