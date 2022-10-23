@@ -296,7 +296,6 @@ model Workout {
   description        String?              @db.VarChar(256)
   type               String?
   preview_image_url  String?              @db.VarChar(256)
-  video_url          String?              @db.VarChar(256)
   level              String?
   duration           String
   created_at         DateTime             @default(now())
@@ -328,6 +327,7 @@ model Exercise {
   id              Int               @id @default(autoincrement())
   name            String
   comment         String?           @db.VarChar(256)
+  video_url       String?           @db.VarChar(256)
   needs_equipment Boolean
   created_at      DateTime          @default(now())
   updated_at      DateTime          @updatedAt
