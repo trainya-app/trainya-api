@@ -188,6 +188,7 @@ class GymsRepository {
     id,
     current_capacity,
   }: IUpdateCurrentCapacity) {
+    console.log({ id, current_capacity });
     const updatedCurrentCapacity = await gym.update({
       where: {
         id,

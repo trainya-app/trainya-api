@@ -144,7 +144,18 @@ class GymsController {
         .send({ message: 'Academia não encontrada', gym: null });
     }
 
-    return res.status(200).json({ message: 'Academia encontrada', gym });
+    // lógica pra pegar quantidade de membros com o at_gym como true
+    const membersAtGym = await GymsMembersRepository.getMembersAtGym({
+      gym_id: gym.id,
+    });
+    const newGym = {
+      ...gym,
+      current_capacity: membersAtGym,
+    };
+
+    return res
+      .status(200)
+      .json({ message: 'Academia encontrada', gym: newGym });
   }
 
   async update(req: Request, res: Response) {
@@ -256,17 +267,16 @@ class GymsController {
           month_id: parsedMonthId,
         });
 
-      if (!progress) {
-        return res
-          .send(404)
-          .json({ message: 'Progresso não encontrado', progress: null });
+      let updatedProgress;
+
+      if (progress) {
+        const newCurrentProgress = progress.current_progress + 1;
+        updatedProgress =
+          await MemberMonthsDayProgressRepository.updateProgress({
+            id: progress.id,
+            current_progress: newCurrentProgress,
+          });
       }
-      const newCurrentProgress = progress.current_progress + 1;
-      const updatedProgress =
-        await MemberMonthsDayProgressRepository.updateProgress({
-          id: progress.id,
-          current_progress: newCurrentProgress,
-        });
 
       return res.status(200).json({
         message: 'Entrada registrada',
