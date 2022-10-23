@@ -7,6 +7,16 @@ import MembersRepository from '../../repositories/members/MembersRepository';
 class GymsMembersController {
   async index(req: Request, res: Response) {
     const { gymId } = req.params;
+    const { verifyMember, userId } = req.query;
+
+    if (verifyMember === 'true') {
+      const memberExistsInGym = await GymsMembersRepository.verifyMember({
+        gym_id: Number(gymId),
+        user_id: Number(userId),
+      });
+      return res.json({ exists: !!memberExistsInGym });
+    }
+
     if (!gymId || Number.isNaN(Number(gymId))) {
       return res
         .status(400)
