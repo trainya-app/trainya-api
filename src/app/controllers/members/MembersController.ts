@@ -195,8 +195,8 @@ class MembersController {
     const emailExists = await MembersRepository.findByEmail(email);
     if (emailExists) {
       const idByEmail = await MembersRepository.findIdByEmail(email);
-      let id = idByEmail.id;
-      if (id != parsedId) {
+      let id = idByEmail?.id;
+      if (id != parsedId && id) {
         return res
           .status(400)
           .json({ message: 'Email já está em uso', member: null });
