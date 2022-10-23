@@ -30,6 +30,7 @@ class MembersController {
       adressNumber,
       birthDate,
       avatarUrl,
+      gymId,
     } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([
@@ -39,11 +40,8 @@ class MembersController {
       height,
       email,
       password,
-      state,
-      city,
-      street,
-      adressNumber,
-      avatarUrl,
+      gymId,
+      birthDate,
     ]);
 
     if (someFieldIsEmpty) {
@@ -64,8 +62,8 @@ class MembersController {
     const member = await MembersRepository.create({
       phone,
       name,
-      weight,
-      height,
+      weight: Number(weight),
+      height: Number(height),
       email,
       password: hashedPassword,
       state,
@@ -74,6 +72,16 @@ class MembersController {
       adress_number: adressNumber,
       birth_date: birthDate,
       avatar_url: avatarUrl,
+    });
+
+    if (!member) {
+      return res
+        .status(400)
+        .json({ message: 'Não foi possível criar o membro', member: null });
+    }
+    await GymsMembersRepository.create({
+      gym_id: Number(gymId),
+      member_id: member?.id as number,
     });
 
     if (member == null) {
@@ -93,11 +101,6 @@ class MembersController {
     const parsedId = Number(id);
 
     const memberExists = await MembersRepository.findById(parsedId);
-    if (!memberExists) {
-      return res
-        .status(404)
-        .json({ message: 'Membro não encontrado', member: null });
-    }
 
     await MembersRepository.delete(parsedId);
 

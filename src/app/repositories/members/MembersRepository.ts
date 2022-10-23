@@ -95,12 +95,13 @@ class MembersRepository {
 
       return createdMember;
     } catch (error) {
+      console.log(error);
       return null;
     }
   }
 
   async delete(id: number) {
-    await member.delete({
+    await member.deleteMany({
       where: {
         id,
       },

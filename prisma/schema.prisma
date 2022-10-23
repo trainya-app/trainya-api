@@ -61,11 +61,11 @@ model Member {
   height              Decimal
   email               String
   password            String
-  state               String
-  city                String
-  street              String                   @db.VarChar(256)
-  adress_number       String
-  at_gym              Boolean                  @default(false)
+  state               String?
+  city                String?
+  street              String?                  @db.VarChar(256)
+  adress_number       String?
+  at_gym              Boolean?                 @default(false)
   created_at          DateTime                 @default(now())
   updated_at          DateTime                 @updatedAt
   memberGoal          MemberGoal[]
@@ -89,7 +89,7 @@ model Member {
 ////Normalization model for members and settings_options as N in cardinality
 model MemberSetting {
   id                 Int            @id @default(autoincrement())
-  member             Member?        @relation(fields: [member_id], references: [id]) //Reference
+  member             Member?        @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id          Int
   settingOption      SettingOption? @relation(fields: [settings_option_id], references: [id]) //Reference
   settings_option_id Int
@@ -114,7 +114,7 @@ model SettingOption {
 ////Normalization model for members and  statistics as N in cardinality
 model MemberStatistic {
   id           Int        @id @default(autoincrement())
-  member       Member?    @relation(fields: [member_id], references: [id]) //Reference
+  member       Member?    @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id    Int
   statistic    Statistic? @relation(fields: [statistic_id], references: [id]) //Reference
   statistic_id Int
@@ -140,7 +140,7 @@ model Statistic {
 //Relation to gyms as                              N in cardinality
 model MemberPayment {
   id           Int      @id @default(autoincrement())
-  member       Member?  @relation(fields: [member_id], references: [id]) //Reference
+  member       Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id    Int
   method       Method?  @relation(fields: [method_id], references: [id]) //Reference
   method_id    Int
@@ -169,7 +169,7 @@ model Method {
 //Relation to members as N in cardinality
 model LegalRepresentative {
   id                          Int                           @id @default(autoincrement())
-  member                      Member?                       @relation(fields: [member_id], references: [id]) //Reference
+  member                      Member?                       @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id                   Int
   name                        String                        @db.VarChar(256)
   phone                       String
@@ -197,7 +197,7 @@ model LegalRepresentativeDocument {
 ////Normalization model for members and documents as N in cardinality
 model MemberDocument {
   id          Int       @id @default(autoincrement())
-  member      Member?   @relation(fields: [member_id], references: [id]) //Reference
+  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id   Int
   document    Document? @relation(fields: [document_id], references: [id]) //Reference
   document_id Int
@@ -226,7 +226,7 @@ model Document {
 ////Normalization model for members and workout_plans as N in cardinality
 model MemberWorkoutPlan {
   id               Int          @id @default(autoincrement())
-  member           Member?      @relation(fields: [member_id], references: [id]) //Reference
+  member           Member?      @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id        Int
   workoutPlan      WorkoutPlan? @relation(fields: [workouts_plan_id], references: [id]) //Reference
   workouts_plan_id Int
@@ -242,7 +242,7 @@ model MemberWorkoutPlan {
 ////Normalization model for members and classes as N in cardinality
 model MemberClass {
   id         Int      @id @default(autoincrement())
-  members    Member?  @relation(fields: [member_id], references: [id]) //Reference
+  members    Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id  Int
   class      Class?   @relation(fields: [class_id], references: [id]) //Reference
   class_id   Int
@@ -431,7 +431,7 @@ model EmployeeRating {
   id          Int       @id @default(autoincrement())
   employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
   employee_id Int
-  member      Member?   @relation(fields: [member_id], references: [id]) //Reference
+  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id   Int
   ratings     Int
   comment     String    @db.VarChar(256)
@@ -581,7 +581,7 @@ model GymMember {
   id         Int      @id @default(autoincrement())
   gym        Gym?     @relation(fields: [gym_id], references: [id]) //Reference
   gym_id     Int
-  member     Member?  @relation(fields: [member_id], references: [id]) //Reference
+  member     Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id  Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -660,7 +660,7 @@ model Subscription {
   id                   Int               @id @default(autoincrement())
   subscriptionPlan     SubscriptionPlan? @relation(fields: [subscription_plan_id], references: [id]) //Reference
   subscription_plan_id Int
-  member               Member?           @relation(fields: [member_id], references: [id]) //Reference
+  member               Member?           @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id            Int
   started_at           String
   created_at           DateTime          @default(now())
@@ -699,7 +699,7 @@ model AuthPermission {
 
 model MemberPermision {
   id            Int             @id @default(autoincrement())
-  member        Member?         @relation(fields: [member_id], references: [id]) //Reference
+  member        Member?         @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id     Int
   permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
   permission_id Int
@@ -711,7 +711,7 @@ model MemberPermision {
 
 model MemberRole {
   id          Int       @id @default(autoincrement())
-  member      Member?   @relation(fields: [member_id], references: [id]) //Reference
+  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id   Int
   authRole    AuthRole? @relation(fields: [authRole_id], references: [id]) //Reference
   authRole_id Int
@@ -794,7 +794,7 @@ model Month {
 
 model MemberMonthDayProgress {
   id               Int      @id @default(autoincrement())
-  member           Member?  @relation(fields: [member_id], references: [id]) //Reference
+  member           Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id        Int
   month            Month?   @relation(fields: [month_id], references: [id])
   month_id         Int
