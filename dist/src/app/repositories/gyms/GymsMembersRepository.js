@@ -102,11 +102,25 @@ class GymsMembersRepository {
                 gym: {
                     select: {
                         name: true,
+                        current_capacity: true,
                     },
                 },
             },
         });
         return gymMemberExists;
+    }
+    async getMembersAtGym({ gym_id }) {
+        const members = await gymMember.count({
+            where: {
+                AND: {
+                    gym_id,
+                    member: {
+                        at_gym: true,
+                    },
+                },
+            },
+        });
+        return members;
     }
 }
 exports.default = new GymsMembersRepository();
