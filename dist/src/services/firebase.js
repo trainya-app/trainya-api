@@ -15,9 +15,9 @@ const uploadFile = (req, res, next) => {
     if (!req.file) {
         return next();
     }
-    const userId = req.userId;
+    const date = (new Date()).getTime();
     const reqFile = req.file;
-    const fileName = userId + '.' + reqFile.originalname.split('.').pop();
+    const fileName = date + '.' + reqFile.originalname.split('.').pop();
     const file = bucket.file('avatars/' + fileName);
     const stream = file.createWriteStream({
         metadata: {

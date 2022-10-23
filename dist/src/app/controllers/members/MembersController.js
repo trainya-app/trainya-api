@@ -17,7 +17,7 @@ class MembersController {
         return res.json({ members });
     }
     async store(req, res) {
-        const { phone, name, weight, height, email, password, state, city, street, adressNumber, birthDate, avatarUrl, } = req.body;
+        const { phone, name, weight, height, email, password, state, city, street, adressNumber, birthDate, avatarUrl, gymId, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             phone,
             name,
@@ -25,11 +25,8 @@ class MembersController {
             height,
             email,
             password,
-            state,
-            city,
-            street,
-            adressNumber,
-            avatarUrl,
+            gymId,
+            birthDate,
         ]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -47,8 +44,8 @@ class MembersController {
         const member = await MembersRepository_1.default.create({
             phone,
             name,
-            weight,
-            height,
+            weight: Number(weight),
+            height: Number(height),
             email,
             password: hashedPassword,
             state,
@@ -57,6 +54,15 @@ class MembersController {
             adress_number: adressNumber,
             birth_date: birthDate,
             avatar_url: avatarUrl,
+        });
+        if (!member) {
+            return res
+                .status(400)
+                .json({ message: 'Não foi possível criar o membro', member: null });
+        }
+        await GymsMembersRepository_1.default.create({
+            gym_id: Number(gymId),
+            member_id: member === null || member === void 0 ? void 0 : member.id,
         });
         if (member == null) {
             return res.status(400).json({
@@ -71,11 +77,6 @@ class MembersController {
         const { id } = req.params;
         const parsedId = Number(id);
         const memberExists = await MembersRepository_1.default.findById(parsedId);
-        if (!memberExists) {
-            return res
-                .status(404)
-                .json({ message: 'Membro não encontrado', member: null });
-        }
         await MembersRepository_1.default.delete(parsedId);
         return res.sendStatus(200);
     }
@@ -139,8 +140,8 @@ class MembersController {
         const emailExists = await MembersRepository_1.default.findByEmail(email);
         if (emailExists) {
             const idByEmail = await MembersRepository_1.default.findIdByEmail(email);
-            let id = idByEmail.id;
-            if (id != parsedId) {
+            let id = idByEmail === null || idByEmail === void 0 ? void 0 : idByEmail.id;
+            if (id != parsedId && id) {
                 return res
                     .status(400)
                     .json({ message: 'Email já está em uso', member: null });

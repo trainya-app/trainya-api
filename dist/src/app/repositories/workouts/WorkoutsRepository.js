@@ -50,7 +50,7 @@ class WorkoutsRepository {
         });
         return titleExists;
     }
-    async create({ employee_id, title, description, type, preview_image_url, video_url, level, duration, }) {
+    async create({ employee_id, title, description, type, preview_image_url, level, duration, }) {
         const createdWorkout = await workout.create({
             data: {
                 employee_id,
@@ -58,7 +58,6 @@ class WorkoutsRepository {
                 description,
                 type,
                 preview_image_url,
-                video_url,
                 level,
                 duration,
             },
@@ -76,7 +75,6 @@ class WorkoutsRepository {
                 duration: true,
                 level: true,
                 preview_image_url: true,
-                video_url: true,
             },
         });
         return createdWorkout;
@@ -114,7 +112,7 @@ class WorkoutsRepository {
         });
         return true;
     }
-    async update({ id, employee_id, title, description, type, preview_image_url, video_url, level, duration, }) {
+    async update({ id, employee_id, title, description, type, preview_image_url, level, duration, }) {
         const updatedWorkout = await workout.update({
             where: {
                 id,
@@ -125,7 +123,6 @@ class WorkoutsRepository {
                 description,
                 type,
                 preview_image_url,
-                video_url,
                 level,
                 duration,
             },

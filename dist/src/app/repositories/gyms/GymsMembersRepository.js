@@ -20,6 +20,8 @@ class GymsMembersRepository {
                         email: true,
                         phone: true,
                         at_gym: true,
+                        height: true,
+                        weight: true,
                         memberDocument: {
                             select: {
                                 document: {

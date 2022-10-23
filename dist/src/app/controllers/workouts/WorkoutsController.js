@@ -14,7 +14,7 @@ class WorkoutsController {
         res.send({ workouts });
     }
     async store(req, res) {
-        const { employeeId, title, description, type, previewImageUrl, videoUrl, level, duration, } = req.body;
+        const { employeeId, title, description, type, previewImageUrl, level, duration, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([employeeId, title, duration]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
@@ -42,7 +42,6 @@ class WorkoutsController {
             description,
             type,
             preview_image_url: previewImageUrl,
-            video_url: videoUrl,
             level,
             duration,
         });
@@ -79,14 +78,13 @@ class WorkoutsController {
     async update(req, res) {
         const { id } = req.params;
         const parsedId = Number(id);
-        const { employeeId, title, description, type, previewImageUrl, videoUrl, level, duration, } = req.body;
+        const { employeeId, title, description, type, previewImageUrl, level, duration, } = req.body;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([
             employeeId,
             title,
             description,
             type,
             previewImageUrl,
-            videoUrl,
             level,
             duration,
         ]);
@@ -130,7 +128,6 @@ class WorkoutsController {
             description,
             type,
             preview_image_url: previewImageUrl,
-            video_url: videoUrl,
             level,
             duration,
         });

@@ -111,23 +111,29 @@ class MemberMonthsDayProgressRepository {
         return updatedProgress;
     }
     async createForAllMonths(member_id) {
-        const createdProgresses = await memberMonthDayProgress.createMany({
-            data: [
-                { member_id, month_id: 1 },
-                { member_id, month_id: 2 },
-                { member_id, month_id: 3 },
-                { member_id, month_id: 4 },
-                { member_id, month_id: 5 },
-                { member_id, month_id: 6 },
-                { member_id, month_id: 7 },
-                { member_id, month_id: 8 },
-                { member_id, month_id: 9 },
-                { member_id, month_id: 10 },
-                { member_id, month_id: 11 },
-                { member_id, month_id: 12 },
-            ],
-        });
-        return createdProgresses;
+        try {
+            const createdProgresses = await memberMonthDayProgress.createMany({
+                data: [
+                    { member_id, month_id: 1 },
+                    { member_id, month_id: 2 },
+                    { member_id, month_id: 3 },
+                    { member_id, month_id: 4 },
+                    { member_id, month_id: 5 },
+                    { member_id, month_id: 6 },
+                    { member_id, month_id: 7 },
+                    { member_id, month_id: 8 },
+                    { member_id, month_id: 9 },
+                    { member_id, month_id: 10 },
+                    { member_id, month_id: 11 },
+                    { member_id, month_id: 12 },
+                ],
+            });
+            return createdProgresses;
+        }
+        catch (err) {
+            console.log(err);
+            return null;
+        }
     }
 }
 exports.default = new MemberMonthsDayProgressRepository();

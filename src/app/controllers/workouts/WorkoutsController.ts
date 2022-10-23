@@ -18,7 +18,6 @@ class WorkoutsController {
       description,
       type,
       previewImageUrl,
-      videoUrl,
       level,
       duration,
     } = req.body;
@@ -53,7 +52,6 @@ class WorkoutsController {
       description,
       type,
       preview_image_url: previewImageUrl,
-      video_url: videoUrl,
       level,
       duration,
     });
@@ -105,7 +103,6 @@ class WorkoutsController {
       description,
       type,
       previewImageUrl,
-      videoUrl,
       level,
       duration,
     } = req.body;
@@ -116,7 +113,6 @@ class WorkoutsController {
       description,
       type,
       previewImageUrl,
-      videoUrl,
       level,
       duration,
     ]);
@@ -165,7 +161,6 @@ class WorkoutsController {
       description,
       type,
       preview_image_url: previewImageUrl,
-      video_url: videoUrl,
       level,
       duration,
     });

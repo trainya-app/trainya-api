@@ -7,7 +7,6 @@ interface IWorkout {
   description: string;
   type: string;
   preview_image_url: string;
-  video_url: string;
   level: string;
   duration: string;
 }
@@ -19,7 +18,6 @@ interface IUpdateWorkout {
   description: string;
   type: string;
   preview_image_url: string;
-  video_url: string;
   level: string;
   duration: string;
 }
@@ -80,7 +78,6 @@ class WorkoutsRepository {
     description,
     type,
     preview_image_url,
-    video_url,
     level,
     duration,
   }: IWorkout) {
@@ -91,7 +88,6 @@ class WorkoutsRepository {
         description,
         type,
         preview_image_url,
-        video_url,
         level,
         duration,
       },
@@ -109,7 +105,6 @@ class WorkoutsRepository {
         duration: true,
         level: true,
         preview_image_url: true,
-        video_url: true,
       },
     });
     return createdWorkout;
@@ -158,7 +153,6 @@ class WorkoutsRepository {
     description,
     type,
     preview_image_url,
-    video_url,
     level,
     duration,
   }: IUpdateWorkout) {
@@ -172,7 +166,6 @@ class WorkoutsRepository {
         description,
         type,
         preview_image_url,
-        video_url,
         level,
         duration,
       },

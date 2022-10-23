@@ -37,13 +37,35 @@ class MembersWorkoutsPlansRepository {
         });
         return createdMemberWorkoutPlan;
     }
-    async findById(id) {
-        const memberWorkoutPlanExists = await memberWorkoutPlan.findFirst({
+    async findById(memberId) {
+        const memberWorkoutPlanExists = await memberWorkoutPlan.findMany({
             where: {
-                id,
+                member_id: memberId,
+            },
+            orderBy: {
+                created_at: 'desc',
+            },
+            include: {
+                workoutPlan: {
+                    include: {
+                        workoutPlanWorkout: {
+                            include: {
+                                workout: {
+                                    include: {
+                                        workoutExercise: {
+                                            include: {
+                                                exercise: true,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             },
         });
-        return memberWorkoutPlanExists;
+        return memberWorkoutPlanExists[0];
     }
     async delete(id) {
         await memberWorkoutPlan.delete({
