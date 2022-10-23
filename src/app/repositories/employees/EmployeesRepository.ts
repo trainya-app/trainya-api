@@ -88,6 +88,11 @@ class EmployeesRepository {
         gymEmployee: {
           select: {
             gym_id: true,
+            gym: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -95,7 +100,10 @@ class EmployeesRepository {
 
     const formatted = {
       ...employeeExists,
-      gymEmployee: { gym_id: employeeExists?.gymEmployee[0]?.gym_id },
+      gymEmployee: {
+        gym_id: employeeExists?.gymEmployee[0]?.gym_id,
+        gym: { name: employeeExists?.gymEmployee[0]?.gym?.name },
+      },
     };
 
     return formatted;

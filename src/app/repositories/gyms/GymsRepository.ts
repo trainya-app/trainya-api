@@ -114,9 +114,17 @@ class GymsRepository {
       where: {
         id,
       },
+      include: {
+        _count: {
+          select: {
+            gymEmployee: true,
+            gymMember: true,
+          },
+        },
+      },
     });
 
-    return gymExists;
+    return { ...gymExists, ...gymExists?._count };
   }
 
   async delete(id: number) {

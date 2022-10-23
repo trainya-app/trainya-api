@@ -146,7 +146,7 @@ class GymsController {
 
     // lógica pra pegar quantidade de membros com o at_gym como true
     const membersAtGym = await GymsMembersRepository.getMembersAtGym({
-      gym_id: gym.id,
+      gym_id: gym?.id as number,
     });
     const newGym = {
       ...gym,
@@ -247,7 +247,7 @@ class GymsController {
       });
     }
 
-    const currentCapacity = gymExists.current_capacity;
+    const currentCapacity = gymExists?.current_capacity as number;
 
     if (memberExists.at_gym === false) {
       const makeCapacity = currentCapacity + 1;
