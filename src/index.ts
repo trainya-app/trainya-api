@@ -47,6 +47,14 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 8080;
 
+app.use(function(req, res, next){
+    req.setTimeout(240000, function(){
+      res.send({ message: 'Erro de timeout'})
+    });
+
+    next();
+});
+
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
