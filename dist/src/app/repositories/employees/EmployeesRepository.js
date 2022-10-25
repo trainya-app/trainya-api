@@ -44,7 +44,7 @@ class EmployeesRepository {
         return employeeExists;
     }
     async findById(id) {
-        var _a;
+        var _a, _b, _c;
         const employeeExists = await employee.findFirst({
             where: {
                 id,
@@ -53,11 +53,19 @@ class EmployeesRepository {
                 gymEmployee: {
                     select: {
                         gym_id: true,
+                        gym: {
+                            select: {
+                                name: true,
+                            },
+                        },
                     },
                 },
             },
         });
-        const formatted = Object.assign(Object.assign({}, employeeExists), { gymEmployee: { gym_id: (_a = employeeExists === null || employeeExists === void 0 ? void 0 : employeeExists.gymEmployee[0]) === null || _a === void 0 ? void 0 : _a.gym_id } });
+        const formatted = Object.assign(Object.assign({}, employeeExists), { gymEmployee: {
+                gym_id: (_a = employeeExists === null || employeeExists === void 0 ? void 0 : employeeExists.gymEmployee[0]) === null || _a === void 0 ? void 0 : _a.gym_id,
+                gym: { name: (_c = (_b = employeeExists === null || employeeExists === void 0 ? void 0 : employeeExists.gymEmployee[0]) === null || _b === void 0 ? void 0 : _b.gym) === null || _c === void 0 ? void 0 : _c.name },
+            } });
         return formatted;
     }
     async create({ role_id, name, birth_date, daily_workload, weekdays_workload, phone, email, password, wage, payment_date, profile_img, document, documentTypeId, gymId, }) {

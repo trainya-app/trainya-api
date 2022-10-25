@@ -74,8 +74,16 @@ class GymsRepository {
             where: {
                 id,
             },
+            include: {
+                _count: {
+                    select: {
+                        gymEmployee: true,
+                        gymMember: true,
+                    },
+                },
+            },
         });
-        return gymExists;
+        return Object.assign(Object.assign({}, gymExists), gymExists === null || gymExists === void 0 ? void 0 : gymExists._count);
     }
     async delete(id) {
         await gym.delete({
@@ -124,7 +132,6 @@ class GymsRepository {
         return id;
     }
     async updateCurrentCapacity({ id, current_capacity, }) {
-        console.log({ id, current_capacity });
         const updatedCurrentCapacity = await gym.update({
             where: {
                 id,

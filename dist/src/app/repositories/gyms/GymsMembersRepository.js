@@ -122,5 +122,16 @@ class GymsMembersRepository {
         });
         return members;
     }
+    async verifyMember({ gym_id, user_id }) {
+        const member = await gymMember.findFirst({
+            where: {
+                AND: {
+                    gym_id,
+                    member_id: user_id,
+                },
+            },
+        });
+        return member;
+    }
 }
 exports.default = new GymsMembersRepository();

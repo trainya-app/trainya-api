@@ -40,6 +40,7 @@ import bodyParser from 'body-parser';
 import monthsRoutes from './routes/Months.routes';
 import memberMonthsDayProgressRoutes from './routes/MemberMonthsDayProgress.routes';
 import employeesClassesRoutes from './routes/EmployeesClasses.routes';
+import ErrorMiddleware from './app/middlewares/ErrorMiddleware';
 
 const app = express();
 app.use(cors());
@@ -55,6 +56,7 @@ app.use(function(req, res, next){
     next();
 });
 
+app.use(ErrorMiddleware);
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });

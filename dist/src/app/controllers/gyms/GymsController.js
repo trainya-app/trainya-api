@@ -110,7 +110,7 @@ class GymsController {
         }
         // lógica pra pegar quantidade de membros com o at_gym como true
         const membersAtGym = await GymsMembersRepository_1.default.getMembersAtGym({
-            gym_id: gym.id,
+            gym_id: gym === null || gym === void 0 ? void 0 : gym.id,
         });
         const newGym = Object.assign(Object.assign({}, gym), { current_capacity: membersAtGym });
         return res
@@ -184,7 +184,7 @@ class GymsController {
                 currentCapacity: gymExists.current_capacity,
             });
         }
-        const currentCapacity = gymExists.current_capacity;
+        const currentCapacity = gymExists === null || gymExists === void 0 ? void 0 : gymExists.current_capacity;
         if (memberExists.at_gym === false) {
             const makeCapacity = currentCapacity + 1;
             const updatedCapacity = await GymsRepository_1.default.updateCurrentCapacity({

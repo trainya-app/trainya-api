@@ -8,7 +8,6 @@ const GymsMembersController_1 = __importDefault(require("../app/controllers/gyms
 const gymMembersRoutes = (0, express_1.Router)();
 gymMembersRoutes.get('/gymMembers/:gymId', GymsMembersController_1.default.index);
 gymMembersRoutes.post('/gymMembers', GymsMembersController_1.default.store);
-gymMembersRoutes.get('/gymMembers/:id', GymsMembersController_1.default.show);
 gymMembersRoutes.delete('/gymMembers/:id', GymsMembersController_1.default.delete);
 gymMembersRoutes.put('/gymMembers/:id', GymsMembersController_1.default.update);
 exports.default = gymMembersRoutes;
