@@ -82,6 +82,7 @@ model Member {
   MemberPermision     MemberPermision[]
   MemberRole          MemberRole[]
   MonthDayProgress    MemberMonthDayProgress[]
+  MemberPhotoProgress MemberPhotoProgress[]
 
   @@map("members")
 }
@@ -783,11 +784,12 @@ model PrivacyPolicie {
 //// Days Frequency Section
 
 model Month {
-  id               Int                      @id @default(autoincrement())
-  name             String
-  created_at       DateTime                 @default(now())
-  updated_at       DateTime                 @updatedAt
-  MonthDayProgress MemberMonthDayProgress[]
+  id                  Int                      @id @default(autoincrement())
+  name                String
+  created_at          DateTime                 @default(now())
+  updated_at          DateTime                 @updatedAt
+  MonthDayProgress    MemberMonthDayProgress[]
+  MemberPhotoProgress MemberPhotoProgress[]
 
   @@map("months")
 }
@@ -803,4 +805,19 @@ model MemberMonthDayProgress {
   updated_at       DateTime @updatedAt
 
   @@map("member_months_day_progress")
+}
+
+model MemberPhotoProgress {
+  id              Int      @id @default(autoincrement())
+  member          Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  member_id       Int
+  month           Month?   @relation(fields: [month_id], references: [id])
+  month_id        Int
+  firstPhoto_url  String?
+  secondPhoto_url String?
+  thirdPhoto_url  String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  @@map("member_photos_progress")
 }

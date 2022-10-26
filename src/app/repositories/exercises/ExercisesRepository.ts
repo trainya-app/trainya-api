@@ -5,6 +5,7 @@ interface IExercises {
   name: string;
   comment: string;
   needs_equipment: boolean;
+  video_url?: string;
 }
 
 interface IUpdateExercises {
@@ -12,6 +13,8 @@ interface IUpdateExercises {
   name: string;
   comment: string;
   needs_equipment: boolean;
+  video_url?: string;
+
 }
 
 class ExercisesRepository {
@@ -36,18 +39,20 @@ class ExercisesRepository {
     return nameExists;
   }
 
-  async store({ name, comment, needs_equipment }: IExercises) {
+  async store({ name, comment, needs_equipment, video_url }: IExercises) {
     const createdExercise = await exercise.create({
       data: {
         name,
         comment,
         needs_equipment,
+        video_url,
       },
       select: {
         id: true,
         name: true,
         comment: true,
         needs_equipment: true,
+        video_url: true,
       },
     });
     return createdExercise;

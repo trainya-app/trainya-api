@@ -2,7 +2,7 @@ import { Router } from 'express';
 import MembersController from '../app/controllers/members/MembersController';
 const membersRoutes = Router();
 import MulterMiddleware from '../app/middlewares/MulterMiddleware';
-import uploadFile from '../services/firebase';
+import {uploadAvatar} from '../services/firebase';
 
 membersRoutes.get('/members', MembersController.index);
 membersRoutes.get('/members/:id', MembersController.show);
@@ -13,7 +13,7 @@ membersRoutes.put('/members/:id', MembersController.update);
 membersRoutes.put(
   '/members-avatar',
   MulterMiddleware.single('avatar'),
-  uploadFile,
+  uploadAvatar,
   MembersController.uploadAvatar
 );
 membersRoutes.get('/member-workouts', MembersController.showWorkouts);

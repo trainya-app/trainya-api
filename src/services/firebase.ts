@@ -12,7 +12,7 @@ admin.initializeApp({
 
 const bucket = admin.storage().bucket();
 
-const uploadFile = (req: Request, res: Response, next: NextFunction) => {
+export const uploadAvatar = (req: Request, res: Response, next: NextFunction) => {
   if (!req.file) {
     return next();
   }
@@ -45,4 +45,36 @@ const uploadFile = (req: Request, res: Response, next: NextFunction) => {
   stream.end(reqFile.buffer);
 };
 
-export default uploadFile;
+export const uploadFiles = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.file) {
+    return next();
+  }
+  const date = (new Date()).getTime()
+
+  const reqFile = req.file;
+  const fileName = date + '.' + reqFile.originalname.split('.').pop();
+
+  const file = bucket.file('' + fileName);
+
+  const stream = file.createWriteStream({
+    metadata: {
+      contentType: reqFile.mimetype,
+    },
+  });
+
+  stream.on('error', (err) => {
+    console.error(err);
+  });
+
+  stream.on('finish', async () => {
+    //set file public
+    await file.makePublic();
+
+    //set url public
+    req.firebaseUrl = `https://storage.googleapis.com/${BUCKET}/${fileName}`;
+    next();
+  });
+
+  stream.end(reqFile.buffer);
+};
+
