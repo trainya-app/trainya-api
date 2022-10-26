@@ -8,6 +8,7 @@ import GymsRepository from '../../repositories/gyms/GymsRepository';
 import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 import ClassesRepository from '../../repositories/classes/ClassesRepository';
 import MembersClassesRepository from '../../repositories/members/MembersClassesRepository';
+import MemberPhotoProgressRepository from '../../repositories/members/MemberPhotoProgressRepository';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -92,6 +93,8 @@ class MembersController {
     }
 
     await MemberMonthsDayProgressRepository.createForAllMonths(member.id);
+    await MemberPhotoProgressRepository.createForAllMonths(member.id);
+
 
     return res.status(200).json({ message: 'Membro criado', member });
   }
