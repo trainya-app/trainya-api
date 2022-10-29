@@ -49,15 +49,7 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 8080;
 
-app.use(function(req, res, next){
-    req.setTimeout(240000, function(){
-      res.send({ message: 'Erro de timeout'})
-    });
 
-    next();
-});
-
-app.use(ErrorMiddleware);
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
@@ -140,5 +132,15 @@ app.use(bodyParser.text());
 app.use(termsRoutes);
 // Privacy Routes
 app.use(privacyPoliciesRoutes);
+
+app.use(function(req, res, next){
+    req.setTimeout(240000, function(){
+      res.send({ message: 'Erro de timeout'})
+    });
+
+    next();
+});
+app.use(ErrorMiddleware);
+
 
 app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));

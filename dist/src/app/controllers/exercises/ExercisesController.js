@@ -12,8 +12,10 @@ class ExercisesController {
         return res.send({ exercises });
     }
     async store(req, res) {
-        const { name, comment, needsEquipment } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, needsEquipment, comment]);
+        const { name, comment } = req.body;
+        const video_url = req.firebaseUrl;
+        const needsEquipment = false;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram enviados',
@@ -31,6 +33,7 @@ class ExercisesController {
             name,
             comment,
             needs_equipment: needsEquipment,
+            video_url,
         });
         return res.status(200).json({ message: 'Exercício cadastrado!', exercise });
     }

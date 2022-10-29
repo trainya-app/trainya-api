@@ -22,18 +22,20 @@ class ExercisesRepository {
         });
         return nameExists;
     }
-    async store({ name, comment, needs_equipment }) {
+    async store({ name, comment, needs_equipment, video_url }) {
         const createdExercise = await exercise.create({
             data: {
                 name,
                 comment,
                 needs_equipment,
+                video_url,
             },
             select: {
                 id: true,
                 name: true,
                 comment: true,
                 needs_equipment: true,
+                video_url: true,
             },
         });
         return createdExercise;

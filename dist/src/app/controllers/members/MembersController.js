@@ -11,6 +11,7 @@ const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repos
 const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
 const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
 const MembersClassesRepository_1 = __importDefault(require("../../repositories/members/MembersClassesRepository"));
+const MemberPhotoProgressRepository_1 = __importDefault(require("../../repositories/members/MemberPhotoProgressRepository"));
 class MembersController {
     async index(req, res) {
         const members = await MembersRepository_1.default.findAll();
@@ -71,6 +72,7 @@ class MembersController {
             });
         }
         await MemberMonthsDayProgressRepository_1.default.createForAllMonths(member.id);
+        await MemberPhotoProgressRepository_1.default.createForAllMonths(member.id);
         return res.status(200).json({ message: 'Membro criado', member });
     }
     async delete(req, res) {
