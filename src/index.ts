@@ -42,6 +42,7 @@ import memberMonthsDayProgressRoutes from './routes/MemberMonthsDayProgress.rout
 import employeesClassesRoutes from './routes/EmployeesClasses.routes';
 import ErrorMiddleware from './app/middlewares/ErrorMiddleware';
 import memberPhotoProgress from './routes/MemberPhotoProgress.routes';
+import filesRoutes from './routes/Files.routes';
 
 const app = express();
 app.use(cors());
@@ -55,6 +56,8 @@ app.get('/', (req, res) => {
 });
 // Login Routes
 app.use(authRoutes);
+// Files
+app.use(filesRoutes);
 // Auth verification
 app.use(AuthMiddleware);
 // Roles Routes
