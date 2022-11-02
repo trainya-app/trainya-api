@@ -182,6 +182,17 @@ class EmployeesRepository {
 
     return formatted;
   }
+  
+  async createWithGym({name, email, password}:{name: string, email: string, password: string}){
+    return await employee.create({
+      data:{
+        name,
+        email,
+        password,
+        role_id: 1,
+      }
+    })
+  }
 
   async delete(id: number) {
     await employee.delete({

@@ -349,17 +349,17 @@ model Exercise {
 //Relation to employees_documents as  1 in cardinality
 model Employee {
   id                Int                 @id @default(autoincrement())
+  email             String              @db.VarChar(256)
+  name              String              @db.VarChar(256)
+  password          String              @db.VarChar(256)
   role              Role?               @relation(fields: [role_id], references: [id]) //Reference
   role_id           Int
-  name              String              @db.VarChar(256)
-  birth_date        String
+  birth_date        String?
   payment_date      DateTime?
   daily_workload    Int?
   weekdays_workload Int?
   phone             String?
-  email             String              @db.VarChar(256)
   wage              Int?
-  password          String              @db.VarChar(256)
   profile_img       String?
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
