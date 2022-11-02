@@ -77,7 +77,7 @@ class GymsController {
     }
 
     const hashedPasswordEmployee = await bcrypt.hash(password, 8);
-    await EmployeesRepository.createWithGym({ name, email, password: hashedPasswordEmployee});
+    await EmployeesRepository.createWithGym({ name, email, password: hashedPasswordEmployee, gymId: gym.id,});
 
     return res.json({ message: 'Academia Criada ', gym });
   }

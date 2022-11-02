@@ -183,13 +183,18 @@ class EmployeesRepository {
     return formatted;
   }
   
-  async createWithGym({name, email, password}:{name: string, email: string, password: string}){
+  async createWithGym({name, email, password, gymId}:{name: string, email: string, password: string, gymId: number}){
     return await employee.create({
       data:{
         name,
         email,
         password,
         role_id: 1,
+        gymEmployee: {
+          create: {
+            gym_id: gymId,
+          },
+        },
       }
     })
   }
