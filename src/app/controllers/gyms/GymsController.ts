@@ -6,6 +6,7 @@ import MembersRepository from '../../repositories/members/MembersRepository';
 import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
 import ClassesRepository from '../../repositories/classes/ClassesRepository';
+import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -74,6 +75,9 @@ class GymsController {
         .status(400)
         .json({ message: 'Valores inválidos para criação da academia.' });
     }
+
+    const hashedPasswordEmployee = await bcrypt.hash(password, 8);
+    await EmployeesRepository.createWithGym({ name, email, password: hashedPasswordEmployee});
 
     return res.json({ message: 'Academia Criada ', gym });
   }
