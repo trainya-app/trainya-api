@@ -7,25 +7,24 @@ import {uploadFiles} from '../services/firebase';
 memberPhotoProgress.get('/memberPhotoProgress', MemberPhotoProgressController.index);
 memberPhotoProgress.post('/memberPhotoProgress', MemberPhotoProgressController.store);
 memberPhotoProgress.put(
-  '/member-uploadFirstPhoto',
+  '/member-uploadFirstPhoto/:monthId',
   MulterMiddleware.single('photo'),
   uploadFiles,
   MemberPhotoProgressController.uploadFirstPhoto
 );
 memberPhotoProgress.put(
-  '/member-uploadSecondPhoto',
+  '/member-uploadSecondPhoto/:monthId',
   MulterMiddleware.single('photo'),
   uploadFiles,
   MemberPhotoProgressController.uploadSecondPhoto
 );
 memberPhotoProgress.put(
-  '/member-uploadThirdPhoto',
+  '/member-uploadThirdPhoto/:monthId',
   MulterMiddleware.single('photo'),
   uploadFiles,
   MemberPhotoProgressController.uploadThirdPhoto
 );
 memberPhotoProgress.get('/member-photos-progress', MemberPhotoProgressController.showByMember);
-memberPhotoProgress.get('/member-month-photos-progress', MemberPhotoProgressController.showByMemberAndMonth);
 
 
 export default memberPhotoProgress;

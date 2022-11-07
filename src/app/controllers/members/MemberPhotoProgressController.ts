@@ -30,8 +30,8 @@ class MemberPhotoProgressController{
   async uploadFirstPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const firstPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const parsedMonthId = Number(monthId);
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -41,7 +41,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: parsedMonthId});
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
@@ -54,8 +54,8 @@ class MemberPhotoProgressController{
   async uploadSecondPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const secondPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const parsedMonthId = Number(monthId);
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -65,7 +65,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: parsedMonthId});
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
@@ -78,8 +78,9 @@ class MemberPhotoProgressController{
   async uploadThirdPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const thirdPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const parsedMonthId = Number(monthId);
+    
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -89,7 +90,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: parsedMonthId});
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
@@ -115,27 +116,6 @@ class MemberPhotoProgressController{
     return res.status(200).json({ message: 'Fotos encontradas', memberPhotosProgress});
   }
 
-  async showByMemberAndMonth(req: Request, res: Response){
-    const memberId = req.userId;
-    const { monthId } = req.body;
-
-    const someFieldIsEmpty = isSomeEmpty([monthId]);
-    if(someFieldIsEmpty){
-      return res.status(400).json({message: "Preencha todos os campos", memberPhotoProgress: null})
-    }
-
-    const memberExists = await MembersRepository.findById(memberId);
-    if (!memberExists) {
-      return res.status(400).send({
-        message: 'Membro não encontrado',
-        memberSetting: null,
-      });
-    }
-
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
-    
-    return res.status(200).json({ message: 'Fotos encontradas', memberPhotoProgress});
-  }
 }
 
 export default new MemberPhotoProgressController();
