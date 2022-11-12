@@ -140,6 +140,7 @@ class MembersWorkoutsPlansRepository {
             goal: true,
             workoutPlanWorkout: {
               select: {
+                id: true,
                 workout: {
                   select: {
                     id: true,

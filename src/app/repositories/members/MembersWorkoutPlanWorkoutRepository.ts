@@ -20,6 +20,16 @@ class MembersWorkoutsPlansRepository {
     return finishedWorkout;
   }
 
+  async findByMember(memberId: number){
+    const finishedWorkouts = await memberworkoutplanworkout.findMany({
+      where:{
+        memberId,
+      }
+    })
+
+    return finishedWorkouts;
+  }
+
 }
 
 export default new MembersWorkoutsPlansRepository();

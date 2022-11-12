@@ -303,6 +303,14 @@ class MembersController {
     return res.send({ memberId, finishedWorkout })
 
   }
+
+  async finishedWorkouts(req: Request, res: Response){
+    const memberId = req.userId;
+
+    const finishedWorkouts = await MembersWorkoutPlanWorkoutRepository.findByMember(memberId);
+
+    return res.send({ finishedWorkouts })
+  }
 }
 
 export default new MembersController();
