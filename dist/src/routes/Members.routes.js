@@ -16,6 +16,4 @@ membersRoutes.put('/members/password/:id', MembersController_1.default.updatePas
 membersRoutes.put('/members/:id', MembersController_1.default.update);
 membersRoutes.put('/members-avatar', MulterMiddleware_1.default.single('avatar'), firebase_1.uploadAvatar, MembersController_1.default.uploadAvatar);
 membersRoutes.get('/member-workouts', MembersController_1.default.showWorkouts);
-membersRoutes.get('/member-gymClasses', MembersController_1.default.showClassesByGym);
-membersRoutes.get('/member-classes', MembersController_1.default.showClassesByMember);
 exports.default = membersRoutes;

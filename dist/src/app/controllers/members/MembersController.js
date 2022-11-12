@@ -9,8 +9,6 @@ const MembersRepository_1 = __importDefault(require("../../repositories/members/
 const MembersWorkoutsPlansRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutsPlansRepository"));
 const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
 const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
-const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
-const MembersClassesRepository_1 = __importDefault(require("../../repositories/members/MembersClassesRepository"));
 const MemberPhotoProgressRepository_1 = __importDefault(require("../../repositories/members/MemberPhotoProgressRepository"));
 class MembersController {
     async index(req, res) {
@@ -200,17 +198,6 @@ class MembersController {
         return res
             .status(200)
             .json({ message: 'Planos de treino', memberWorkouts });
-    }
-    async showClassesByGym(req, res) {
-        const member_id = req.userId;
-        const gym_id = await GymsMembersRepository_1.default.findByMember(member_id);
-        const gymClasses = await ClassesRepository_1.default.findByGym(Number(gym_id === null || gym_id === void 0 ? void 0 : gym_id.gym_id));
-        return res.status(200).json({ message: 'Aulas encontradas', gymClasses });
-    }
-    async showClassesByMember(req, res) {
-        const member_id = req.userId;
-        const classes = await MembersClassesRepository_1.default.findByMember(member_id);
-        return res.status(200).json({ message: 'Aulas encontradas', classes });
     }
 }
 exports.default = new MembersController();

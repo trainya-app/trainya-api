@@ -14,6 +14,5 @@ gymsRoutes.put(
   GymsController.updateCapacity
 );
 gymsRoutes.get('/gyms-member', GymsController.showByMember);
-gymsRoutes.get('/gyms-classes/:gymId', GymsController.showByClass);
 
 export default gymsRoutes;

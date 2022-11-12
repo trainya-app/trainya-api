@@ -9,6 +9,34 @@ class GymsRepository {
     }
     async create({ name, email, password, state, city, street, adress_number, zip_code, max_capacity, current_capacity, }) {
         try {
+            const createdGym = await gym.create({
+                data: {
+                    name,
+                    email,
+                    password,
+                    state,
+                    city,
+                    street,
+                    zip_code,
+                    adress_number,
+                    max_capacity,
+                    current_capacity,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    password: true,
+                    state: true,
+                    city: true,
+                    street: true,
+                    zip_code: true,
+                    adress_number: true,
+                    max_capacity: true,
+                    current_capacity: true,
+                },
+            });
+            return createdGym;
         }
         catch (_a) {
             return null;
