@@ -4,11 +4,12 @@ import bcrypt from 'bcrypt';
 import MembersRepository from '../../repositories/members/MembersRepository';
 import MembersWorkoutsPlansRepository from '../../repositories/members/MembersWorkoutsPlansRepository';
 import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
-import GymsRepository from '../../repositories/gyms/GymsRepository';
 import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository';
 import ClassesRepository from '../../repositories/classes/ClassesRepository';
 import MembersClassesRepository from '../../repositories/members/MembersClassesRepository';
 import MemberPhotoProgressRepository from '../../repositories/members/MemberPhotoProgressRepository';
+import WorkoutsPlansWorkoutsRepository from '../../repositories/workouts-plans/WorkoutsPlansWorkoutsRepository';
+import MembersWorkoutPlanWorkoutRepository from '../../repositories/members/MembersWorkoutPlanWorkoutRepository';
 
 class MembersController {
   async index(req: Request, res: Response) {
@@ -286,6 +287,21 @@ class MembersController {
     const classes = await MembersClassesRepository.findByMember(member_id);
 
     return res.status(200).json({ message: 'Aulas encontradas', classes });
+  }
+
+  async finishWorkout(req: Request, res: Response){
+    const memberId = req.userId;
+    const { workoutPlanWorkoutId } = req.body;
+
+    const workoutExists = await WorkoutsPlansWorkoutsRepository.findById(workoutPlanWorkoutId);
+    if(!workoutExists){
+      return res.status(404).json({ message: 'Treino não encontrado', workout: null})
+    }
+
+    const finishedWorkout = await MembersWorkoutPlanWorkoutRepository.setFinished({ memberId, workoutPlanWorkoutId})
+
+    return res.send({ memberId, finishedWorkout })
+
   }
 }
 

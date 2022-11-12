@@ -17,6 +17,7 @@ membersRoutes.put(
   MembersController.uploadAvatar
 );
 membersRoutes.get('/member-workouts', MembersController.showWorkouts);
+membersRoutes.post('/member-finish-workout', MembersController.finishWorkout);
 membersRoutes.get('/member-gymClasses', MembersController.showClassesByGym);
 membersRoutes.get('/member-classes', MembersController.showClassesByMember);
 
