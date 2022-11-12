@@ -25,8 +25,14 @@ import memberMonthsDayProgressRoutes from './routes/MemberMonthsDayProgress.rout
 import ErrorMiddleware from './app/middlewares/ErrorMiddleware';
 import memberPhotoProgress from './routes/MemberPhotoProgress.routes';
 import filesRoutes from './routes/Files.routes';
+import * as Sentry from '@sentry/node';
 
 const app = express();
+
+Sentry.init({
+  dsn: 'https://91ace0cc11ae4f81b87bba6162c1e8a0@o4504117572927488.ingest.sentry.io/4504117576466432',
+});
+
 app.use(cors());
 app.use(express.json());
 

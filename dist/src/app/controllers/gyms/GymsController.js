@@ -61,7 +61,12 @@ class GymsController {
                 .json({ message: 'Valores inválidos para criação da academia.' });
         }
         const hashedPasswordEmployee = await bcrypt_1.default.hash(password, 8);
-        await EmployeesRepository_1.default.createWithGym({ name, email, password: hashedPasswordEmployee, gymId: gym.id, });
+        await EmployeesRepository_1.default.createWithGym({
+            name,
+            email,
+            password: hashedPasswordEmployee,
+            gymId: gym.id,
+        });
         return res.json({ message: 'Academia Criada ', gym });
     }
     async updatePassword(req, res) {
