@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
-import { Employee } from '@prisma/client';
 import gymEmployeesRoutes from '../../../routes/GymEmployees.routes';
 import { DocumentsTypes } from '../../contants/documents.token';
 const { employee } = new PrismaClient();
+
 
 interface IUpdateEmployee {
   role_id?: number;
