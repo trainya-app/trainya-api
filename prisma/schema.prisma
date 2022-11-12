@@ -68,8 +68,6 @@ model Member {
   memberDocument           MemberDocument[]
   memberGoal               MemberGoal[]
   memberPayment            MemberPayment[]
-  MemberPermision          MemberPermision[]
-  MemberRole               MemberRole[]
   memberSetting            MemberSetting[]
   memberStatistic          MemberStatistic[]
   memberWorkoutPlan        MemberWorkoutPlan[]
@@ -351,9 +349,7 @@ model Employee {
   role              Role                @relation(fields: [role_id], references: [id], onDelete: NoAction)
   employeeClasse    EmployeeClass[]
   employeeDocument  EmployeeDocument[]
-  EmployeePermision EmployeePermision[]
   employeeRating    EmployeeRating[]
-  EmployeeRole      EmployeeRole[]
   employeeStatistic EmployeeStatistic[]
   gymEmployee       GymEmployee[]
   workout           Workout[]
@@ -652,102 +648,6 @@ model Subscription {
   @@index([member_id], map: "subscription_member_id_fkey")
   @@index([subscription_plan_id], map: "subscription_subscription_plan_id_fkey")
   @@map("subscription")
-}
-
-model AuthRole {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  AuthRolePermision AuthRolePermision[]
-  EmployeeRole      EmployeeRole[]
-  MemberRole        MemberRole[]
-
-  @@map("auth_roles")
-}
-
-model AuthPermission {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  AuthRolePermision AuthRolePermision[]
-  EmployeePermision EmployeePermision[]
-  MemberPermision   MemberPermision[]
-
-  @@map("auth_permissions")
-}
-
-model MemberPermision {
-  id            Int            @id @default(autoincrement())
-  member_id     Int
-  permission_id Int
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  member        Member         @relation(fields: [member_id], references: [id], onDelete: Cascade)
-  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
-
-  @@index([member_id], map: "members_permissions_member_id_fkey")
-  @@index([permission_id], map: "members_permissions_permission_id_fkey")
-  @@map("members_permissions")
-}
-
-model MemberRole {
-  id          Int      @id @default(autoincrement())
-  member_id   Int
-  authRole_id Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  authRole    AuthRole @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
-  member      Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
-
-  @@index([authRole_id], map: "members_roles_authRole_id_fkey")
-  @@index([member_id], map: "members_roles_member_id_fkey")
-  @@map("members_roles")
-}
-
-model AuthRolePermision {
-  id            Int            @id @default(autoincrement())
-  authRole_id   Int
-  permission_id Int
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  authRole      AuthRole       @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
-  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
-
-  @@index([authRole_id], map: "auth_roles_permissions_authRole_id_fkey")
-  @@index([permission_id], map: "auth_roles_permissions_permission_id_fkey")
-  @@map("auth_roles_permissions")
-}
-
-model EmployeeRole {
-  id          Int      @id @default(autoincrement())
-  employee_id Int
-  authRole_id Int
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  authRole    AuthRole @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
-  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-
-  @@index([authRole_id], map: "employees_roles_authRole_id_fkey")
-  @@index([employee_id], map: "employees_roles_employee_id_fkey")
-  @@map("employees_roles")
-}
-
-model EmployeePermision {
-  id            Int            @id @default(autoincrement())
-  employee_id   Int
-  permission_id Int
-  created_at    DateTime       @default(now())
-  updated_at    DateTime       @updatedAt
-  employee      Employee       @relation(fields: [employee_id], references: [id], onDelete: Cascade)
-  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
-
-  @@index([employee_id], map: "employees_permissions_employee_id_fkey")
-  @@index([permission_id], map: "employees_permissions_permission_id_fkey")
-  @@map("employees_permissions")
 }
 
 /// / Terms Section
