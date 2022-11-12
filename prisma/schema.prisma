@@ -507,7 +507,6 @@ model Gym {
   class               Class[]
   gymEmployee         GymEmployee[]
   gymMember           GymMember[]
-  gymStock            GymStock[]
   gymSubscriptionPlan GymSubscriptionPlan[]
   memberPayment       MemberPayment[]
 
@@ -527,24 +526,6 @@ model GymEmployee {
   @@index([employee_id], map: "gyms_employees_employee_id_fkey")
   @@index([gym_id], map: "gyms_employees_gym_id_fkey")
   @@map("gyms_employees")
-}
-
-/// /Normalization model for gyms and products as N in cardinality
-model GymStock {
-  id         Int      @id @default(autoincrement())
-  amount     Int
-  created_at DateTime @default(now())
-  max_amount Int
-  min_amount Int
-  updated_at DateTime @updatedAt
-  gym_id     Int
-  product_id Int
-  gym        Gym      @relation(fields: [gym_id], references: [id], onDelete: NoAction)
-  product    Product  @relation(fields: [product_id], references: [id], onDelete: NoAction)
-
-  @@index([gym_id], map: "gyms_stock_gym_id_fkey")
-  @@index([product_id], map: "gyms_stock_product_id_fkey")
-  @@map("gyms_stock")
 }
 
 /// /Normalization model for gyms and subscriptions_plans as N in cardinality
@@ -575,50 +556,6 @@ model GymMember {
   @@index([gym_id], map: "gyms_members_gym_id_fkey")
   @@index([member_id], map: "gyms_members_member_id_fkey")
   @@map("gyms_members")
-}
-
-model Product {
-  id           Int             @id @default(autoincrement())
-  created_at   DateTime        @default(now())
-  image_url    String          @db.VarChar(256)
-  name         String          @db.VarChar(256)
-  price        Decimal
-  updated_at   DateTime        @updatedAt
-  categorie_id Int
-  provider_id  Int
-  categorie    ProductCategory @relation(fields: [categorie_id], references: [id], onDelete: NoAction)
-  provider     Provider        @relation(fields: [provider_id], references: [id], onDelete: NoAction)
-  gym_stock    GymStock[]
-
-  @@index([categorie_id], map: "products_categorie_id_fkey")
-  @@index([provider_id], map: "products_provider_id_fkey")
-  @@map("products")
-}
-
-model ProductCategory {
-  id         Int       @id @default(autoincrement())
-  name       String
-  image_url  String    @db.VarChar(256)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  product    Product[]
-
-  @@map("products_categories")
-}
-
-model Provider {
-  id            Int       @id @default(autoincrement())
-  adress_number String
-  city          String
-  cnpj          String
-  created_at    DateTime  @default(now())
-  name          String    @db.VarChar(256)
-  phone_number  String
-  state         String
-  updated_at    DateTime  @updatedAt
-  product       Product[]
-
-  @@map("providers")
 }
 
 model SubscriptionPlan {

@@ -1,7 +1,6 @@
 import express from 'express';
 import gymsRoutes from './routes/Gyms.routes';
 import rolesRoutes from './routes/Roles.routes';
-import productsCategoriesRoutes from './routes/ProductsCategories.routes';
 import employeesRoutes from './routes/Employees.routes';
 import gymEmployeesRoutes from './routes/GymEmployees.routes';
 import membersRoutes from './routes/Members.routes';
@@ -30,7 +29,6 @@ import authRoutes from './routes/Auth.routes';
 import AuthMiddleware from './app/middlewares/AuthMiddleware';
 import termsRoutes from './routes/Terms.routes';
 import privacyPoliciesRoutes from './routes/PrivacyPolicies.routes';
-import can, { is } from './app/middlewares/permissions';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import monthsRoutes from './routes/Months.routes';
@@ -62,8 +60,6 @@ app.use(rolesRoutes);
 app.use(employeesRoutes);
 // Gyms Routes
 app.use(gymsRoutes);
-// ProductsCategories Routes
-app.use(productsCategoriesRoutes);
 // Gym Employees Routes
 app.use(gymEmployeesRoutes);
 // Members Routes
