@@ -122,6 +122,21 @@ class EmployeesRepository {
         const formatted = Object.assign(Object.assign({}, createdEmployee), { gymEmployee: { gym_id: (_a = createdEmployee.gymEmployee[0]) === null || _a === void 0 ? void 0 : _a.gym_id } });
         return formatted;
     }
+    async createWithGym({ name, email, password, gymId }) {
+        return await employee.create({
+            data: {
+                name,
+                email,
+                password,
+                role_id: 1,
+                gymEmployee: {
+                    create: {
+                        gym_id: gymId,
+                    },
+                },
+            }
+        });
+    }
     async delete(id) {
         await employee.delete({
             where: {

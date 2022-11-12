@@ -10,6 +10,7 @@ const MembersRepository_1 = __importDefault(require("../../repositories/members/
 const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms/GymsMembersRepository"));
 const MemberMonthsDayProgressRepository_1 = __importDefault(require("../../repositories/members/MemberMonthsDayProgressRepository"));
 const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
+const EmployeesRepository_1 = __importDefault(require("../../repositories/employees/EmployeesRepository"));
 class GymsController {
     async index(req, res) {
         const gyms = await GymsRepository_1.default.findAll();
@@ -59,6 +60,8 @@ class GymsController {
                 .status(400)
                 .json({ message: 'Valores inválidos para criação da academia.' });
         }
+        const hashedPasswordEmployee = await bcrypt_1.default.hash(password, 8);
+        await EmployeesRepository_1.default.createWithGym({ name, email, password: hashedPasswordEmployee, gymId: gym.id, });
         return res.json({ message: 'Academia Criada ', gym });
     }
     async updatePassword(req, res) {
