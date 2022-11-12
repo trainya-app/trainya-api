@@ -12,9 +12,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//////Members Section
-
-//Relation to members_goals as 1 in cardinality
 model Goal {
   id          Int          @id @default(autoincrement())
   description String
@@ -25,142 +22,136 @@ model Goal {
   @@map("goals")
 }
 
-////Normalization model for members and goals as N in cardinality
+/// /Normalization model for members and goals as N in cardinality
 model MemberGoal {
   id               Int      @id @default(autoincrement())
-  goal             Goal?    @relation(fields: [goal_id], references: [id]) //Reference
   goal_id          Int?
-  member           Member   @relation(fields: [member_id], references: [id])
   member_id        Int
-  desired_progress Int
+  created_at       DateTime @default(now())
   current_progress Int
-  started_at       String
+  desired_progress Int
   finish_at        String
   finished_at      String
-  created_at       DateTime @default(now())
+  started_at       String
   updated_at       DateTime @updatedAt
+  goal             Goal?    @relation(fields: [goal_id], references: [id])
+  member           Member   @relation(fields: [member_id], references: [id], onDelete: NoAction)
 
+  @@index([goal_id], map: "members_goals_goal_id_fkey")
+  @@index([member_id], map: "members_goals_member_id_fkey")
   @@map("members_goals")
 }
 
-//Relation to members_goals as          1 in cardinality
-//Relation to members_settings as       1 in cardinality
-//Relation to members_payments as       1 in cardinality
-//Relation to responsibles as           1 in cardinality
-//Relation to members_documents as      1 in cardinality
-//Relation to members_workouts_plans as 1 in cardinality
-//Relation to employees_ratings as      1 in cardinality
-//Relation to members_classes as        1 in cardinality
-//Relation to gyms_members as           1 in cardinality
-//Relation to subscriptions as          1 in cardinality
-//Relation to members_statistics as     1 in cardinality
-
 model Member {
-  id                  Int                      @id @default(autoincrement())
-  avatar_url          String?
-  phone               String
-  name                String                   @db.VarChar(256)
-  birth_date          String
-  weight              Decimal
-  height              Decimal
-  email               String
-  password            String
-  state               String?
-  city                String?
-  street              String?                  @db.VarChar(256)
-  adress_number       String?
-  at_gym              Boolean?                 @default(false)
-  created_at          DateTime                 @default(now())
-  updated_at          DateTime                 @updatedAt
-  memberGoal          MemberGoal[]
-  memberSetting       MemberSetting[]
-  memberPayment       MemberPayment[]
-  legalRepresentative LegalRepresentative[]
-  memberDocument      MemberDocument[]
-  memberWorkoutPlan   MemberWorkoutPlan[]
-  employeeRating      EmployeeRating[]
-  memberClass         MemberClass[]
-  gymMember           GymMember[]
-  subscription        Subscription[]
-  memberStatistic     MemberStatistic[]
-  MemberPermision     MemberPermision[]
-  MemberRole          MemberRole[]
-  MonthDayProgress    MemberMonthDayProgress[]
-  MemberPhotoProgress MemberPhotoProgress[]
+  id                       Int                        @id @default(autoincrement())
+  adress_number            String?
+  city                     String?
+  created_at               DateTime                   @default(now())
+  email                    String
+  height                   Decimal
+  name                     String                     @db.VarChar(256)
+  password                 String
+  phone                    String
+  state                    String?
+  street                   String?                    @db.VarChar(256)
+  updated_at               DateTime                   @updatedAt
+  weight                   Decimal
+  at_gym                   Boolean?                   @default(false)
+  avatar_url               String?
+  birth_date               String
+  employeeRating           EmployeeRating[]
+  gymMember                GymMember[]
+  legalRepresentative      LegalRepresentative[]
+  MonthDayProgress         MemberMonthDayProgress[]
+  MemberPhotoProgress      MemberPhotoProgress[]
+  memberClass              MemberClass[]
+  memberDocument           MemberDocument[]
+  memberGoal               MemberGoal[]
+  memberPayment            MemberPayment[]
+  MemberPermision          MemberPermision[]
+  MemberRole               MemberRole[]
+  memberSetting            MemberSetting[]
+  memberStatistic          MemberStatistic[]
+  memberWorkoutPlan        MemberWorkoutPlan[]
+  memberworkoutplanworkout memberworkoutplanworkout[] @relation("membersTomemberworkoutplanworkout")
+  subscription             Subscription[]
 
   @@map("members")
 }
 
-////Normalization model for members and settings_options as N in cardinality
+/// /Normalization model for members and settings_options as N in cardinality
 model MemberSetting {
-  id                 Int            @id @default(autoincrement())
-  member             Member?        @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  id                 Int           @id @default(autoincrement())
   member_id          Int
-  settingOption      SettingOption? @relation(fields: [settings_option_id], references: [id]) //Reference
-  settings_option_id Int
+  created_at         DateTime      @default(now())
+  updated_at         DateTime      @updatedAt
   value              String
-  created_at         DateTime       @default(now())
-  updated_at         DateTime       @updatedAt
+  settings_option_id Int
+  member             Member        @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  settingOption      SettingOption @relation(fields: [settings_option_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "members_settings_member_id_fkey")
+  @@index([settings_option_id], map: "members_settings_settings_option_id_fkey")
   @@map("members_settings")
 }
 
-//Relation to members_settings as 1 in cardinality
 model SettingOption {
   id            Int             @id @default(autoincrement())
-  description   String
   created_at    DateTime        @default(now())
+  description   String
   updated_at    DateTime        @updatedAt
   memberSetting MemberSetting[]
 
   @@map("settings_options")
 }
 
-////Normalization model for members and  statistics as N in cardinality
+/// /Normalization model for members and  statistics as N in cardinality
 model MemberStatistic {
-  id           Int        @id @default(autoincrement())
-  member       Member?    @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  id           Int       @id @default(autoincrement())
   member_id    Int
-  statistic    Statistic? @relation(fields: [statistic_id], references: [id]) //Reference
-  statistic_id Int
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
   value        String
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @updatedAt
+  statistic_id Int
+  member       Member    @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  statistic    Statistic @relation(fields: [statistic_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "members_statistics_member_id_fkey")
+  @@index([statistic_id], map: "members_statistics_statistic_id_fkey")
   @@map("members_statistics")
 }
 
-//Relation to members_statistics as 1 in cardinality
 model Statistic {
   id              Int               @id @default(autoincrement())
-  description     String
   created_at      DateTime          @default(now())
+  description     String
   updated_at      DateTime          @updatedAt
   memberStatistic MemberStatistic[]
 
   @@map("statistics")
 }
 
-////Normalization model for members and methods as N in cardinality
-//Relation to gyms as                              N in cardinality
+/// /Normalization model for members and methods as N in cardinality
 model MemberPayment {
   id           Int      @id @default(autoincrement())
-  member       Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id    Int
-  method       Method?  @relation(fields: [method_id], references: [id]) //Reference
-  method_id    Int
-  gym          Gym?     @relation(fields: [gym_id], references: [id]) //Reference
-  gym_id       Int
-  price        Decimal
+  created_at   DateTime @default(now())
   due_date     String
   payment_date String
-  created_at   DateTime @default(now())
+  price        Decimal
   updated_at   DateTime @updatedAt
+  gym_id       Int
+  method_id    Int
+  gym          Gym      @relation(fields: [gym_id], references: [id], onDelete: NoAction)
+  member       Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  method       Method   @relation(fields: [method_id], references: [id], onDelete: NoAction)
 
+  @@index([gym_id], map: "members_payments_gym_id_fkey")
+  @@index([member_id], map: "members_payments_member_id_fkey")
+  @@index([method_id], map: "members_payments_method_id_fkey")
   @@map("members_payments")
 }
 
-//Relation to members_payments as 1 in cardinality
 model Method {
   id            Int             @id @default(autoincrement())
   name          String
@@ -171,241 +162,233 @@ model Method {
   @@map("methods")
 }
 
-//Relation to members as N in cardinality
 model LegalRepresentative {
   id                          Int                           @id @default(autoincrement())
-  member                      Member?                       @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id                   Int
   name                        String                        @db.VarChar(256)
   phone                       String
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime                      @updatedAt
+  member                      Member                        @relation(fields: [member_id], references: [id], onDelete: Cascade)
   legalRepresentativeDocument LegalRepresentativeDocument[]
 
+  @@index([member_id], map: "legal_representatives_member_id_fkey")
   @@map("legal_representatives")
 }
 
-////Normalization model for responsibles and documents as N in cardinality
+/// /Normalization model for responsibles and documents as N in cardinality
 model LegalRepresentativeDocument {
-  id                      Int                  @id @default(autoincrement())
-  legalRepresentative     LegalRepresentative? @relation(fields: [legal_representative_id], references: [id]) //Reference
-  legal_representative_id Int
-  document                Document?            @relation(fields: [document_id], references: [id]) //Reference
-  document_id             Int
+  id                      Int                 @id @default(autoincrement())
   value                   Int
-  created_at              DateTime             @default(now())
-  updated_at              DateTime             @updatedAt
+  created_at              DateTime            @default(now())
+  updated_at              DateTime            @updatedAt
+  document_id             Int
+  legal_representative_id Int
+  document                Document            @relation(fields: [document_id], references: [id], onDelete: NoAction)
+  legalRepresentative     LegalRepresentative @relation(fields: [legal_representative_id], references: [id], onDelete: NoAction)
 
+  @@index([document_id], map: "legal_representatives_documents_document_id_fkey")
+  @@index([legal_representative_id], map: "legal_representatives_documents_legal_representative_id_fkey")
   @@map("legal_representatives_documents")
 }
 
-////Normalization model for members and documents as N in cardinality
+/// /Normalization model for members and documents as N in cardinality
 model MemberDocument {
-  id          Int       @id @default(autoincrement())
-  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
-  member_id   Int
-  document    Document? @relation(fields: [document_id], references: [id]) //Reference
-  document_id Int
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   value       Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  document_id Int
+  member_id   Int
+  document    Document @relation(fields: [document_id], references: [id], onDelete: NoAction)
+  member      Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
+  @@index([document_id], map: "members_documents_document_id_fkey")
+  @@index([member_id], map: "members_documents_member_id_fkey")
   @@map("members_documents")
 }
 
-//Relation to responsibles_documents as 1 in cardinality
-//Relation to members_documents as      1 in cardinality
-//Relation to employees_documents as    1 in cardinality
 model Document {
   id                          Int                           @id @default(autoincrement())
-  name                        String
   created_at                  DateTime                      @default(now())
+  name                        String
   updated_at                  DateTime                      @updatedAt
+  employeeDocument            EmployeeDocument[]
   LegalRepresentativeDocument LegalRepresentativeDocument[]
   memberDocument              MemberDocument[]
-  employeeDocument            EmployeeDocument[]
 
   @@map("documents")
 }
 
-////Normalization model for members and workout_plans as N in cardinality
+/// /Normalization model for members and workout_plans as N in cardinality
 model MemberWorkoutPlan {
-  id               Int          @id @default(autoincrement())
-  member           Member?      @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
-  member_id        Int
-  workoutPlan      WorkoutPlan? @relation(fields: [workouts_plan_id], references: [id]) //Reference
-  workouts_plan_id Int
-  started_at       String?
+  id               Int         @id @default(autoincrement())
+  created_at       DateTime    @default(now())
   finish_at        String
   finished_at      String?
-  created_at       DateTime     @default(now())
-  updated_at       DateTime     @updatedAt
+  started_at       String?
+  updated_at       DateTime    @updatedAt
+  member_id        Int
+  workouts_plan_id Int
+  member           Member      @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  workoutPlan      WorkoutPlan @relation(fields: [workouts_plan_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "members_workouts_plans_member_id_fkey")
+  @@index([workouts_plan_id], map: "members_workouts_plans_workouts_plan_id_fkey")
   @@map("members_workouts_plans")
 }
 
-////Normalization model for members and classes as N in cardinality
+/// /Normalization model for members and classes as N in cardinality
 model MemberClass {
   id         Int      @id @default(autoincrement())
-  members    Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
-  member_id  Int
-  class      Class?   @relation(fields: [class_id], references: [id]) //Reference
-  class_id   Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  class_id   Int
+  member_id  Int
+  class      Class    @relation(fields: [class_id], references: [id], onDelete: NoAction)
+  members    Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
+  @@index([class_id], map: "members_classes_class_id_fkey")
+  @@index([member_id], map: "members_classes_member_id_fkey")
   @@map("members_classes")
 }
 
-////// Workouts plan section
-
-//Relation to members_workouts_plans as  1 in cardinality
-//Relation to workouts_plans_workouts as 1 in cardinality
-//Relation to employees as               N in cardinality
 model WorkoutPlan {
   id                 Int                  @id @default(autoincrement())
-  employee           Employee?            @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Referece
-  employee_id        Int
-  goal               String               @db.VarChar(256)
   created_at         DateTime             @default(now())
+  goal               String               @db.VarChar(256)
   updated_at         DateTime             @updatedAt
+  employee_id        Int
+  employee           Employee             @relation(fields: [employee_id], references: [id], onDelete: Cascade)
   memberWorkoutPlan  MemberWorkoutPlan[]
   workoutPlanWorkout WorkoutPlanWorkout[]
 
+  @@index([employee_id], map: "workouts_plans_employee_id_fkey")
   @@map("workouts_plans")
 }
 
-////Normalization model for workout_plans and workout as N in cardinality
+/// /Normalization model for workout_plans and workout as N in cardinality
 model WorkoutPlanWorkout {
-  id               Int          @id @default(autoincrement())
-  workoutsPlan     WorkoutPlan? @relation(fields: [workouts_plan_id], references: [id]) //Reference
-  workouts_plan_id Int
-  workout          Workout?     @relation(fields: [workout_id], references: [id]) //Reference
-  workout_id       Int
-  created_at       DateTime     @default(now())
-  updated_at       DateTime     @updatedAt
+  id                       Int                        @id @default(autoincrement())
+  workout_id               Int
+  created_at               DateTime                   @default(now())
+  updated_at               DateTime                   @updatedAt
+  workouts_plan_id         Int
+  workout                  Workout                    @relation(fields: [workout_id], references: [id], onDelete: NoAction)
+  workoutsPlan             WorkoutPlan                @relation(fields: [workouts_plan_id], references: [id], onDelete: NoAction)
+  memberworkoutplanworkout memberworkoutplanworkout[] @relation("memberworkoutplanworkoutToworkouts_plans_workouts")
 
+  @@index([workout_id], map: "workouts_plans_workouts_workout_id_fkey")
+  @@index([workouts_plan_id], map: "workouts_plans_workouts_workouts_plan_id_fkey")
   @@map("workouts_plans_workouts")
 }
 
-////// Workouts section
-
-//Relation to workouts_plans_workouts as 1 in cardinality
-//Relation to employees as               N in cardinality
-//Relation to workouts_exercises as      1 in cardinality
 model Workout {
   id                 Int                  @id @default(autoincrement())
-  employee           Employee?            @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
-  employee_id        Int
-  title              String
-  description        String?              @db.VarChar(256)
-  type               String?
-  preview_image_url  String?              @db.VarChar(256)
-  level              String?
-  duration           String
   created_at         DateTime             @default(now())
+  description        String?              @db.VarChar(256)
+  duration           String
+  level              String?
+  preview_image_url  String?              @db.VarChar(256)
+  title              String
+  type               String?
   updated_at         DateTime             @updatedAt
-  workoutPlanWorkout WorkoutPlanWorkout[]
+  employee_id        Int
+  employee           Employee             @relation(fields: [employee_id], references: [id], onDelete: Cascade)
   workoutExercise    WorkoutExercise[]
+  workoutPlanWorkout WorkoutPlanWorkout[]
 
+  @@index([employee_id], map: "workouts_employee_id_fkey")
   @@map("workouts")
 }
 
-////Normalization model for workouts and exercises as N in cardinality
+/// /Normalization model for workouts and exercises as N in cardinality
 model WorkoutExercise {
-  id          Int       @id @default(autoincrement())
-  workout     Workout?  @relation(fields: [workout_id], references: [id]) //Reference
-  workout_id  Int
-  exercise    Exercise? @relation(fields: [exercise_id], references: [id]) //Reference
-  exercise_id Int
-  sets        Int
-  repetitions Int
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
   duration    Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  repetitions Int
+  sets        Int
+  updated_at  DateTime @updatedAt
+  exercise_id Int
+  workout_id  Int
+  exercise    Exercise @relation(fields: [exercise_id], references: [id], onDelete: NoAction)
+  workout     Workout  @relation(fields: [workout_id], references: [id], onDelete: NoAction)
 
+  @@index([exercise_id], map: "workouts_exercises_exercise_id_fkey")
+  @@index([workout_id], map: "workouts_exercises_workout_id_fkey")
   @@map("workouts_exercises")
 }
 
-//Relation to workout_exercises as 1 in cardinality
 model Exercise {
   id              Int               @id @default(autoincrement())
+  created_at      DateTime          @default(now())
   name            String
+  needs_equipment Boolean
+  updated_at      DateTime          @updatedAt
   comment         String?           @db.VarChar(256)
   video_url       String?           @db.VarChar(256)
-  needs_equipment Boolean
-  created_at      DateTime          @default(now())
-  updated_at      DateTime          @updatedAt
   workoutExercise WorkoutExercise[]
 
   @@map("exercises")
 }
 
-////// Employees section
-
-//Relation to workouts as             1 in cardinality
-//Relation to workouts_plans as       1 in cardinality
-//Relation to employees_statistics as 1 in cardinality
-//Relation to rolls as                N in cardinality
-//Relation to employees_classes       1 in cardinality
-//Relation to employees_ratings as    1 in cardinality
-//Relation to gyms_employees as       1 in cardinality
-//Relation to employees_documents as  1 in cardinality
 model Employee {
   id                Int                 @id @default(autoincrement())
+  birth_date        String?
+  created_at        DateTime            @default(now())
+  daily_workload    Int?
   email             String              @db.VarChar(256)
   name              String              @db.VarChar(256)
   password          String              @db.VarChar(256)
-  role              Role?               @relation(fields: [role_id], references: [id]) //Reference
-  role_id           Int
-  birth_date        String?
-  payment_date      DateTime?
-  daily_workload    Int?
-  weekdays_workload Int?
   phone             String?
-  wage              Int?
-  profile_img       String?
-  created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
+  weekdays_workload Int?
+  payment_date      DateTime?
+  profile_img       String?
+  wage              Int?
+  role_id           Int
+  role              Role                @relation(fields: [role_id], references: [id], onDelete: NoAction)
   employeeClasse    EmployeeClass[]
-  employeeRating    EmployeeRating[]
-  gymEmployee       GymEmployee[]
   employeeDocument  EmployeeDocument[]
+  EmployeePermision EmployeePermision[]
+  employeeRating    EmployeeRating[]
+  EmployeeRole      EmployeeRole[]
+  employeeStatistic EmployeeStatistic[]
+  gymEmployee       GymEmployee[]
   workout           Workout[]
   workoutPlan       WorkoutPlan[]
-  employeeStatistic EmployeeStatistic[]
-  EmployeeRole      EmployeeRole[]
-  EmployeePermision EmployeePermision[]
 
+  @@index([role_id], map: "employees_role_id_fkey")
   @@map("employees")
 }
 
-////Normalization model for employees and employees_statistics_datails as N in cardinality
+/// /Normalization model for employees and employees_statistics_datails as N in cardinality
 model EmployeeStatistic {
-  id                           Int                      @id @default(autoincrement())
-  employee                     Employee?                @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
+  id                           Int                     @id @default(autoincrement())
+  created_at                   DateTime                @default(now())
+  updated_at                   DateTime                @updatedAt
+  value                        String                  @db.VarChar(256)
   employee_id                  Int
-  employeeStatisticDetail      EmployeeStatisticDetail? @relation(fields: [employee_statistic_detail_id], references: [id]) //Reference
   employee_statistic_detail_id Int
-  value                        String                   @db.VarChar(256)
-  created_at                   DateTime                 @default(now())
-  updated_at                   DateTime                 @updatedAt
+  employee                     Employee                @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  employeeStatisticDetail      EmployeeStatisticDetail @relation(fields: [employee_statistic_detail_id], references: [id], onDelete: NoAction)
 
+  @@index([employee_id], map: "employees_statistics_employee_id_fkey")
+  @@index([employee_statistic_detail_id], map: "employees_statistics_employee_statistic_detail_id_fkey")
   @@map("employees_statistics")
 }
 
-//Relation to employees_statistics as 1 in cardinality
 model EmployeeStatisticDetail {
   id                Int                 @id @default(autoincrement())
-  title             String              @db.VarChar(256)
   created_at        DateTime            @default(now())
+  title             String              @db.VarChar(256)
   updated_at        DateTime            @updatedAt
   employeeStatistic EmployeeStatistic[]
 
   @@map("employees_statistics_details")
 }
 
-//Relation to employees 1 in cardinality
 model Role {
   id           Int        @id @default(autoincrement())
   title        String
@@ -417,205 +400,205 @@ model Role {
   @@map("roles")
 }
 
-////Normalization model for employees and documents as N in cardinality
+/// /Normalization model for employees and documents as N in cardinality
 model EmployeeDocument {
-  id          Int       @id @default(autoincrement())
-  employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
-  employee_id Int
-  document    Document? @relation(fields: [document_id], references: [id]) //Reference
-  document_id Int
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   value       String
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  document_id Int
+  employee_id Int
+  document    Document @relation(fields: [document_id], references: [id], onDelete: NoAction)
+  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
 
+  @@index([document_id], map: "employees_documents_document_id_fkey")
+  @@index([employee_id], map: "employees_documents_employee_id_fkey")
   @@map("employees_documents")
 }
 
-////Normalization model for employees and members as N in cardinality
+/// /Normalization model for employees and members as N in cardinality
 model EmployeeRating {
-  id          Int       @id @default(autoincrement())
-  employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
-  employee_id Int
-  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
-  member_id   Int
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
   ratings     Int
-  comment     String    @db.VarChar(256)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  updated_at  DateTime @updatedAt
+  comment     String   @db.VarChar(256)
+  employee_id Int
+  member_id   Int
+  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  member      Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
+  @@index([employee_id], map: "employees_ratings_employee_id_fkey")
+  @@index([member_id], map: "employees_ratings_member_id_fkey")
   @@map("employees_ratings")
 }
 
-////Normalization model for employees and classes as N in cardinality
+/// /Normalization model for employees and classes as N in cardinality
 model EmployeeClass {
-  id          Int       @id @default(autoincrement())
-  employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //  Reference
-  employee_id Int
-  class       Class?    @relation(fields: [class_id], references: [id]) // Reference
-  class_id    Int
+  id          Int      @id @default(autoincrement())
+  comments    String   @db.VarChar(256)
+  created_at  DateTime @default(now())
   rating      Int
-  comments    String    @db.VarChar(256)
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  updated_at  DateTime @updatedAt
+  class_id    Int
+  employee_id Int
+  class       Class    @relation(fields: [class_id], references: [id], onDelete: NoAction)
+  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
 
+  @@index([class_id], map: "employees_classes_class_id_fkey")
+  @@index([employee_id], map: "employees_classes_employee_id_fkey")
   @@map("employees_classes")
 }
 
-////// Gyms Section
-
-//Relation to gyms as              N in cardinality
-//Relation to employees_classes    1 in cardinality
-//Relation to classes_week_days as 1 in cardinality
-//Relation to members_classes as   1 in cardinality
 model Class {
   id            Int             @id @default(autoincrement())
-  gym           Gym?            @relation(fields: [gym_id], references: [id]) //Reference
-  gym_id        Int
-  title         String
-  description   String          @db.VarChar(256)
-  hour          Float
-  min_members   Int
-  max_members   Int
   created_at    DateTime        @default(now())
+  description   String          @db.VarChar(256)
+  title         String
   updated_at    DateTime        @updatedAt
-  employeeClass EmployeeClass[]
+  gym_id        Int
+  hour          Float
+  max_members   Int
+  min_members   Int
+  gym           Gym             @relation(fields: [gym_id], references: [id], onDelete: NoAction)
   classWeekDay  ClassWeekDay[]
+  employeeClass EmployeeClass[]
   memberClass   MemberClass[]
 
+  @@index([gym_id], map: "classes_gym_id_fkey")
   @@map("classes")
 }
 
-////Normalization model for classes and week_days as N in cardinality
+/// /Normalization model for classes and week_days as N in cardinality
 model ClassWeekDay {
   id          Int      @id @default(autoincrement())
-  class       Class?   @relation(fields: [class_id], references: [id]) //Reference
-  class_id    Int
-  weekDay     WeekDay? @relation(fields: [week_day_id], references: [id]) //Reference
-  week_day_id Int
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  class_id    Int
+  week_day_id Int
+  class       Class    @relation(fields: [class_id], references: [id], onDelete: NoAction)
+  weekDay     WeekDay  @relation(fields: [week_day_id], references: [id], onDelete: NoAction)
 
+  @@index([class_id], map: "classes_week_days_class_id_fkey")
+  @@index([week_day_id], map: "classes_week_days_week_day_id_fkey")
   @@map("classes_week_days")
 }
 
-//Relation to week_days as 1 in cardinality
 model WeekDay {
   id           Int            @id @default(autoincrement())
-  name         String
   created_at   DateTime       @default(now())
+  name         String
   updated_at   DateTime       @updatedAt
   classWeekDay ClassWeekDay[]
 
   @@map("week_days")
 }
 
-//Relation to members_payments as         1 in cardinality
-//Relation to gyms_employees as           1 in cardinality
-//Relation to classes as                  1 in cardinality
-//Relation to gyms_stock as               1 in cardinality
-//Relation to gyms_subscriptions_plans as 1 in cardinality
-//Relation to gyms_members as             1 in cardinality
 model Gym {
   id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(256)
+  city                String
+  created_at          DateTime              @default(now())
   email               String
+  name                String                @db.VarChar(256)
   password            String                @db.VarChar(256)
   state               String
-  city                String
   street              String                @db.VarChar(256)
+  updated_at          DateTime              @updatedAt
   adress_number       Int
   zip_code            Int
   current_capacity    Int
   max_capacity        Int
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
-  memberPayment       MemberPayment[]
-  gymEmployee         GymEmployee[]
   class               Class[]
+  gymEmployee         GymEmployee[]
+  gymMember           GymMember[]
   gymStock            GymStock[]
   gymSubscriptionPlan GymSubscriptionPlan[]
-  gymMember           GymMember[]
+  memberPayment       MemberPayment[]
 
   @@map("gyms")
 }
 
-////Normalization model for gyms and employees as N in cardinality
+/// /Normalization model for gyms and employees as N in cardinality
 model GymEmployee {
-  id          Int       @id @default(autoincrement())
-  gym         Gym?      @relation(fields: [gym_id], references: [id]) //Reference
-  gym_id      Int
-  employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
   employee_id Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  gym_id      Int
+  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  gym         Gym      @relation(fields: [gym_id], references: [id], onDelete: NoAction)
 
+  @@index([employee_id], map: "gyms_employees_employee_id_fkey")
+  @@index([gym_id], map: "gyms_employees_gym_id_fkey")
   @@map("gyms_employees")
 }
 
-////Normalization model for gyms and products as N in cardinality
+/// /Normalization model for gyms and products as N in cardinality
 model GymStock {
   id         Int      @id @default(autoincrement())
-  gym        Gym?     @relation(fields: [gym_id], references: [id]) //Reference
-  gym_id     Int
-  product    Product? @relation(fields: [product_id], references: [id]) //Reference
-  product_id Int
   amount     Int
-  min_amount Int
-  max_amount Int
   created_at DateTime @default(now())
+  max_amount Int
+  min_amount Int
   updated_at DateTime @updatedAt
+  gym_id     Int
+  product_id Int
+  gym        Gym      @relation(fields: [gym_id], references: [id], onDelete: NoAction)
+  product    Product  @relation(fields: [product_id], references: [id], onDelete: NoAction)
 
+  @@index([gym_id], map: "gyms_stock_gym_id_fkey")
+  @@index([product_id], map: "gyms_stock_product_id_fkey")
   @@map("gyms_stock")
 }
 
-////Normalization model for gyms and subscriptions_plans as N in cardinality
+/// /Normalization model for gyms and subscriptions_plans as N in cardinality
 model GymSubscriptionPlan {
-  id                   Int               @id @default(autoincrement())
-  gym                  Gym?              @relation(fields: [gym_id], references: [id]) //Reference
+  id                   Int              @id @default(autoincrement())
+  created_at           DateTime         @default(now())
+  updated_at           DateTime         @updatedAt
   gym_id               Int
-  subscriptionPlan     SubscriptionPlan? @relation(fields: [subscription_plan_id], references: [id]) //Reference
   subscription_plan_id Int
-  created_at           DateTime          @default(now())
-  updated_at           DateTime          @updatedAt
+  gym                  Gym              @relation(fields: [gym_id], references: [id], onDelete: NoAction)
+  subscriptionPlan     SubscriptionPlan @relation(fields: [subscription_plan_id], references: [id], onDelete: NoAction)
 
+  @@index([gym_id], map: "gyms_subscriptions_plans_gym_id_fkey")
+  @@index([subscription_plan_id], map: "gyms_subscriptions_plans_subscription_plan_id_fkey")
   @@map("gyms_subscriptions_plans")
 }
 
-////Normalization model for gyms and members as N in cardinality
+/// /Normalization model for gyms and members as N in cardinality
 model GymMember {
   id         Int      @id @default(autoincrement())
-  gym        Gym?     @relation(fields: [gym_id], references: [id]) //Reference
-  gym_id     Int
-  member     Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
-  member_id  Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  gym_id     Int
+  member_id  Int
+  gym        Gym      @relation(fields: [gym_id], references: [id], onDelete: NoAction)
+  member     Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
+  @@index([gym_id], map: "gyms_members_gym_id_fkey")
+  @@index([member_id], map: "gyms_members_member_id_fkey")
   @@map("gyms_members")
 }
 
-////// Products Section
-
-//Relation to gyms_stock as 1 in cardinality
-//Relation to providers as N in cardinality
-//Relation to categories as N in cardinality
 model Product {
-  id           Int              @id @default(autoincrement())
-  provider     Provider?        @relation(fields: [provider_id], references: [id]) //Reference
-  provider_id  Int
-  categorie    ProductCategory? @relation(fields: [categorie_id], references: [id]) //Reference
-  categorie_id Int
-  name         String           @db.VarChar(256)
+  id           Int             @id @default(autoincrement())
+  created_at   DateTime        @default(now())
+  image_url    String          @db.VarChar(256)
+  name         String          @db.VarChar(256)
   price        Decimal
-  image_url    String           @db.VarChar(256)
-  created_at   DateTime         @default(now())
-  updated_at   DateTime         @updatedAt
+  updated_at   DateTime        @updatedAt
+  categorie_id Int
+  provider_id  Int
+  categorie    ProductCategory @relation(fields: [categorie_id], references: [id], onDelete: NoAction)
+  provider     Provider        @relation(fields: [provider_id], references: [id], onDelete: NoAction)
   gym_stock    GymStock[]
 
+  @@index([categorie_id], map: "products_categorie_id_fkey")
+  @@index([provider_id], map: "products_provider_id_fkey")
   @@map("products")
 }
 
-//Relation to products as 1 in cardinality
 model ProductCategory {
   id         Int       @id @default(autoincrement())
   name       String
@@ -627,54 +610,49 @@ model ProductCategory {
   @@map("products_categories")
 }
 
-//Relation to products as 1 in cardinality
 model Provider {
   id            Int       @id @default(autoincrement())
-  name          String    @db.VarChar(256)
-  cnpj          String
-  state         String
-  city          String
   adress_number String
-  phone_number  String
+  city          String
+  cnpj          String
   created_at    DateTime  @default(now())
+  name          String    @db.VarChar(256)
+  phone_number  String
+  state         String
   updated_at    DateTime  @updatedAt
   product       Product[]
 
   @@map("providers")
 }
 
-////// Subscriptions Plans Section
-
-//Relation to subscriptions as            1 in cardinality
-//Relation to gyms_subscriptions_plans as 1 in cardinality
 model SubscriptionPlan {
   id                  Int                   @id @default(autoincrement())
-  title               String                @db.VarChar(256)
-  price               Decimal
-  months_covered      Int
   created_at          DateTime              @default(now())
+  months_covered      Int
+  price               Decimal
+  title               String                @db.VarChar(256)
   updated_at          DateTime              @updatedAt
-  subscriptions       Subscription[]
   gymSubscriptionPlan GymSubscriptionPlan[]
+  subscriptions       Subscription[]
 
   @@map("subscriptions_plans")
 }
 
-////Normalization model for subscriptions_plans and members as N in cardinality
+/// /Normalization model for subscriptions_plans and members as N in cardinality
 model Subscription {
-  id                   Int               @id @default(autoincrement())
-  subscriptionPlan     SubscriptionPlan? @relation(fields: [subscription_plan_id], references: [id]) //Reference
-  subscription_plan_id Int
-  member               Member?           @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  id                   Int              @id @default(autoincrement())
   member_id            Int
+  created_at           DateTime         @default(now())
   started_at           String
-  created_at           DateTime          @default(now())
-  updated_at           DateTime          @updatedAt
+  updated_at           DateTime         @updatedAt
+  subscription_plan_id Int
+  member               Member           @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  subscriptionPlan     SubscriptionPlan @relation(fields: [subscription_plan_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "subscription_member_id_fkey")
+  @@index([subscription_plan_id], map: "subscription_subscription_plan_id_fkey")
   @@map("subscription")
 }
-
-////// Auth Section
 
 model AuthRole {
   id                Int                 @id @default(autoincrement())
@@ -682,9 +660,9 @@ model AuthRole {
   description       String
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
-  MemberRole        MemberRole[]
   AuthRolePermision AuthRolePermision[]
   EmployeeRole      EmployeeRole[]
+  MemberRole        MemberRole[]
 
   @@map("auth_roles")
 }
@@ -695,74 +673,84 @@ model AuthPermission {
   description       String
   created_at        DateTime            @default(now())
   updated_at        DateTime            @updatedAt
-  MemberPermision   MemberPermision[]
   AuthRolePermision AuthRolePermision[]
   EmployeePermision EmployeePermision[]
+  MemberPermision   MemberPermision[]
 
   @@map("auth_permissions")
 }
 
 model MemberPermision {
-  id            Int             @id @default(autoincrement())
-  member        Member?         @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  id            Int            @id @default(autoincrement())
   member_id     Int
-  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
   permission_id Int
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  member        Member         @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "members_permissions_member_id_fkey")
+  @@index([permission_id], map: "members_permissions_permission_id_fkey")
   @@map("members_permissions")
 }
 
 model MemberRole {
-  id          Int       @id @default(autoincrement())
-  member      Member?   @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
+  id          Int      @id @default(autoincrement())
   member_id   Int
-  authRole    AuthRole? @relation(fields: [authRole_id], references: [id]) //Reference
   authRole_id Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  authRole    AuthRole @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
+  member      Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
 
+  @@index([authRole_id], map: "members_roles_authRole_id_fkey")
+  @@index([member_id], map: "members_roles_member_id_fkey")
   @@map("members_roles")
 }
 
 model AuthRolePermision {
-  id            Int             @id @default(autoincrement())
-  authRole      AuthRole?       @relation(fields: [authRole_id], references: [id]) //Reference
+  id            Int            @id @default(autoincrement())
   authRole_id   Int
-  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
   permission_id Int
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  authRole      AuthRole       @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
+  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
 
+  @@index([authRole_id], map: "auth_roles_permissions_authRole_id_fkey")
+  @@index([permission_id], map: "auth_roles_permissions_permission_id_fkey")
   @@map("auth_roles_permissions")
 }
 
 model EmployeeRole {
-  id          Int       @id @default(autoincrement())
-  employee    Employee? @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
+  id          Int      @id @default(autoincrement())
   employee_id Int
-  authRole    AuthRole? @relation(fields: [authRole_id], references: [id]) //Reference
   authRole_id Int
-  created_at  DateTime  @default(now())
-  updated_at  DateTime  @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  authRole    AuthRole @relation(fields: [authRole_id], references: [id], onDelete: NoAction)
+  employee    Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
 
+  @@index([authRole_id], map: "employees_roles_authRole_id_fkey")
+  @@index([employee_id], map: "employees_roles_employee_id_fkey")
   @@map("employees_roles")
 }
 
 model EmployeePermision {
-  id            Int             @id @default(autoincrement())
-  employee      Employee?       @relation(fields: [employee_id], references: [id], onDelete: Cascade) //Reference
+  id            Int            @id @default(autoincrement())
   employee_id   Int
-  permission    AuthPermission? @relation(fields: [permission_id], references: [id]) //Reference
   permission_id Int
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  employee      Employee       @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  permission    AuthPermission @relation(fields: [permission_id], references: [id], onDelete: NoAction)
 
+  @@index([employee_id], map: "employees_permissions_employee_id_fkey")
+  @@index([permission_id], map: "employees_permissions_permission_id_fkey")
   @@map("employees_permissions")
 }
 
-//// Terms Section
+/// / Terms Section
 model TermAndCondition {
   id         Int      @id @default(autoincrement())
   title      String   @default("Termos e Condições")
@@ -785,8 +773,6 @@ model PrivacyPolicie {
   @@map("privacy_policies")
 }
 
-//// Days Frequency Section
-
 model Month {
   id                  Int                      @id @default(autoincrement())
   name                String
@@ -800,28 +786,62 @@ model Month {
 
 model MemberMonthDayProgress {
   id               Int      @id @default(autoincrement())
-  member           Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id        Int
-  month            Month?   @relation(fields: [month_id], references: [id])
   month_id         Int
   current_progress Int      @default(0)
   created_at       DateTime @default(now())
   updated_at       DateTime @updatedAt
+  member           Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  month            Month    @relation(fields: [month_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "member_months_day_progress_member_id_fkey")
+  @@index([month_id], map: "member_months_day_progress_month_id_fkey")
   @@map("member_months_day_progress")
 }
 
 model MemberPhotoProgress {
   id              Int      @id @default(autoincrement())
-  member          Member?  @relation(fields: [member_id], references: [id], onDelete: Cascade) //Reference
   member_id       Int
-  month           Month?   @relation(fields: [month_id], references: [id])
   month_id        Int
   firstPhoto_url  String?
   secondPhoto_url String?
   thirdPhoto_url  String?
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt
+  member          Member   @relation(fields: [member_id], references: [id], onDelete: Cascade)
+  month           Month    @relation(fields: [month_id], references: [id], onDelete: NoAction)
 
+  @@index([member_id], map: "member_photos_progress_member_id_fkey")
+  @@index([month_id], map: "member_photos_progress_month_id_fkey")
   @@map("member_photos_progress")
+}
+
+model memberworkoutplanworkout {
+  id                      Int                 @id @default(autoincrement())
+  is_complete             Boolean
+  memberId                Int?
+  workoutPlanWorkoutId    Int?
+  created_at              DateTime            @default(now())
+  updated_at              DateTime
+  members                 Member?             @relation("membersTomemberworkoutplanworkout", fields: [memberId], references: [id], map: "MemberWorkoutPlanWorkout_memberId_fkey")
+  workouts_plans_workouts WorkoutPlanWorkout? @relation("memberworkoutplanworkoutToworkouts_plans_workouts", fields: [workoutPlanWorkoutId], references: [id], map: "MemberWorkoutPlanWorkout_workoutPlanWorkoutId_fkey")
+
+  @@index([memberId], map: "MemberWorkoutPlanWorkout_memberId_fkey")
+  @@index([workoutPlanWorkoutId], map: "MemberWorkoutPlanWorkout_workoutPlanWorkoutId_fkey")
+}
+
+model rolls {
+  id           Int      @id @default(autoincrement())
+  access_level String
+  created_at   DateTime @default(now())
+  title        String
+  updated_at   DateTime
+}
+
+model terms {
+  id      Int    @id @default(autoincrement())
+  title   String @default("Termos e Condições")
+  content String @db.Text
+
+  @@fulltext([content])
 }
