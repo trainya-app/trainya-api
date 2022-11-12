@@ -1,9 +1,22 @@
 import { PrismaClient } from '@prisma/client';
-import { Gym } from '@prisma/client';
 
 const { gym } = new PrismaClient();
 
-type IGym = Omit<Gym, 'created_at' | 'updated_at'>;
+// type IGym = Omit<Gym, 'created_at' | 'updated_at'>;
+
+
+interface IGym {
+  name: string;
+  email: string;
+  state: string;
+  street: string;
+  password: string;
+  city: string;
+  adress_number: number;
+  zip_code: number;
+  max_capacity: number;
+  current_capacity: number;
+}
 
 interface UpdateGym {
   id: number;
@@ -41,7 +54,7 @@ class GymsRepository {
     zip_code,
     max_capacity,
     current_capacity,
-  }: Omit<IGym, 'id'>) {
+  }: IGym) {
     try {
       const createdGym = await gym.create({
                 data: {
