@@ -32,16 +32,6 @@ class GymsMembersRepository {
             at_gym: true,
             height: true,
             weight: true,
-            memberDocument: {
-              select: {
-                document: {
-                  select: {
-                    name: true,
-                  },
-                },
-                value: true,
-              },
-            },
           },
         },
       },
