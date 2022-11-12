@@ -1,10 +1,10 @@
-import { PrismaClient, WorkoutPlanWorkout } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 const { workoutPlan } = new PrismaClient();
 
 interface IWorkoutPlan {
   employee_id: number;
   goal: string;
-  workoutPlanWorkouts: WorkoutPlanWorkout[];
+  workoutPlanWorkouts: [];
 }
 
 interface IUpdateWorkoutPlan {
