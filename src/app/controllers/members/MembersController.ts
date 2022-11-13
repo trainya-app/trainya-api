@@ -294,7 +294,7 @@ class MembersController {
     const { workoutPlanWorkoutId } = req.body;
 
     const someFieldIsEmpty = isSomeEmpty([workoutPlanWorkoutId]);
-    if(!someFieldIsEmpty){
+    if(someFieldIsEmpty){
       return res.status(400).json({ message: 'Preencha os campos obrigatórios', finishedWorkout: null})
     }
 
