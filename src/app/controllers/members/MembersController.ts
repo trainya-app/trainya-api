@@ -293,10 +293,21 @@ class MembersController {
     const memberId = req.userId;
     const { workoutPlanWorkoutId } = req.body;
 
+    const someFieldIsEmpty = isSomeEmpty([workoutPlanWorkoutId]);
+    if(!someFieldIsEmpty){
+      return res.status(400).json({ message: 'Preencha os campos obrigatórios', finishedWorkout: null})
+    }
+
     const workoutExists = await WorkoutsPlansWorkoutsRepository.findById(workoutPlanWorkoutId);
     if(!workoutExists){
       return res.status(404).json({ message: 'Treino não encontrado', workout: null})
     }
+
+    const workoutAlreadyFinished = await MembersWorkoutPlanWorkoutRepository.findByMemberAndWorkoutPlanWorkout({ memberId, workoutPlanWorkoutId});
+    if(workoutAlreadyFinished){
+      return res.status(400).json({ message: 'Treino já finalizado', finishedWorkout: null})
+    }
+    
 
     const finishedWorkout = await MembersWorkoutPlanWorkoutRepository.setFinished({ memberId, workoutPlanWorkoutId})
 
@@ -310,6 +321,16 @@ class MembersController {
     const finishedWorkouts = await MembersWorkoutPlanWorkoutRepository.findByMember(memberId);
 
     return res.send({ finishedWorkouts })
+  }
+
+  async deleteFinishedWorkout(req: Request, res: Response){
+    const { id } = req.params;
+    const parsedId = Number(id)
+
+    await MembersWorkoutPlanWorkoutRepository.delete(parsedId);
+
+    return res.sendStatus(200)
+
   }
 }
 

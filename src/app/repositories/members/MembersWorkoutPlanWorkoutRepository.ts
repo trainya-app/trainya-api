@@ -30,6 +30,23 @@ class MembersWorkoutsPlansRepository {
     return finishedWorkouts;
   }
 
+  async findByMemberAndWorkoutPlanWorkout({memberId, workoutPlanWorkoutId} :{memberId: number, workoutPlanWorkoutId: number}){
+    return await memberworkoutplanworkout.findFirst({
+      where:{
+        memberId,
+        workoutPlanWorkoutId
+      }
+    })
+  }
+
+  async delete(id: number){
+    return await memberworkoutplanworkout.delete({
+      where:{
+        id
+      }
+    })
+  }
+
 }
 
 export default new MembersWorkoutsPlansRepository();
