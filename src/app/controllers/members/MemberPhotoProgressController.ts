@@ -30,8 +30,8 @@ class MemberPhotoProgressController{
   async uploadFirstPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const firstPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const month_id = Number(monthId);
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -41,7 +41,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id});
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
@@ -54,8 +54,8 @@ class MemberPhotoProgressController{
   async uploadSecondPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const secondPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const month_id = Number(monthId);
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -65,7 +65,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id });
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
@@ -78,8 +78,8 @@ class MemberPhotoProgressController{
   async uploadThirdPhoto(req: Request, res: Response){
     const memberId = req.userId;
     const thirdPhoto_url = req.firebaseUrl;
-    // const { monthId } = req.body;
-    const monthId = 1;
+    const { monthId } = req.params;
+    const month_id = Number(monthId);
 
     const memberExists = await MembersRepository.findById(memberId);
     if (!memberExists) {
@@ -89,7 +89,7 @@ class MemberPhotoProgressController{
       });
     }
 
-    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id: monthId});
+    const memberPhotoProgress = await MemberPhotoProgressRepository.findByMemberAndMonth({ member_id: memberId, month_id});
     if(!memberPhotoProgress){
       return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null})
     }
