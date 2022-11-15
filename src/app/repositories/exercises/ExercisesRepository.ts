@@ -85,7 +85,6 @@ class ExercisesRepository {
     needs_equipment,
     video_url,
   }: IUpdateExercises) {
-    console.log({ id, name, comment, needs_equipment, video_url });
     const updatedExercise = await exercise.update({
       where: {
         id,
