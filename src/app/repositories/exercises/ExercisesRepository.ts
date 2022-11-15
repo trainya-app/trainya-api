@@ -14,7 +14,6 @@ interface IUpdateExercises {
   comment: string;
   needs_equipment: boolean;
   video_url?: string;
-
 }
 
 class ExercisesRepository {
@@ -79,7 +78,14 @@ class ExercisesRepository {
     return true;
   }
 
-  async update({ id, name, comment, needs_equipment,video_url }: IUpdateExercises) {
+  async update({
+    id,
+    name,
+    comment,
+    needs_equipment,
+    video_url,
+  }: IUpdateExercises) {
+    console.log({ id, name, comment, needs_equipment, video_url });
     const updatedExercise = await exercise.update({
       where: {
         id,
@@ -88,7 +94,7 @@ class ExercisesRepository {
         name,
         comment,
         needs_equipment,
-        video_url
+        video_url,
       },
     });
 

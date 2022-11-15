@@ -103,19 +103,19 @@ class ExercisesController {
           exercise: null,
         });
       }
-
-      const updatedExercise = await ExercisesRepository.update({
-        id: parsedId,
-        name,
-        comment,
-        needs_equipment: needsEquipment,
-        video_url: videoUrl,
-      });
-
-      return res
-        .status(200)
-        .json({ message: 'Exercício atualizado!', exercise: updatedExercise });
     }
+
+    const updatedExercise = await ExercisesRepository.update({
+      id: parsedId,
+      name,
+      comment,
+      needs_equipment: needsEquipment,
+      video_url: videoUrl,
+    });
+
+    return res
+      .status(200)
+      .json({ message: 'Exercício atualizado!', exercise: updatedExercise });
   }
 }
 
