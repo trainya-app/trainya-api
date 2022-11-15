@@ -25,6 +25,7 @@ class ExercisesRepository {
         name: true,
         comment: true,
         needs_equipment: true,
+        video_url: true,
       },
     });
     return exercises;
