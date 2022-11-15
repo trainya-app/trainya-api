@@ -10,6 +10,7 @@ class ExercisesRepository {
                 name: true,
                 comment: true,
                 needs_equipment: true,
+                video_url: true,
             },
         });
         return exercises;
@@ -56,7 +57,7 @@ class ExercisesRepository {
         });
         return true;
     }
-    async update({ id, name, comment, needs_equipment }) {
+    async update({ id, name, comment, needs_equipment, video_url }) {
         const updatedExercise = await exercise.update({
             where: {
                 id,
@@ -65,6 +66,7 @@ class ExercisesRepository {
                 name,
                 comment,
                 needs_equipment,
+                video_url
             },
         });
         return updatedExercise;

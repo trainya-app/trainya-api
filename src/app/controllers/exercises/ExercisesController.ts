@@ -76,9 +76,9 @@ class ExercisesController {
     const { id } = req.params;
     const parsedId = Number(id);
 
-    const { name, comment, needsEquipment } = req.body;
+    const { name, comment, needsEquipment, videoUrl } = req.body;
 
-    const someFieldIsEmpty = isSomeEmpty([name, comment, needsEquipment]);
+    const someFieldIsEmpty = isSomeEmpty([name, comment, needsEquipment, videoUrl]);
     if (someFieldIsEmpty) {
       return res.status(400).json({
         message: 'Campos obrigatórios não foram enviados',
@@ -109,6 +109,7 @@ class ExercisesController {
         name,
         comment,
         needs_equipment: needsEquipment,
+        video_url: videoUrl
       });
 
       return res

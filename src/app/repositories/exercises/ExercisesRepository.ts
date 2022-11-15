@@ -79,7 +79,7 @@ class ExercisesRepository {
     return true;
   }
 
-  async update({ id, name, comment, needs_equipment }: IUpdateExercises) {
+  async update({ id, name, comment, needs_equipment,video_url }: IUpdateExercises) {
     const updatedExercise = await exercise.update({
       where: {
         id,
@@ -88,6 +88,7 @@ class ExercisesRepository {
         name,
         comment,
         needs_equipment,
+        video_url
       },
     });
 

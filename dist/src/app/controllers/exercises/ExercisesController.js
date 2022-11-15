@@ -66,8 +66,8 @@ class ExercisesController {
     async update(req, res) {
         const { id } = req.params;
         const parsedId = Number(id);
-        const { name, comment, needsEquipment } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment, needsEquipment]);
+        const { name, comment, needsEquipment, videoUrl } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment, needsEquipment, videoUrl]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram enviados',
@@ -95,6 +95,7 @@ class ExercisesController {
                 name,
                 comment,
                 needs_equipment: needsEquipment,
+                video_url: videoUrl
             });
             return res
                 .status(200)
