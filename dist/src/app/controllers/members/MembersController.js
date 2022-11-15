@@ -12,6 +12,8 @@ const GymsMembersRepository_1 = __importDefault(require("../../repositories/gyms
 const ClassesRepository_1 = __importDefault(require("../../repositories/classes/ClassesRepository"));
 const MembersClassesRepository_1 = __importDefault(require("../../repositories/members/MembersClassesRepository"));
 const MemberPhotoProgressRepository_1 = __importDefault(require("../../repositories/members/MemberPhotoProgressRepository"));
+const WorkoutsPlansWorkoutsRepository_1 = __importDefault(require("../../repositories/workouts-plans/WorkoutsPlansWorkoutsRepository"));
+const MembersWorkoutPlanWorkoutRepository_1 = __importDefault(require("../../repositories/members/MembersWorkoutPlanWorkoutRepository"));
 class MembersController {
     async index(req, res) {
         const members = await MembersRepository_1.default.findAll();
@@ -211,6 +213,35 @@ class MembersController {
         const member_id = req.userId;
         const classes = await MembersClassesRepository_1.default.findByMember(member_id);
         return res.status(200).json({ message: 'Aulas encontradas', classes });
+    }
+    async finishWorkout(req, res) {
+        const memberId = req.userId;
+        const { workoutPlanWorkoutId } = req.body;
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([workoutPlanWorkoutId]);
+        if (someFieldIsEmpty) {
+            return res.status(400).json({ message: 'Preencha os campos obrigatórios', finishedWorkout: null });
+        }
+        const workoutExists = await WorkoutsPlansWorkoutsRepository_1.default.findById(workoutPlanWorkoutId);
+        if (!workoutExists) {
+            return res.status(404).json({ message: 'Treino não encontrado', workout: null });
+        }
+        const workoutAlreadyFinished = await MembersWorkoutPlanWorkoutRepository_1.default.findByMemberAndWorkoutPlanWorkout({ memberId, workoutPlanWorkoutId });
+        if (workoutAlreadyFinished) {
+            return res.status(400).json({ message: 'Treino já finalizado', finishedWorkout: null });
+        }
+        const finishedWorkout = await MembersWorkoutPlanWorkoutRepository_1.default.setFinished({ memberId, workoutPlanWorkoutId });
+        return res.send({ memberId, finishedWorkout });
+    }
+    async finishedWorkouts(req, res) {
+        const memberId = req.userId;
+        const finishedWorkouts = await MembersWorkoutPlanWorkoutRepository_1.default.findByMember(memberId);
+        return res.send({ finishedWorkouts });
+    }
+    async deleteFinishedWorkout(req, res) {
+        const { id } = req.params;
+        const parsedId = Number(id);
+        await MembersWorkoutPlanWorkoutRepository_1.default.delete(parsedId);
+        return res.sendStatus(200);
     }
 }
 exports.default = new MembersController();

@@ -46,6 +46,7 @@ const MemberMonthsDayProgress_routes_1 = __importDefault(require("./routes/Membe
 const EmployeesClasses_routes_1 = __importDefault(require("./routes/EmployeesClasses.routes"));
 const ErrorMiddleware_1 = __importDefault(require("./app/middlewares/ErrorMiddleware"));
 const MemberPhotoProgress_routes_1 = __importDefault(require("./routes/MemberPhotoProgress.routes"));
+const Files_routes_1 = __importDefault(require("./routes/Files.routes"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
@@ -55,6 +56,8 @@ app.get('/', (req, res) => {
 });
 // Login Routes
 app.use(Auth_routes_1.default);
+// Files
+app.use(Files_routes_1.default);
 // Auth verification
 app.use(AuthMiddleware_1.default);
 // Roles Routes

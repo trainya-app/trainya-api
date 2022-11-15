@@ -27,8 +27,8 @@ class MemberPhotoProgressController {
     async uploadFirstPhoto(req, res) {
         const memberId = req.userId;
         const firstPhoto_url = req.firebaseUrl;
-        // const { monthId } = req.body;
-        const monthId = 1;
+        const { monthId } = req.params;
+        const month_id = Number(monthId);
         const memberExists = await MembersRepository_1.default.findById(memberId);
         if (!memberExists) {
             return res.status(400).send({
@@ -36,7 +36,7 @@ class MemberPhotoProgressController {
                 memberSetting: null,
             });
         }
-        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id: monthId });
+        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id });
         if (!memberPhotoProgress) {
             return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null });
         }
@@ -46,8 +46,8 @@ class MemberPhotoProgressController {
     async uploadSecondPhoto(req, res) {
         const memberId = req.userId;
         const secondPhoto_url = req.firebaseUrl;
-        // const { monthId } = req.body;
-        const monthId = 1;
+        const { monthId } = req.params;
+        const month_id = Number(monthId);
         const memberExists = await MembersRepository_1.default.findById(memberId);
         if (!memberExists) {
             return res.status(400).send({
@@ -55,7 +55,7 @@ class MemberPhotoProgressController {
                 memberSetting: null,
             });
         }
-        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id: monthId });
+        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id });
         if (!memberPhotoProgress) {
             return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null });
         }
@@ -65,8 +65,8 @@ class MemberPhotoProgressController {
     async uploadThirdPhoto(req, res) {
         const memberId = req.userId;
         const thirdPhoto_url = req.firebaseUrl;
-        // const { monthId } = req.body;
-        const monthId = 1;
+        const { monthId } = req.params;
+        const month_id = Number(monthId);
         const memberExists = await MembersRepository_1.default.findById(memberId);
         if (!memberExists) {
             return res.status(400).send({
@@ -74,7 +74,7 @@ class MemberPhotoProgressController {
                 memberSetting: null,
             });
         }
-        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id: monthId });
+        const memberPhotoProgress = await MemberPhotoProgressRepository_1.default.findByMemberAndMonth({ member_id: memberId, month_id });
         if (!memberPhotoProgress) {
             return res.status(404).json({ message: "Progresso não encontrado", memberPhotoProgress: null });
         }

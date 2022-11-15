@@ -10,8 +10,7 @@ class ExercisesController {
   }
 
   async store(req: Request, res: Response) {
-    const { name, comment } = req.body;
-    const video_url = req.firebaseUrl;
+    const { name, comment,video_url } = req.body;
     const needsEquipment = false;
 
     const someFieldIsEmpty = isSomeEmpty([name, comment]);

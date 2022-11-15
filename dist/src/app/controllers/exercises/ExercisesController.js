@@ -12,8 +12,7 @@ class ExercisesController {
         return res.send({ exercises });
     }
     async store(req, res) {
-        const { name, comment } = req.body;
-        const video_url = req.firebaseUrl;
+        const { name, comment, video_url } = req.body;
         const needsEquipment = false;
         const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment]);
         if (someFieldIsEmpty) {
