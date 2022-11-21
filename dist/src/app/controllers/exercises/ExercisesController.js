@@ -67,7 +67,7 @@ class ExercisesController {
         const { id } = req.params;
         const parsedId = Number(id);
         const { name, comment, needsEquipment, videoUrl } = req.body;
-        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment, needsEquipment, videoUrl]);
+        const someFieldIsEmpty = (0, isSomeEmpty_1.isSomeEmpty)([name, comment]);
         if (someFieldIsEmpty) {
             return res.status(400).json({
                 message: 'Campos obrigatórios não foram enviados',
@@ -90,17 +90,17 @@ class ExercisesController {
                     exercise: null,
                 });
             }
-            const updatedExercise = await ExercisesRepository_1.default.update({
-                id: parsedId,
-                name,
-                comment,
-                needs_equipment: needsEquipment,
-                video_url: videoUrl
-            });
-            return res
-                .status(200)
-                .json({ message: 'Exercício atualizado!', exercise: updatedExercise });
         }
+        const updatedExercise = await ExercisesRepository_1.default.update({
+            id: parsedId,
+            name,
+            comment,
+            needs_equipment: needsEquipment,
+            video_url: videoUrl,
+        });
+        return res
+            .status(200)
+            .json({ message: 'Exercício atualizado!', exercise: updatedExercise });
     }
 }
 exports.default = new ExercisesController();
