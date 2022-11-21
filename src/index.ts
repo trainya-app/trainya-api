@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request } from 'express';
 import gymsRoutes from './routes/Gyms.routes';
 import rolesRoutes from './routes/Roles.routes';
 import productsCategoriesRoutes from './routes/ProductsCategories.routes';
@@ -53,7 +53,7 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
@@ -61,7 +61,9 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`)
+  socket.on('join-gym', (data) => {
+    socket.join(`members@${data}`);
+  })
 })
 
 const PORT = process.env.PORT || 8080;
@@ -70,6 +72,7 @@ const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
   res.send('🔷 Trainya App');
 });
+
 // Login Routes
 app.use(authRoutes);
 // Files

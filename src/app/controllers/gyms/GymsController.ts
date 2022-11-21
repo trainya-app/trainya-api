@@ -7,6 +7,7 @@ import GymsMembersRepository from '../../repositories/gyms/GymsMembersRepository
 import MemberMonthsDayProgressRepository from '../../repositories/members/MemberMonthsDayProgressRepository';
 import ClassesRepository from '../../repositories/classes/ClassesRepository';
 import EmployeesRepository from '../../repositories/employees/EmployeesRepository';
+import { io } from '../../..';
 class GymsController {
   async index(req: Request, res: Response) {
     const gyms = await GymsRepository.findAll();
@@ -282,6 +283,9 @@ class GymsController {
           });
       }
 
+      //SOCKET
+      io.to(`members@${gymId}`).emit('update-capacity', { isLeaving: false });
+
       return res.status(200).json({
         message: 'Entrada registrada',
         updatedCapacity,
@@ -301,6 +305,8 @@ class GymsController {
         inGym: false,
         id: parsedMemberId,
       });
+
+      io.to(`members@${gymId}`).emit('update-capacity', { isLeaving: true });
 
       return res
         .status(200)
