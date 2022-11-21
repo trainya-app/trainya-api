@@ -47,9 +47,20 @@ const EmployeesClasses_routes_1 = __importDefault(require("./routes/EmployeesCla
 const ErrorMiddleware_1 = __importDefault(require("./app/middlewares/ErrorMiddleware"));
 const MemberPhotoProgress_routes_1 = __importDefault(require("./routes/MemberPhotoProgress.routes"));
 const Files_routes_1 = __importDefault(require("./routes/Files.routes"));
+const socket_io_1 = require("socket.io");
+const http_1 = __importDefault(require("http"));
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
+const server = http_1.default.createServer(app);
+const io = new socket_io_1.Server(server, {
+    cors: {
+        origin: '*',
+    },
+});
+io.on("connection", (socket) => {
+    console.log(`User connected: ${socket.id}`);
+});
 const PORT = process.env.PORT || 8080;
 app.get('/', (req, res) => {
     res.send('🔷 Trainya App');

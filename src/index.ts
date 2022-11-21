@@ -44,9 +44,25 @@ import ErrorMiddleware from './app/middlewares/ErrorMiddleware';
 import memberPhotoProgress from './routes/MemberPhotoProgress.routes';
 import filesRoutes from './routes/Files.routes';
 
+import { Server } from 'socket.io';
+import http from 'http';
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`)
+})
 
 const PORT = process.env.PORT || 8080;
 
