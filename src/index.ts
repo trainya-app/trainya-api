@@ -162,4 +162,4 @@ app.use(function(req, res, next){
 app.use(ErrorMiddleware);
 
 
-app.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
+server.listen(PORT, () => console.log('🔥 Server Running! 🔥'));
